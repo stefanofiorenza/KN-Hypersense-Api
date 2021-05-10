@@ -1,0 +1,25 @@
+{
+  "name": "Supplier",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "contactDetails",
+      "fieldType": "String"
+    }
+  ],
+  "relationships": [],
+  "javadoc": "Entity to hold up Device vendor information.\\n@author Vassili Moskaljov\\n@version 1.0",
+  "entityTableName": "supplier",
+  "dto": "mapstruct",
+  "pagination": "no",
+  "service": "serviceImpl",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "changelogDate": "20210510161307"
+}

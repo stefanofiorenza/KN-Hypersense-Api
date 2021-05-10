@@ -1,0 +1,32 @@
+{
+  "name": "ThingCategory",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "description",
+      "fieldType": "String"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "thing",
+      "otherEntityRelationshipName": "thingCategory",
+      "relationshipName": "thing"
+    }
+  ],
+  "javadoc": "Entity to group up Thing entitites.\\n@author Vassili Moskaljov\\n@version 1.0",
+  "entityTableName": "thing_category",
+  "dto": "mapstruct",
+  "pagination": "no",
+  "service": "serviceImpl",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "changelogDate": "20210510161302"
+}

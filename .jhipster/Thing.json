@@ -1,0 +1,53 @@
+{
+  "name": "Thing",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-one",
+      "otherEntityName": "location",
+      "otherEntityRelationshipName": "thing",
+      "relationshipName": "location",
+      "ownerSide": true
+    },
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "device",
+      "otherEntityRelationshipName": "thing",
+      "relationshipName": "device"
+    },
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "state",
+      "otherEntityRelationshipName": "thing",
+      "relationshipName": "state"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "thingCategory",
+      "otherEntityRelationshipName": "thing",
+      "relationshipName": "thingCategory"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "application",
+      "otherEntityRelationshipName": "thing",
+      "relationshipName": "application"
+    }
+  ],
+  "javadoc": "Thing is a representation of place to attach sensorts.\\n@author Vassili Moskaljov\\n@version 1.0",
+  "entityTableName": "thing",
+  "dto": "mapstruct",
+  "pagination": "no",
+  "service": "serviceImpl",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "changelogDate": "20210510161303"
+}

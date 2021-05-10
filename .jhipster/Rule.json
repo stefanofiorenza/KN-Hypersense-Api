@@ -1,0 +1,42 @@
+{
+  "name": "Rule",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "description",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "alias",
+      "fieldType": "String"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "ruleConfiguration",
+      "otherEntityRelationshipName": "rule",
+      "relationshipName": "ruleConfiguration"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "device",
+      "otherEntityRelationshipName": "rule",
+      "relationshipName": "device"
+    }
+  ],
+  "javadoc": "Entity for Optional information for custom Action that sensors can define.\\n@author Vassili Moskaljov\\n@version 1.0",
+  "entityTableName": "rule",
+  "dto": "mapstruct",
+  "pagination": "no",
+  "service": "serviceImpl",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "changelogDate": "20210510161311"
+}

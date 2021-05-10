@@ -1,0 +1,47 @@
+{
+  "name": "AlertMessage",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "description",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "dataType",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "value",
+      "fieldType": "String"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-one",
+      "otherEntityName": "alertConfiguration",
+      "otherEntityRelationshipName": "alertMessage",
+      "relationshipName": "alertConfiguration",
+      "ownerSide": true
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "device",
+      "otherEntityRelationshipName": "alertMessage",
+      "relationshipName": "device"
+    }
+  ],
+  "javadoc": "Entity for custom Alerts or Messages that device could define.\\n@author Vassili Moskaljov\\n@version 1.0",
+  "entityTableName": "alert_message",
+  "dto": "mapstruct",
+  "pagination": "no",
+  "service": "serviceImpl",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "changelogDate": "20210510161314"
+}

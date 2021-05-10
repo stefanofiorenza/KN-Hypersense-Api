@@ -15,7 +15,38 @@
     <property name="datetimeType" value="datetime" dbms="oracle, mssql, postgresql, h2"/>
 
     <include file="config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210510161257_added_entity_Organisation.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210510161258_added_entity_UserData.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210510161259_added_entity_DeviceConfiguration.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210510161300_added_entity_ConfigurationData.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210510161301_added_entity_Application.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210510161302_added_entity_ThingCategory.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210510161303_added_entity_Thing.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210510161304_added_entity_DeviceGroup.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210510161305_added_entity_AlertConfiguration.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210510161306_added_entity_Telemetry.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210510161307_added_entity_Supplier.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210510161308_added_entity_Device.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210510161309_added_entity_DeviceModel.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210510161310_added_entity_Location.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210510161311_added_entity_Rule.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210510161312_added_entity_RuleConfiguration.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210510161313_added_entity_Metadata.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210510161314_added_entity_AlertMessage.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210510161315_added_entity_State.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210510161316_added_entity_Status.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
+    <include file="config/liquibase/changelog/20210510161258_added_entity_constraints_UserData.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210510161259_added_entity_constraints_DeviceConfiguration.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210510161301_added_entity_constraints_Application.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210510161303_added_entity_constraints_Thing.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210510161308_added_entity_constraints_Device.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210510161311_added_entity_constraints_Rule.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210510161312_added_entity_constraints_RuleConfiguration.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210510161313_added_entity_constraints_Metadata.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210510161314_added_entity_constraints_AlertMessage.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210510161315_added_entity_constraints_State.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210510161316_added_entity_constraints_Status.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
     <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
 </databaseChangeLog>

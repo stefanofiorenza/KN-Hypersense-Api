@@ -1,0 +1,16 @@
+{
+  "name": "ConfigurationData",
+  "fields": [],
+  "relationships": [],
+  "javadoc": "Entity to add specific values to device configuration.\\n@author Vassili Moskaljov\\n@version 1.0",
+  "entityTableName": "configuration_data",
+  "dto": "mapstruct",
+  "pagination": "no",
+  "service": "serviceImpl",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "changelogDate": "20210510161300"
+}

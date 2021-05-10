@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+    <!--
+        Added the constraints for entity AlertMessage.
+    -->
+    <changeSet id="20210510161314-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="alert_configuration_id"
+                                 baseTableName="alert_message"
+                                 constraintName="fk_alert_message__alert_configuration_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="alert_configuration"/>
+
+        <addForeignKeyConstraint baseColumnNames="device_id"
+                                 baseTableName="alert_message"
+                                 constraintName="fk_alert_message__device_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="device"/>
+    </changeSet>
+</databaseChangeLog>

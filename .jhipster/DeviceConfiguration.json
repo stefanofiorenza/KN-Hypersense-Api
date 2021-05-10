@@ -1,0 +1,46 @@
+{
+  "name": "DeviceConfiguration",
+  "fields": [
+    {
+      "fieldName": "uUID",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "token",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "any"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-one",
+      "otherEntityName": "configurationData",
+      "otherEntityRelationshipName": "deviceConfiguration",
+      "relationshipName": "configurationData",
+      "ownerSide": true
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "device",
+      "otherEntityRelationshipName": "deviceConfiguration",
+      "relationshipName": "device"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "userData",
+      "otherEntityRelationshipName": "deviceConfiguration",
+      "relationshipName": "userData"
+    }
+  ],
+  "javadoc": "Entity to keep data related to sensor connection.\\n@author Vassili Moskaljov\\n@version 1.0",
+  "entityTableName": "device_configuration",
+  "dto": "mapstruct",
+  "pagination": "no",
+  "service": "serviceImpl",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "changelogDate": "20210510161259"
+}

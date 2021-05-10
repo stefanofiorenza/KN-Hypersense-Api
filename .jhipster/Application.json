@@ -1,0 +1,42 @@
+{
+  "name": "Application",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "description",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "isAuthorized",
+      "fieldType": "Boolean"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "thing",
+      "otherEntityRelationshipName": "application",
+      "relationshipName": "thing"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "organisation",
+      "otherEntityRelationshipName": "factory",
+      "relationshipName": "organisation"
+    }
+  ],
+  "javadoc": "Application entity, specific application to use core platform.\\n@author Vassili Moskaljov\\n@version 1.0",
+  "entityTableName": "application",
+  "dto": "mapstruct",
+  "pagination": "no",
+  "service": "serviceImpl",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "changelogDate": "20210510161301"
+}

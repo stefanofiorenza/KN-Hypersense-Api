@@ -1,0 +1,21 @@
+{
+  "name": "Location",
+  "fields": [
+    {
+      "fieldName": "coordinates",
+      "fieldType": "String"
+    }
+  ],
+  "relationships": [],
+  "javadoc": "Entity that holds information specific to Thing location.\\n@author Vassili Moskaljov\\n@version 1.0",
+  "entityTableName": "location",
+  "dto": "mapstruct",
+  "pagination": "no",
+  "service": "serviceImpl",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "changelogDate": "20210510161310"
+}

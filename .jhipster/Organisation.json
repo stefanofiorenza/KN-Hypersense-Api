@@ -1,0 +1,34 @@
+{
+  "name": "Organisation",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "application",
+      "otherEntityRelationshipName": "organisation",
+      "relationshipName": "factory"
+    },
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "userData",
+      "otherEntityRelationshipName": "organisation",
+      "relationshipName": "userData"
+    }
+  ],
+  "javadoc": "Organisation entity that is related to user\\n@author Vassili Moskaljov\\n@version 1.0",
+  "entityTableName": "organisation",
+  "dto": "mapstruct",
+  "pagination": "no",
+  "service": "serviceImpl",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "changelogDate": "20210510161257"
+}

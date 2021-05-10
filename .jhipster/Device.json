@@ -1,0 +1,93 @@
+{
+  "name": "Device",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "serialNumber",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "manufacturer",
+      "fieldType": "String"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-one",
+      "otherEntityName": "telemetry",
+      "otherEntityRelationshipName": "device",
+      "relationshipName": "telemetry",
+      "ownerSide": true
+    },
+    {
+      "relationshipType": "one-to-one",
+      "otherEntityName": "supplier",
+      "otherEntityRelationshipName": "device",
+      "relationshipName": "supplier",
+      "ownerSide": true
+    },
+    {
+      "relationshipType": "one-to-one",
+      "otherEntityName": "deviceModel",
+      "otherEntityRelationshipName": "device",
+      "relationshipName": "deviceModel",
+      "ownerSide": true
+    },
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "rule",
+      "otherEntityRelationshipName": "device",
+      "relationshipName": "rule"
+    },
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "alertMessage",
+      "otherEntityRelationshipName": "device",
+      "relationshipName": "alertMessage"
+    },
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "metadata",
+      "otherEntityRelationshipName": "device",
+      "relationshipName": "metaData"
+    },
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "deviceConfiguration",
+      "otherEntityRelationshipName": "device",
+      "relationshipName": "deviceConfiguration"
+    },
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "status",
+      "otherEntityRelationshipName": "device",
+      "relationshipName": "status"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "thing",
+      "otherEntityRelationshipName": "device",
+      "relationshipName": "thing"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "deviceGroup",
+      "otherEntityRelationshipName": "device",
+      "relationshipName": "deviceGroup"
+    }
+  ],
+  "javadoc": "Entity that holds up Sensor data.\\n@author Vassili Moskaljov\\n@version 1.0",
+  "entityTableName": "device",
+  "dto": "mapstruct",
+  "pagination": "no",
+  "service": "serviceImpl",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "changelogDate": "20210510161308"
+}

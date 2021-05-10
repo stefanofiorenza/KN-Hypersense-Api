@@ -1,0 +1,16 @@
+{
+  "name": "DeviceModel",
+  "fields": [],
+  "relationships": [],
+  "javadoc": "Entity to set device model specification.\\n@author Vassili Moskaljov\\n@version 1.0",
+  "entityTableName": "device_model",
+  "dto": "mapstruct",
+  "pagination": "no",
+  "service": "serviceImpl",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "changelogDate": "20210510161309"
+}

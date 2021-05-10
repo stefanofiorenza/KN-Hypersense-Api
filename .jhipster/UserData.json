@@ -1,0 +1,36 @@
+{
+  "name": "UserData",
+  "fields": [],
+  "relationships": [
+    {
+      "relationshipType": "one-to-one",
+      "otherEntityName": "user",
+      "otherEntityRelationshipName": "userData",
+      "relationshipName": "internalUser",
+      "ownerSide": true
+    },
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "deviceConfiguration",
+      "otherEntityRelationshipName": "userData",
+      "relationshipName": "deviceConfiguration"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "organisation",
+      "otherEntityRelationshipName": "userData",
+      "relationshipName": "organisation"
+    }
+  ],
+  "javadoc": "Extended user data that is used instead of User entity.\\n@author Vassili Moskaljov\\n@version 1.0",
+  "entityTableName": "user_data",
+  "dto": "mapstruct",
+  "pagination": "no",
+  "service": "serviceImpl",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "changelogDate": "20210510161258"
+}

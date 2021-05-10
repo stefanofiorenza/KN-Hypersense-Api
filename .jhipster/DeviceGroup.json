@@ -1,0 +1,32 @@
+{
+  "name": "DeviceGroup",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "description",
+      "fieldType": "String"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "device",
+      "otherEntityRelationshipName": "deviceGroup",
+      "relationshipName": "device"
+    }
+  ],
+  "javadoc": "Entity to Group up sertain devices.\\n@author Vassili Moskaljov\\n@version 1.0",
+  "entityTableName": "device_group",
+  "dto": "mapstruct",
+  "pagination": "no",
+  "service": "serviceImpl",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "changelogDate": "20210510161304"
+}

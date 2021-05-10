@@ -1,0 +1,23 @@
+{
+  "name": "RuleConfiguration",
+  "fields": [],
+  "relationships": [
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "rule",
+      "otherEntityRelationshipName": "ruleConfiguration",
+      "relationshipName": "rule"
+    }
+  ],
+  "javadoc": "Entity to configure certain rule\\n@author Vassili Moskaljov\\n@version 1.0",
+  "entityTableName": "rule_configuration",
+  "dto": "mapstruct",
+  "pagination": "no",
+  "service": "serviceImpl",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "changelogDate": "20210510161312"
+}

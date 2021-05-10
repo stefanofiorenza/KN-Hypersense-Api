@@ -41,6 +41,29 @@
     "jwtSecretKey": "MDIwNzdiMjQ2ODQyNDY4OTg0ZGNkZDU2ZWMzODI3NmZiYWU0YTk0M2Y1NjgzMWZlMWU2ZGVlNzE5YzUwOGYxMzkwZTZhZmQ0YzMwM2Y2MjYzMTE2N2JhOWRhYTJiZGQyOTU5NmM0ZTU0OWM4ZTVmZGY2MjZjNmVkMmFhMTYwN2M=",
     "clientPackageManager": "npm",
     "clientThemeVariant": "",
-    "languages": ["en", "fr"]
+    "languages": ["en", "fr"],
+    "entities": [
+      "Organisation",
+      "UserData",
+      "DeviceConfiguration",
+      "ConfigurationData",
+      "Application",
+      "ThingCategory",
+      "Thing",
+      "DeviceGroup",
+      "AlertConfiguration",
+      "Telemetry",
+      "Supplier",
+      "Device",
+      "DeviceModel",
+      "Location",
+      "Rule",
+      "RuleConfiguration",
+      "Metadata",
+      "AlertMessage",
+      "State",
+      "Status"
+    ],
+    "lastLiquibaseTimestamp": 1620663196000
   }
 }
