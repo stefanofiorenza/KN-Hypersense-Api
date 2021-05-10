@@ -1,0 +1,247 @@
+/**
+* Organisation entity that is related to user
+* @author Vassili Moskaljov
+* @version 1.0
+*/
+entity Organisation {
+	name String
+}
+
+/**
+* Extended user data that is used instead of User entity.
+* @author Vassili Moskaljov
+* @version 1.0
+*/
+entity UserData
+
+/**
+* Entity to keep data related to sensor connection.
+* @author Vassili Moskaljov
+* @version 1.0
+*/
+entity DeviceConfiguration {
+	UUID String
+    token Blob
+}
+
+/**
+* Entity to add specific values to device configuration.
+* @author Vassili Moskaljov
+* @version 1.0
+*/
+entity ConfigurationData
+
+/**
+* Application entity, specific application to use core platform.
+* @author Vassili Moskaljov
+* @version 1.0
+*/
+entity Application {
+	name String
+    description String
+    isAuthorized Boolean
+}
+
+/**
+* Entity to group up Thing entitites.
+* @author Vassili Moskaljov
+* @version 1.0
+*/
+entity ThingCategory {
+	name String
+    description String
+}
+
+/**
+* Thing is a representation of place to attach sensorts.
+* @author Vassili Moskaljov
+* @version 1.0
+*/
+entity Thing {
+	name String
+}
+
+/**
+* Entity to Group up sertain devices.
+* @author Vassili Moskaljov
+* @version 1.0
+*/
+entity DeviceGroup {
+	name String
+    description String
+}
+
+/**
+* Entity to configure Alert.
+* @author Vassili Moskaljov
+* @version 1.0
+*/
+entity AlertConfiguration {
+	name String
+    description String
+    configuration String
+}
+
+/**
+* Entity for data that being transfered from devices.
+* @author Vassili Moskaljov
+* @version 1.0
+*/
+entity Telemetry{
+	name String
+    data String
+}
+
+/**
+* Entity to hold up Device vendor information.
+* @author Vassili Moskaljov
+* @version 1.0
+*/
+entity Supplier{
+	name String
+    contactDetails String
+}
+
+/**
+* Entity that holds up Sensor data.
+* @author Vassili Moskaljov
+* @version 1.0
+*/
+entity Device {
+	name String
+    serialNumber String
+    manufacturer String
+}
+
+/**
+* Entity to set device model specification.
+* @author Vassili Moskaljov
+* @version 1.0
+*/
+entity DeviceModel
+
+/**
+* Entity that holds information specific to Thing location.
+* @author Vassili Moskaljov
+* @version 1.0
+*/
+entity Location {
+	coordinates String
+}
+
+/**
+* Entity for Optional information for custom Action that sensors can define.
+* @author Vassili Moskaljov
+* @version 1.0
+*/
+entity Rule {
+	name String
+    description String
+    alias String
+}
+
+/**
+* Entity to configure certain rule
+* @author Vassili Moskaljov
+* @version 1.0
+*/
+entity RuleConfiguration
+
+/**
+* Entity for metadata that sensor could contain.
+* @author Vassili Moskaljov
+* @version 1.0
+*/
+entity Metadata {
+	name String
+    data String
+}
+
+/**
+* Entity for custom Alerts or Messages that device could define.
+* @author Vassili Moskaljov
+* @version 1.0
+*/
+entity AlertMessage {
+	name String
+    description String
+    dataType String
+    value String
+}
+
+/**
+* Entity to define possible state of the Thing.
+* @author Vassili Moskaljov
+* @version 1.0
+*/
+entity State {
+	name String
+    description String
+    UUID String
+}
+
+/**
+* Entity to define possible Device status.
+* @author Vassili Moskaljov
+* @version 1.0
+*/
+entity Status {
+	name String
+    description String
+    UUID String
+}
+
+relationship OneToOne {
+	Thing{location} to Location
+}
+
+relationship OneToMany {
+	Device{rule} to Rule
+    Device{alertMessage} to AlertMessage
+    Device{metaData} to Metadata
+    Device{deviceConfiguration} to DeviceConfiguration
+    Device{status} to Status
+}
+
+relationship OneToOne{
+    Device{telemetry} to Telemetry
+    Device{supplier} to Supplier
+    DeviceConfiguration{configurationData} to ConfigurationData
+    Device{deviceModel} to DeviceModel
+    AlertMessage{alertConfiguration} to AlertConfiguration
+}
+
+relationship OneToMany {
+	Thing{device} to Device
+    ThingCategory{thing} to Thing
+    Thing{state} to State
+}
+
+relationship OneToMany {
+	Application{thing} to Thing
+}
+
+relationship OneToMany {
+	Organisation{factory} to Application
+    Organisation{userData} to UserData
+}
+
+relationship OneToMany {
+	UserData{deviceConfiguration} to DeviceConfiguration
+    DeviceGroup{device} to Device
+    Rule{ruleConfiguration} to RuleConfiguration
+}
+
+relationship OneToOne {
+    UserData{internalUser} to User
+}
+// Set pagination options
+
+// Use Data Transfer Objects (DTO)
+dto * with mapstruct
+
+// Set service options to all except few
+service all with serviceImpl
+
+// Set an angular suffix
+// angularSuffix * with mySuffix
