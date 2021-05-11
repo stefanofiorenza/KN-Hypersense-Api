@@ -93,6 +93,12 @@ export const ThingUpdate = (props: IThingUpdateProps) => {
                 <AvField id="thing-name" data-cy="name" type="text" name="name" />
               </AvGroup>
               <AvGroup>
+                <Label id="uUIDLabel" for="thing-uUID">
+                  U UID
+                </Label>
+                <AvField id="thing-uUID" data-cy="uUID" type="text" name="uUID" />
+              </AvGroup>
+              <AvGroup>
                 <Label for="thing-location">Location</Label>
                 <AvInput id="thing-location" data-cy="location" type="select" className="form-control" name="locationId">
                   <option value="" key="0" />

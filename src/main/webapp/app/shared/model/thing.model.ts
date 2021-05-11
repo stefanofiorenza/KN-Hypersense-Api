@@ -7,6 +7,7 @@ import { IApplication } from 'app/shared/model/application.model';
 export interface IThing {
   id?: number;
   name?: string | null;
+  uUID?: string | null;
   location?: ILocation | null;
   devices?: IDevice[] | null;
   states?: IState[] | null;
