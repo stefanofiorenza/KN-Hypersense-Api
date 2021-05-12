@@ -10,11 +10,14 @@
         Added the entity Thing.
     -->
     <changeSet id="20210510161303-1" author="jhipster">
-        <createTable tableName="thing" remarks="Thing is a representation of place to attach sensorts.\n@author Vassili Moskaljov\n@version 1.0">
+        <createTable tableName="thing" remarks="Thing is a representation of place to attach sensorts.\n@author Vassili Moskaljov\n@version 1.1">
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="name" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="u_uid" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
             <column name="location_id" type="bigint">
@@ -47,6 +50,7 @@
                   tableName="thing">
             <column name="id" type="numeric"/>
             <column name="name" type="string"/>
+            <column name="u_uid" type="string"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>

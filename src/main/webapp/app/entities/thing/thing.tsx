@@ -43,6 +43,7 @@ export const Thing = (props: IThingProps) => {
               <tr>
                 <th>ID</th>
                 <th>Name</th>
+                <th>U UID</th>
                 <th>Location</th>
                 <th>Thing Category</th>
                 <th>Application</th>
@@ -58,6 +59,7 @@ export const Thing = (props: IThingProps) => {
                     </Button>
                   </td>
                   <td>{thing.name}</td>
+                  <td>{thing.uUID}</td>
                   <td>{thing.location ? <Link to={`location/${thing.location.id}`}>{thing.location.id}</Link> : ''}</td>
                   <td>
                     {thing.thingCategory ? <Link to={`thing-category/${thing.thingCategory.id}`}>{thing.thingCategory.id}</Link> : ''}

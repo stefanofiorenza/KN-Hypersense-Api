@@ -9,7 +9,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
- * Thing is a representation of place to attach sensorts.\n@author Vassili Moskaljov\n@version 1.0
+ * Thing is a representation of place to attach sensorts.\n@author Vassili Moskaljov\n@version 1.1
  */
 @Entity
 @Table(name = "thing")
@@ -25,6 +25,9 @@ public class Thing implements Serializable {
 
     @Column(name = "name")
     private String name;
+
+    @Column(name = "u_uid")
+    private String uUID;
 
     @OneToOne
     @JoinColumn(unique = true)
@@ -87,6 +90,19 @@ public class Thing implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getuUID() {
+        return this.uUID;
+    }
+
+    public Thing uUID(String uUID) {
+        this.uUID = uUID;
+        return this;
+    }
+
+    public void setuUID(String uUID) {
+        this.uUID = uUID;
     }
 
     public Location getLocation() {
@@ -215,6 +231,7 @@ public class Thing implements Serializable {
         return "Thing{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
+            ", uUID='" + getuUID() + "'" +
             "}";
     }
 }

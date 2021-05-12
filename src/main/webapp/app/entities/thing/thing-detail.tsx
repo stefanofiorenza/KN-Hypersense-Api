@@ -30,6 +30,10 @@ export const ThingDetail = (props: IThingDetailProps) => {
             <span id="name">Name</span>
           </dt>
           <dd>{thingEntity.name}</dd>
+          <dt>
+            <span id="uUID">U UID</span>
+          </dt>
+          <dd>{thingEntity.uUID}</dd>
           <dt>Location</dt>
           <dd>{thingEntity.location ? thingEntity.location.id : ''}</dd>
           <dt>Thing Category</dt>

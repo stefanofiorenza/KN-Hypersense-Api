@@ -55,10 +55,11 @@ entity ThingCategory {
 /**
 * Thing is a representation of place to attach sensorts.
 * @author Vassili Moskaljov
-* @version 1.0
+* @version 1.1
 */
 entity Thing {
 	name String
+	UUID String
 }
 
 /**

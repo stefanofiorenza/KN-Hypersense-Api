@@ -34,6 +34,9 @@ class ThingResourceIT {
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
 
+    private static final String DEFAULT_U_UID = "AAAAAAAAAA";
+    private static final String UPDATED_U_UID = "BBBBBBBBBB";
+
     private static final String ENTITY_API_URL = "/api/things";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
@@ -61,7 +64,7 @@ class ThingResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Thing createEntity(EntityManager em) {
-        Thing thing = new Thing().name(DEFAULT_NAME);
+        Thing thing = new Thing().name(DEFAULT_NAME).uUID(DEFAULT_U_UID);
         return thing;
     }
 
@@ -72,7 +75,7 @@ class ThingResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Thing createUpdatedEntity(EntityManager em) {
-        Thing thing = new Thing().name(UPDATED_NAME);
+        Thing thing = new Thing().name(UPDATED_NAME).uUID(UPDATED_U_UID);
         return thing;
     }
 
@@ -96,6 +99,7 @@ class ThingResourceIT {
         assertThat(thingList).hasSize(databaseSizeBeforeCreate + 1);
         Thing testThing = thingList.get(thingList.size() - 1);
         assertThat(testThing.getName()).isEqualTo(DEFAULT_NAME);
+        assertThat(testThing.getuUID()).isEqualTo(DEFAULT_U_UID);
     }
 
     @Test
@@ -129,7 +133,8 @@ class ThingResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(thing.getId().intValue())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)));
+            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
+            .andExpect(jsonPath("$.[*].uUID").value(hasItem(DEFAULT_U_UID)));
     }
 
     @Test
@@ -144,7 +149,8 @@ class ThingResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(thing.getId().intValue()))
-            .andExpect(jsonPath("$.name").value(DEFAULT_NAME));
+            .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
+            .andExpect(jsonPath("$.uUID").value(DEFAULT_U_UID));
     }
 
     @Test
@@ -166,7 +172,7 @@ class ThingResourceIT {
         Thing updatedThing = thingRepository.findById(thing.getId()).get();
         // Disconnect from session so that the updates on updatedThing are not directly saved in db
         em.detach(updatedThing);
-        updatedThing.name(UPDATED_NAME);
+        updatedThing.name(UPDATED_NAME).uUID(UPDATED_U_UID);
         ThingDTO thingDTO = thingMapper.toDto(updatedThing);
 
         restThingMockMvc
@@ -182,6 +188,7 @@ class ThingResourceIT {
         assertThat(thingList).hasSize(databaseSizeBeforeUpdate);
         Thing testThing = thingList.get(thingList.size() - 1);
         assertThat(testThing.getName()).isEqualTo(UPDATED_NAME);
+        assertThat(testThing.getuUID()).isEqualTo(UPDATED_U_UID);
     }
 
     @Test
@@ -276,6 +283,7 @@ class ThingResourceIT {
         assertThat(thingList).hasSize(databaseSizeBeforeUpdate);
         Thing testThing = thingList.get(thingList.size() - 1);
         assertThat(testThing.getName()).isEqualTo(UPDATED_NAME);
+        assertThat(testThing.getuUID()).isEqualTo(DEFAULT_U_UID);
     }
 
     @Test
@@ -290,7 +298,7 @@ class ThingResourceIT {
         Thing partialUpdatedThing = new Thing();
         partialUpdatedThing.setId(thing.getId());
 
-        partialUpdatedThing.name(UPDATED_NAME);
+        partialUpdatedThing.name(UPDATED_NAME).uUID(UPDATED_U_UID);
 
         restThingMockMvc
             .perform(
@@ -305,6 +313,7 @@ class ThingResourceIT {
         assertThat(thingList).hasSize(databaseSizeBeforeUpdate);
         Thing testThing = thingList.get(thingList.size() - 1);
         assertThat(testThing.getName()).isEqualTo(UPDATED_NAME);
+        assertThat(testThing.getuUID()).isEqualTo(UPDATED_U_UID);
     }
 
     @Test

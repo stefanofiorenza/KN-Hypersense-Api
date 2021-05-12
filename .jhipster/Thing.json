@@ -4,6 +4,10 @@
     {
       "fieldName": "name",
       "fieldType": "String"
+    },
+    {
+      "fieldName": "uUID",
+      "fieldType": "String"
     }
   ],
   "relationships": [
@@ -39,7 +43,7 @@
       "relationshipName": "application"
     }
   ],
-  "javadoc": "Thing is a representation of place to attach sensorts.\\n@author Vassili Moskaljov\\n@version 1.0",
+  "javadoc": "Thing is a representation of place to attach sensorts.\\n@author Vassili Moskaljov\\n@version 1.1",
   "entityTableName": "thing",
   "dto": "mapstruct",
   "pagination": "no",
