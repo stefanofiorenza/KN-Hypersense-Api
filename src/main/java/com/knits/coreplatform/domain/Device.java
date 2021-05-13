@@ -64,11 +64,6 @@ public class Device implements Serializable {
     @JsonIgnoreProperties(value = { "configurationData", "device", "userData" }, allowSetters = true)
     private Set<DeviceConfiguration> deviceConfigurations = new HashSet<>();
 
-    @OneToMany(mappedBy = "device")
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "device" }, allowSetters = true)
-    private Set<Status> statuses = new HashSet<>();
-
     @ManyToOne
     @JsonIgnoreProperties(value = { "location", "devices", "states", "thingCategory", "application" }, allowSetters = true)
     private Thing thing;
@@ -76,6 +71,10 @@ public class Device implements Serializable {
     @ManyToOne
     @JsonIgnoreProperties(value = { "devices" }, allowSetters = true)
     private DeviceGroup deviceGroup;
+
+    @OneToOne
+    @JoinColumn(unique = true)
+    private Status status;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -293,37 +292,6 @@ public class Device implements Serializable {
         this.deviceConfigurations = deviceConfigurations;
     }
 
-    public Set<Status> getStatuses() {
-        return this.statuses;
-    }
-
-    public Device statuses(Set<Status> statuses) {
-        this.setStatuses(statuses);
-        return this;
-    }
-
-    public Device addStatus(Status status) {
-        this.statuses.add(status);
-        status.setDevice(this);
-        return this;
-    }
-
-    public Device removeStatus(Status status) {
-        this.statuses.remove(status);
-        status.setDevice(null);
-        return this;
-    }
-
-    public void setStatuses(Set<Status> statuses) {
-        if (this.statuses != null) {
-            this.statuses.forEach(i -> i.setDevice(null));
-        }
-        if (statuses != null) {
-            statuses.forEach(i -> i.setDevice(this));
-        }
-        this.statuses = statuses;
-    }
-
     public Thing getThing() {
         return this.thing;
     }
@@ -348,6 +316,19 @@ public class Device implements Serializable {
 
     public void setDeviceGroup(DeviceGroup deviceGroup) {
         this.deviceGroup = deviceGroup;
+    }
+
+    public Status getStatus() {
+        return this.status;
+    }
+
+    public Device status(Status status) {
+        this.setStatus(status);
+        return this;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

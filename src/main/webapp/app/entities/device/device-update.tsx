@@ -1,33 +1,24 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Row, Col, Label } from 'reactstrap';
-import { AvFeedback, AvForm, AvGroup, AvInput, AvField } from 'availity-reactstrap-validation';
-import { translate } from 'react-jhipster';
+import { Button, Col, Label, Row } from 'reactstrap';
+import { AvField, AvForm, AvGroup, AvInput } from 'availity-reactstrap-validation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
-
-import { ITelemetry } from 'app/shared/model/telemetry.model';
 import { getEntities as getTelemetries } from 'app/entities/telemetry/telemetry.reducer';
-import { ISupplier } from 'app/shared/model/supplier.model';
 import { getEntities as getSuppliers } from 'app/entities/supplier/supplier.reducer';
-import { IDeviceModel } from 'app/shared/model/device-model.model';
 import { getEntities as getDeviceModels } from 'app/entities/device-model/device-model.reducer';
-import { IThing } from 'app/shared/model/thing.model';
 import { getEntities as getThings } from 'app/entities/thing/thing.reducer';
-import { IDeviceGroup } from 'app/shared/model/device-group.model';
 import { getEntities as getDeviceGroups } from 'app/entities/device-group/device-group.reducer';
-import { getEntity, updateEntity, createEntity, reset } from './device.reducer';
-import { IDevice } from 'app/shared/model/device.model';
-import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
-import { mapIdList } from 'app/shared/util/entity-utils';
+import { getEntities as getStatuses } from 'app/entities/status/status.reducer';
+import { createEntity, getEntity, reset, updateEntity } from './device.reducer';
 
 export interface IDeviceUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 export const DeviceUpdate = (props: IDeviceUpdateProps) => {
   const [isNew] = useState(!props.match.params || !props.match.params.id);
 
-  const { deviceEntity, telemetries, suppliers, deviceModels, things, deviceGroups, loading, updating } = props;
+  const { deviceEntity, telemetries, suppliers, deviceModels, things, deviceGroups, statuses, loading, updating } = props;
 
   const handleClose = () => {
     props.history.push('/device');
@@ -45,6 +36,7 @@ export const DeviceUpdate = (props: IDeviceUpdateProps) => {
     props.getDeviceModels();
     props.getThings();
     props.getDeviceGroups();
+    props.getStatuses();
   }, []);
 
   useEffect(() => {
@@ -63,6 +55,7 @@ export const DeviceUpdate = (props: IDeviceUpdateProps) => {
         deviceModel: deviceModels.find(it => it.id.toString() === values.deviceModelId.toString()),
         thing: things.find(it => it.id.toString() === values.thingId.toString()),
         deviceGroup: deviceGroups.find(it => it.id.toString() === values.deviceGroupId.toString()),
+        status: statuses.find(it => it.id.toString() === values.statusId.toString()),
       };
 
       if (isNew) {
@@ -177,6 +170,19 @@ export const DeviceUpdate = (props: IDeviceUpdateProps) => {
                     : null}
                 </AvInput>
               </AvGroup>
+              <AvGroup>
+                <Label for="device-status">Status</Label>
+                <AvInput id="device-status" data-cy="status" type="select" className="form-control" name="statusId">
+                  <option value="" key="0" />
+                  {statuses
+                    ? statuses.map(otherEntity => (
+                        <option value={otherEntity.id} key={otherEntity.id}>
+                          {otherEntity.id}
+                        </option>
+                      ))
+                    : null}
+                </AvInput>
+              </AvGroup>
               <Button tag={Link} id="cancel-save" to="/device" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />
                 &nbsp;
@@ -201,6 +207,7 @@ const mapStateToProps = (storeState: IRootState) => ({
   deviceModels: storeState.deviceModel.entities,
   things: storeState.thing.entities,
   deviceGroups: storeState.deviceGroup.entities,
+  statuses: storeState.status.entities,
   deviceEntity: storeState.device.entity,
   loading: storeState.device.loading,
   updating: storeState.device.updating,
@@ -213,6 +220,7 @@ const mapDispatchToProps = {
   getDeviceModels,
   getThings,
   getDeviceGroups,
+  getStatuses,
   getEntity,
   updateEntity,
   createEntity,

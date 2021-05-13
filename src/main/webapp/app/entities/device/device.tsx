@@ -1,14 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Col, Row, Table } from 'reactstrap';
-import { Translate } from 'react-jhipster';
+import { Button, Table } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { IRootState } from 'app/shared/reducers';
 import { getEntities } from './device.reducer';
-import { IDevice } from 'app/shared/model/device.model';
-import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 
 export interface IDeviceProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
 
@@ -50,6 +47,7 @@ export const Device = (props: IDeviceProps) => {
                 <th>Device Model</th>
                 <th>Thing</th>
                 <th>Device Group</th>
+                <th>Status</th>
                 <th />
               </tr>
             </thead>
@@ -69,6 +67,7 @@ export const Device = (props: IDeviceProps) => {
                   <td>{device.deviceModel ? <Link to={`device-model/${device.deviceModel.id}`}>{device.deviceModel.id}</Link> : ''}</td>
                   <td>{device.thing ? <Link to={`thing/${device.thing.id}`}>{device.thing.id}</Link> : ''}</td>
                   <td>{device.deviceGroup ? <Link to={`device-group/${device.deviceGroup.id}`}>{device.deviceGroup.id}</Link> : ''}</td>
+                  <td>{device.status ? <Link to={`status/${device.status.id}`}>{device.status.id}</Link> : ''}</td>
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`${match.url}/${device.id}`} color="info" size="sm" data-cy="entityDetailsButton">

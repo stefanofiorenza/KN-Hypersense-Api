@@ -1,13 +1,11 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Row, Col } from 'reactstrap';
-import {} from 'react-jhipster';
+import { Button, Col, Row } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { IRootState } from 'app/shared/reducers';
 import { getEntity } from './status.reducer';
-import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 
 export interface IStatusDetailProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
@@ -38,8 +36,6 @@ export const StatusDetail = (props: IStatusDetailProps) => {
             <span id="uUID">U UID</span>
           </dt>
           <dd>{statusEntity.uUID}</dd>
-          <dt>Device</dt>
-          <dd>{statusEntity.device ? statusEntity.device.id : ''}</dd>
         </dl>
         <Button tag={Link} to="/status" replace color="info" data-cy="entityDetailsBackButton">
           <FontAwesomeIcon icon="arrow-left" /> <span className="d-none d-md-inline">Back</span>

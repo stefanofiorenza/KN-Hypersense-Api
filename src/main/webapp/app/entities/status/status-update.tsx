@@ -1,25 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Row, Col, Label } from 'reactstrap';
-import { AvFeedback, AvForm, AvGroup, AvInput, AvField } from 'availity-reactstrap-validation';
-import { translate } from 'react-jhipster';
+import { Button, Col, Label, Row } from 'reactstrap';
+import { AvField, AvForm, AvGroup, AvInput } from 'availity-reactstrap-validation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
 
-import { IDevice } from 'app/shared/model/device.model';
-import { getEntities as getDevices } from 'app/entities/device/device.reducer';
-import { getEntity, updateEntity, createEntity, reset } from './status.reducer';
-import { IStatus } from 'app/shared/model/status.model';
-import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
-import { mapIdList } from 'app/shared/util/entity-utils';
+import { createEntity, getEntity, reset, updateEntity } from './status.reducer';
 
 export interface IStatusUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 export const StatusUpdate = (props: IStatusUpdateProps) => {
   const [isNew] = useState(!props.match.params || !props.match.params.id);
 
-  const { statusEntity, devices, loading, updating } = props;
+  const { statusEntity, loading, updating } = props;
 
   const handleClose = () => {
     props.history.push('/status');
@@ -31,8 +25,6 @@ export const StatusUpdate = (props: IStatusUpdateProps) => {
     } else {
       props.getEntity(props.match.params.id);
     }
-
-    props.getDevices();
   }, []);
 
   useEffect(() => {
@@ -46,7 +38,6 @@ export const StatusUpdate = (props: IStatusUpdateProps) => {
       const entity = {
         ...statusEntity,
         ...values,
-        device: devices.find(it => it.id.toString() === values.deviceId.toString()),
       };
 
       if (isNew) {
@@ -96,19 +87,6 @@ export const StatusUpdate = (props: IStatusUpdateProps) => {
                 </Label>
                 <AvField id="status-uUID" data-cy="uUID" type="text" name="uUID" />
               </AvGroup>
-              <AvGroup>
-                <Label for="status-device">Device</Label>
-                <AvInput id="status-device" data-cy="device" type="select" className="form-control" name="deviceId">
-                  <option value="" key="0" />
-                  {devices
-                    ? devices.map(otherEntity => (
-                        <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.id}
-                        </option>
-                      ))
-                    : null}
-                </AvInput>
-              </AvGroup>
               <Button tag={Link} id="cancel-save" to="/status" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />
                 &nbsp;
@@ -128,7 +106,6 @@ export const StatusUpdate = (props: IStatusUpdateProps) => {
 };
 
 const mapStateToProps = (storeState: IRootState) => ({
-  devices: storeState.device.entities,
   statusEntity: storeState.status.entity,
   loading: storeState.status.loading,
   updating: storeState.status.updating,
@@ -136,7 +113,6 @@ const mapStateToProps = (storeState: IRootState) => ({
 });
 
 const mapDispatchToProps = {
-  getDevices,
   getEntity,
   updateEntity,
   createEntity,
