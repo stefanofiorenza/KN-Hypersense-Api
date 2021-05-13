@@ -48,6 +48,7 @@ public class ThingCategoryResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/thing-categories")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.COMPANY_ADMIN + "\")")
     public ResponseEntity<ThingCategoryDTO> createThingCategory(@RequestBody ThingCategoryDTO thingCategoryDTO) throws URISyntaxException {
         log.debug("REST request to save ThingCategory : {}", thingCategoryDTO);
         if (thingCategoryDTO.getId() != null) {
