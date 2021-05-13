@@ -61,12 +61,6 @@
       "relationshipName": "deviceConfiguration"
     },
     {
-      "relationshipType": "one-to-many",
-      "otherEntityName": "status",
-      "otherEntityRelationshipName": "device",
-      "relationshipName": "status"
-    },
-    {
       "relationshipType": "many-to-one",
       "otherEntityName": "thing",
       "otherEntityRelationshipName": "device",
@@ -77,6 +71,15 @@
       "otherEntityName": "deviceGroup",
       "otherEntityRelationshipName": "device",
       "relationshipName": "deviceGroup"
+    },
+    {
+      "relationshipName": "status",
+      "otherEntityName": "status",
+      "relationshipType": "one-to-one",
+      "otherEntityField": "id",
+      "ownerSide": true,
+      "id": false,
+      "otherEntityRelationshipName": "one-to-one"
     }
   ],
   "javadoc": "Entity that holds up Sensor data.\\n@author Vassili Moskaljov\\n@version 1.0",

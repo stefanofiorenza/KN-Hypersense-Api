@@ -1,14 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Col, Row, Table } from 'reactstrap';
-import { Translate } from 'react-jhipster';
+import { Button, Table } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { IRootState } from 'app/shared/reducers';
 import { getEntities } from './status.reducer';
-import { IStatus } from 'app/shared/model/status.model';
-import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 
 export interface IStatusProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
 
@@ -45,7 +42,6 @@ export const Status = (props: IStatusProps) => {
                 <th>Name</th>
                 <th>Description</th>
                 <th>U UID</th>
-                <th>Device</th>
                 <th />
               </tr>
             </thead>
@@ -60,7 +56,6 @@ export const Status = (props: IStatusProps) => {
                   <td>{status.name}</td>
                   <td>{status.description}</td>
                   <td>{status.uUID}</td>
-                  <td>{status.device ? <Link to={`device/${status.device.id}`}>{status.device.id}</Link> : ''}</td>
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`${match.url}/${status.id}`} color="info" size="sm" data-cy="entityDetailsButton">

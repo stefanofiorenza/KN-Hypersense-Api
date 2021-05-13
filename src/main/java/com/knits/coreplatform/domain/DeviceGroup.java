@@ -40,9 +40,9 @@ public class DeviceGroup implements Serializable {
             "alertMessages",
             "metaData",
             "deviceConfigurations",
-            "statuses",
             "thing",
             "deviceGroup",
+            "status",
         },
         allowSetters = true
     )

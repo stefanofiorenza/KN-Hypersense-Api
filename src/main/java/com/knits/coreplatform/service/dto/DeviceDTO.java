@@ -28,6 +28,8 @@ public class DeviceDTO implements Serializable {
 
     private DeviceGroupDTO deviceGroup;
 
+    private StatusDTO status;
+
     public Long getId() {
         return id;
     }
@@ -100,6 +102,14 @@ public class DeviceDTO implements Serializable {
         this.deviceGroup = deviceGroup;
     }
 
+    public StatusDTO getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusDTO status) {
+        this.status = status;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -134,6 +144,7 @@ public class DeviceDTO implements Serializable {
             ", deviceModel=" + getDeviceModel() +
             ", thing=" + getThing() +
             ", deviceGroup=" + getDeviceGroup() +
+            ", status=" + getStatus() +
             "}";
     }
 }

@@ -1,13 +1,11 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Row, Col } from 'reactstrap';
-import {} from 'react-jhipster';
+import { Button, Col, Row } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { IRootState } from 'app/shared/reducers';
 import { getEntity } from './device.reducer';
-import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 
 export interface IDeviceDetailProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
@@ -48,6 +46,8 @@ export const DeviceDetail = (props: IDeviceDetailProps) => {
           <dd>{deviceEntity.thing ? deviceEntity.thing.id : ''}</dd>
           <dt>Device Group</dt>
           <dd>{deviceEntity.deviceGroup ? deviceEntity.deviceGroup.id : ''}</dd>
+          <dt>Status</dt>
+          <dd>{deviceEntity.status ? deviceEntity.status.id : ''}</dd>
         </dl>
         <Button tag={Link} to="/device" replace color="info" data-cy="entityDetailsBackButton">
           <FontAwesomeIcon icon="arrow-left" /> <span className="d-none d-md-inline">Back</span>

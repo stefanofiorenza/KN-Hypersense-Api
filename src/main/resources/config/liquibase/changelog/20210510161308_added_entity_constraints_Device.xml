@@ -37,5 +37,11 @@
                                  constraintName="fk_device__device_group_id"
                                  referencedColumnNames="id"
                                  referencedTableName="device_group"/>
+
+        <addForeignKeyConstraint baseColumnNames="status_id"
+                                 baseTableName="device"
+                                 constraintName="fk_device__status_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="status"/>
     </changeSet>
 </databaseChangeLog>

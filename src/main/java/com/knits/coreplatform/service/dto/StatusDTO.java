@@ -18,8 +18,6 @@ public class StatusDTO implements Serializable {
 
     private String uUID;
 
-    private DeviceDTO device;
-
     public Long getId() {
         return id;
     }
@@ -52,14 +50,6 @@ public class StatusDTO implements Serializable {
         this.uUID = uUID;
     }
 
-    public DeviceDTO getDevice() {
-        return device;
-    }
-
-    public void setDevice(DeviceDTO device) {
-        this.device = device;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -89,7 +79,6 @@ public class StatusDTO implements Serializable {
             ", name='" + getName() + "'" +
             ", description='" + getDescription() + "'" +
             ", uUID='" + getuUID() + "'" +
-            ", device=" + getDevice() +
             "}";
     }
 }

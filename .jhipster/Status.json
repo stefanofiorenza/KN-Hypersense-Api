@@ -14,14 +14,7 @@
       "fieldType": "String"
     }
   ],
-  "relationships": [
-    {
-      "relationshipType": "many-to-one",
-      "otherEntityName": "device",
-      "otherEntityRelationshipName": "status",
-      "relationshipName": "device"
-    }
-  ],
+  "relationships": [],
   "javadoc": "Entity to define possible Device status.\\n@author Vassili Moskaljov\\n@version 1.0",
   "entityTableName": "status",
   "dto": "mapstruct",
