@@ -110,6 +110,7 @@ public class ApplicationResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/applications/{id}", consumes = "application/merge-patch+json")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.COMPANY_ADMIN + "\")")
     public ResponseEntity<ApplicationDTO> partialUpdateApplication(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody ApplicationDTO applicationDTO
@@ -180,6 +181,7 @@ public class ApplicationResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of authorized applications in body.
      */
     @GetMapping("/applications/authorized")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.COMPANY_ADMIN + "\")")
     public List<ApplicationDTO> getAllAuthorizedApplications() {
         log.debug("REST request to get all authorized Applications");
         return applicationService.findAllByIsAuthorizedTrue();
