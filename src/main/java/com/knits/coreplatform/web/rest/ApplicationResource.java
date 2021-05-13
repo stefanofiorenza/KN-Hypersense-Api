@@ -173,4 +173,15 @@ public class ApplicationResource {
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
             .build();
     }
+
+    /**
+     * {@code GET  /applications/authorized} : get all the authorized applications.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of authorized applications in body.
+     */
+    @GetMapping("/applications/authorized")
+    public List<ApplicationDTO> getAllAuthorizedApplications() {
+        log.debug("REST request to get all authorized Applications");
+        return applicationService.findAllByIsAuthorizedTrue();
+    }
 }
