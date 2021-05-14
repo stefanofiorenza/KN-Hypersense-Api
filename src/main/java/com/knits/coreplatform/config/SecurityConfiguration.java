@@ -100,6 +100,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers("/management/**").hasAuthority(AuthoritiesConstants.ADMIN)
             .antMatchers("/things/**").authenticated()
             .antMatchers("/thing-categories/**").authenticated()
+            .antMatchers("/applications/**").authenticated()
         .and()
             .httpBasic()
         .and()
