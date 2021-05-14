@@ -8,36 +8,37 @@
         Added the entity Device.
     -->
     <changeSet id="20210510161308-1" author="jhipster">
-        <createTable tableName="device" remarks="Entity that holds up Sensor data.\n@author Vassili Moskaljov\n@version 1.0">
+        <createTable tableName="device"
+                     remarks="Entity that holds up Sensor data.\n@author Vassili Moskaljov\n@version 1.0">
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="name" type="varchar(255)">
-                <constraints nullable="true" />
+                <constraints nullable="true"/>
             </column>
             <column name="serial_number" type="varchar(255)">
-                <constraints nullable="true" />
+                <constraints nullable="true"/>
             </column>
             <column name="manufacturer" type="varchar(255)">
-                <constraints nullable="true" />
+                <constraints nullable="true"/>
             </column>
             <column name="telemetry_id" type="bigint">
-                <constraints nullable="true" unique="true" uniqueConstraintName="ux_device__telemetry_id" />
+                <constraints nullable="true" unique="true" uniqueConstraintName="ux_device__telemetry_id"/>
             </column>
             <column name="supplier_id" type="bigint">
-                <constraints nullable="true" unique="true" uniqueConstraintName="ux_device__supplier_id" />
+                <constraints nullable="true" unique="true" uniqueConstraintName="ux_device__supplier_id"/>
             </column>
             <column name="device_model_id" type="bigint">
-                <constraints nullable="true" unique="true" uniqueConstraintName="ux_device__device_model_id" />
+                <constraints nullable="true" unique="true" uniqueConstraintName="ux_device__device_model_id"/>
             </column>
             <column name="thing_id" type="bigint">
-                <constraints nullable="true" />
+                <constraints nullable="true"/>
             </column>
             <column name="device_group_id" type="bigint">
-                <constraints nullable="true" />
+                <constraints nullable="true"/>
             </column>
             <column name="status_id" type="bigint">
-                <constraints nullable="true" unique="true" uniqueConstraintName="ux_device__status_id" />
+                <constraints nullable="true" unique="true" uniqueConstraintName="ux_device__status_id"/>
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
@@ -55,9 +56,9 @@
     -->
     <changeSet id="20210510161308-1-data" author="jhipster" context="faker">
         <loadData
-                  file="config/liquibase/fake-data/device.csv"
-                  separator=";"
-                  tableName="device">
+            file="config/liquibase/fake-data/device.csv"
+            separator=";"
+            tableName="device">
             <column name="id" type="numeric"/>
             <column name="name" type="string"/>
             <column name="serial_number" type="string"/>
