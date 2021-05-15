@@ -164,6 +164,7 @@ public class ThingCategoryResource {
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/thing-categories/{id}")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.COMPANY_ADMIN + "\")")
     public ResponseEntity<Void> deleteThingCategory(@PathVariable Long id) {
         log.debug("REST request to delete ThingCategory : {}", id);
         thingCategoryService.delete(id);
