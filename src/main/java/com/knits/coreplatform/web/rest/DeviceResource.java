@@ -1,6 +1,7 @@
 package com.knits.coreplatform.web.rest;
 
 import com.knits.coreplatform.repository.DeviceRepository;
+import com.knits.coreplatform.security.AuthoritiesConstants;
 import com.knits.coreplatform.service.DeviceService;
 import com.knits.coreplatform.service.dto.DeviceDTO;
 import com.knits.coreplatform.web.rest.errors.BadRequestAlertException;
@@ -13,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.ResponseUtil;
@@ -48,6 +50,7 @@ public class DeviceResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/devices")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.COMPANY_ADMIN + "\")")
     public ResponseEntity<DeviceDTO> createDevice(@RequestBody DeviceDTO deviceDTO) throws URISyntaxException {
         log.debug("REST request to save Device : {}", deviceDTO);
         if (deviceDTO.getId() != null) {
@@ -63,7 +66,7 @@ public class DeviceResource {
     /**
      * {@code PUT  /devices/:id} : Updates an existing device.
      *
-     * @param id the id of the deviceDTO to save.
+     * @param id        the id of the deviceDTO to save.
      * @param deviceDTO the deviceDTO to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated deviceDTO,
      * or with status {@code 400 (Bad Request)} if the deviceDTO is not valid,
@@ -71,6 +74,7 @@ public class DeviceResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/devices/{id}")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.COMPANY_ADMIN + "\")")
     public ResponseEntity<DeviceDTO> updateDevice(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody DeviceDTO deviceDTO
@@ -97,7 +101,7 @@ public class DeviceResource {
     /**
      * {@code PATCH  /devices/:id} : Partial updates given fields of an existing device, field will ignore if it is null
      *
-     * @param id the id of the deviceDTO to save.
+     * @param id        the id of the deviceDTO to save.
      * @param deviceDTO the deviceDTO to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated deviceDTO,
      * or with status {@code 400 (Bad Request)} if the deviceDTO is not valid,
@@ -106,6 +110,7 @@ public class DeviceResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/devices/{id}", consumes = "application/merge-patch+json")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.COMPANY_ADMIN + "\")")
     public ResponseEntity<DeviceDTO> partialUpdateDevice(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody DeviceDTO deviceDTO
@@ -136,6 +141,7 @@ public class DeviceResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of devices in body.
      */
     @GetMapping("/devices")
+    @PreAuthorize("hasAnyAuthority(\"" + AuthoritiesConstants.COMPANY_ADMIN + "\",\"" + AuthoritiesConstants.COMPANY_ADMIN + "\")")
     public List<DeviceDTO> getAllDevices() {
         log.debug("REST request to get all Devices");
         return deviceService.findAll();
@@ -148,6 +154,7 @@ public class DeviceResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the deviceDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/devices/{id}")
+    @PreAuthorize("hasAnyAuthority(\"" + AuthoritiesConstants.COMPANY_ADMIN + "\",\"" + AuthoritiesConstants.COMPANY_ADMIN + "\")")
     public ResponseEntity<DeviceDTO> getDevice(@PathVariable Long id) {
         log.debug("REST request to get Device : {}", id);
         Optional<DeviceDTO> deviceDTO = deviceService.findOne(id);

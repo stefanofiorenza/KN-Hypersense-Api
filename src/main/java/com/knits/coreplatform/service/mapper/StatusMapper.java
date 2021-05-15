@@ -1,8 +1,11 @@
 package com.knits.coreplatform.service.mapper;
 
-import com.knits.coreplatform.domain.*;
+import com.knits.coreplatform.domain.Status;
 import com.knits.coreplatform.service.dto.StatusDTO;
-import org.mapstruct.*;
+import org.mapstruct.BeanMapping;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Named;
 
 /**
  * Mapper for the entity {@link Status} and its DTO {@link StatusDTO}.

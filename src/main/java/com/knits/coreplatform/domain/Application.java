@@ -34,7 +34,7 @@ public class Application implements Serializable {
 
     @OneToMany(mappedBy = "application")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "location", "devices", "thingCategory", "application", "states" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "location", "devices", "states", "thingCategory", "application" }, allowSetters = true)
     private Set<Thing> things = new HashSet<>();
 
     @ManyToOne

@@ -1,6 +1,8 @@
 package com.knits.coreplatform.repository;
 
 import com.knits.coreplatform.domain.Application;
+import java.util.List;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 
@@ -9,4 +11,6 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface ApplicationRepository extends JpaRepository<Application, Long> {}
+public interface ApplicationRepository extends JpaRepository<Application, Long> {
+    List<Application> findAllByIsAuthorizedTrue();
+}
