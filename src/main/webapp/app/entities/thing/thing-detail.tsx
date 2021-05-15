@@ -40,6 +40,17 @@ export const ThingDetail = (props: IThingDetailProps) => {
           <dd>{thingEntity.thingCategory ? thingEntity.thingCategory.id : ''}</dd>
           <dt>Application</dt>
           <dd>{thingEntity.application ? thingEntity.application.id : ''}</dd>
+          <dt>State</dt>
+          <dd>
+            {thingEntity.states
+              ? thingEntity.states.map((val, i) => (
+                  <span key={val.id}>
+                    <a>{val.name}</a>
+                    {thingEntity.states && i === thingEntity.states.length - 1 ? '' : ', '}
+                  </span>
+                ))
+              : null}
+          </dd>
         </dl>
         <Button tag={Link} to="/thing" replace color="info" data-cy="entityDetailsBackButton">
           <FontAwesomeIcon icon="arrow-left" /> <span className="d-none d-md-inline">Back</span>

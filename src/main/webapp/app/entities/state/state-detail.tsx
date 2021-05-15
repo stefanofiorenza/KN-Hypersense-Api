@@ -38,8 +38,6 @@ export const StateDetail = (props: IStateDetailProps) => {
             <span id="uUID">U UID</span>
           </dt>
           <dd>{stateEntity.uUID}</dd>
-          <dt>Thing</dt>
-          <dd>{stateEntity.thing ? stateEntity.thing.id : ''}</dd>
         </dl>
         <Button tag={Link} to="/state" replace color="info" data-cy="entityDetailsBackButton">
           <FontAwesomeIcon icon="arrow-left" /> <span className="d-none d-md-inline">Back</span>

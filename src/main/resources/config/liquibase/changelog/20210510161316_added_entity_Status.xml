@@ -1,26 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <databaseChangeLog
     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
     <!--
         Added the entity Status.
     -->
     <changeSet id="20210510161316-1" author="jhipster">
-        <createTable tableName="status"
-                     remarks="Entity to define possible Device status.\n@author Vassili Moskaljov\n@version 1.0">
+        <createTable tableName="status" remarks="Entity to define possible Device status.\n@author Vassili Moskaljov\n@version 1.0">
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="name" type="varchar(255)">
-                <constraints nullable="true"/>
+                <constraints nullable="true" />
             </column>
             <column name="description" type="varchar(255)">
-                <constraints nullable="true"/>
+                <constraints nullable="true" />
             </column>
             <column name="u_uid" type="varchar(255)">
-                <constraints nullable="true"/>
+                <constraints nullable="true" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
@@ -38,9 +39,9 @@
     -->
     <changeSet id="20210510161316-1-data" author="jhipster" context="faker">
         <loadData
-            file="config/liquibase/fake-data/status.csv"
-            separator=";"
-            tableName="status">
+                  file="config/liquibase/fake-data/status.csv"
+                  separator=";"
+                  tableName="status">
             <column name="id" type="numeric"/>
             <column name="name" type="string"/>
             <column name="description" type="string"/>

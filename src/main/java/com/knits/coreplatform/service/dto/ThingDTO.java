@@ -2,7 +2,9 @@ package com.knits.coreplatform.service.dto;
 
 import io.swagger.annotations.ApiModel;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * A DTO for the {@link com.knits.coreplatform.domain.Thing} entity.
@@ -21,6 +23,8 @@ public class ThingDTO implements Serializable {
     private ThingCategoryDTO thingCategory;
 
     private ApplicationDTO application;
+
+    private Set<StateDTO> states = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -70,6 +74,14 @@ public class ThingDTO implements Serializable {
         this.application = application;
     }
 
+    public Set<StateDTO> getStates() {
+        return states;
+    }
+
+    public void setStates(Set<StateDTO> states) {
+        this.states = states;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -101,6 +113,7 @@ public class ThingDTO implements Serializable {
             ", location=" + getLocation() +
             ", thingCategory=" + getThingCategory() +
             ", application=" + getApplication() +
+            ", states=" + getStates() +
             "}";
     }
 }

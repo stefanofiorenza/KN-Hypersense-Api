@@ -1,6 +1,5 @@
 package com.knits.coreplatform.service;
 
-import com.knits.coreplatform.domain.Application;
 import com.knits.coreplatform.service.dto.ApplicationDTO;
 import java.util.List;
 import java.util.Optional;
@@ -46,11 +45,4 @@ public interface ApplicationService {
      * @param id the id of the entity.
      */
     void delete(Long id);
-
-    /**
-     * Get all the applications.
-     *
-     * @return the list of entities.
-     */
-    List<ApplicationDTO> findAllByIsAuthorizedTrue();
 }

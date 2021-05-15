@@ -75,15 +75,4 @@ public class ApplicationServiceImpl implements ApplicationService {
         log.debug("Request to delete Application : {}", id);
         applicationRepository.deleteById(id);
     }
-
-    @Override
-    @Transactional(readOnly = true)
-    public List<ApplicationDTO> findAllByIsAuthorizedTrue() {
-        log.debug("Request to get all Applications");
-        return applicationRepository
-            .findAllByIsAuthorizedTrue()
-            .stream()
-            .map(applicationMapper::toDto)
-            .collect(Collectors.toCollection(LinkedList::new));
-    }
 }

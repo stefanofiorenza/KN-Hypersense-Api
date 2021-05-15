@@ -65,7 +65,7 @@ public class Device implements Serializable {
     private Set<DeviceConfiguration> deviceConfigurations = new HashSet<>();
 
     @ManyToOne
-    @JsonIgnoreProperties(value = { "location", "devices", "states", "thingCategory", "application" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "location", "devices", "thingCategory", "application", "states" }, allowSetters = true)
     private Thing thing;
 
     @ManyToOne

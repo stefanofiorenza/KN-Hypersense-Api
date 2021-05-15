@@ -1,7 +1,6 @@
 package com.knits.coreplatform.web.rest;
 
 import com.knits.coreplatform.repository.LocationRepository;
-import com.knits.coreplatform.security.AuthoritiesConstants;
 import com.knits.coreplatform.service.LocationService;
 import com.knits.coreplatform.service.dto.LocationDTO;
 import com.knits.coreplatform.web.rest.errors.BadRequestAlertException;
@@ -14,7 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.ResponseUtil;
@@ -50,7 +48,6 @@ public class LocationResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/locations")
-    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.COMPANY_ADMIN + "\")")
     public ResponseEntity<LocationDTO> createLocation(@RequestBody LocationDTO locationDTO) throws URISyntaxException {
         log.debug("REST request to save Location : {}", locationDTO);
         if (locationDTO.getId() != null) {
@@ -74,7 +71,6 @@ public class LocationResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/locations/{id}")
-    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.COMPANY_ADMIN + "\")")
     public ResponseEntity<LocationDTO> updateLocation(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody LocationDTO locationDTO
@@ -110,7 +106,6 @@ public class LocationResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/locations/{id}", consumes = "application/merge-patch+json")
-    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.COMPANY_ADMIN + "\")")
     public ResponseEntity<LocationDTO> partialUpdateLocation(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody LocationDTO locationDTO
@@ -141,7 +136,6 @@ public class LocationResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of locations in body.
      */
     @GetMapping("/locations")
-    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.COMPANY_USER + "\")")
     public List<LocationDTO> getAllLocations() {
         log.debug("REST request to get all Locations");
         return locationService.findAll();
@@ -154,7 +148,6 @@ public class LocationResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the locationDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/locations/{id}")
-    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.COMPANY_USER + "\")")
     public ResponseEntity<LocationDTO> getLocation(@PathVariable Long id) {
         log.debug("REST request to get Location : {}", id);
         Optional<LocationDTO> locationDTO = locationService.findOne(id);
@@ -168,7 +161,6 @@ public class LocationResource {
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/locations/{id}")
-    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.COMPANY_ADMIN + "\")")
     public ResponseEntity<Void> deleteLocation(@PathVariable Long id) {
         log.debug("REST request to delete Location : {}", id);
         locationService.delete(id);

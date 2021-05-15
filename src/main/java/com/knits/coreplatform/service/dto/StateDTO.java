@@ -18,8 +18,6 @@ public class StateDTO implements Serializable {
 
     private String uUID;
 
-    private ThingDTO thing;
-
     public Long getId() {
         return id;
     }
@@ -52,14 +50,6 @@ public class StateDTO implements Serializable {
         this.uUID = uUID;
     }
 
-    public ThingDTO getThing() {
-        return thing;
-    }
-
-    public void setThing(ThingDTO thing) {
-        this.thing = thing;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -89,7 +79,6 @@ public class StateDTO implements Serializable {
             ", name='" + getName() + "'" +
             ", description='" + getDescription() + "'" +
             ", uUID='" + getuUID() + "'" +
-            ", thing=" + getThing() +
             "}";
     }
 }

@@ -1,7 +1,6 @@
 package com.knits.coreplatform.web.rest;
 
 import com.knits.coreplatform.repository.ThingRepository;
-import com.knits.coreplatform.security.AuthoritiesConstants;
 import com.knits.coreplatform.service.ThingService;
 import com.knits.coreplatform.service.dto.ThingDTO;
 import com.knits.coreplatform.web.rest.errors.BadRequestAlertException;
@@ -14,7 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.ResponseUtil;
@@ -50,7 +48,6 @@ public class ThingResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/things")
-    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.COMPANY_ADMIN + "\")")
     public ResponseEntity<ThingDTO> createThing(@RequestBody ThingDTO thingDTO) throws URISyntaxException {
         log.debug("REST request to save Thing : {}", thingDTO);
         if (thingDTO.getId() != null) {
@@ -74,7 +71,6 @@ public class ThingResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/things/{id}")
-    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.COMPANY_ADMIN + "\")")
     public ResponseEntity<ThingDTO> updateThing(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody ThingDTO thingDTO
@@ -137,13 +133,11 @@ public class ThingResource {
     /**
      * {@code GET  /things} : get all the things.
      *
+     * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many).
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of things in body.
      */
     @GetMapping("/things")
-    @PreAuthorize(
-        "hasAuthority(\"" + AuthoritiesConstants.COMPANY_ADMIN + "\") and hasAuthority(\"" + AuthoritiesConstants.COMPANY_USER + "\") "
-    )
-    public List<ThingDTO> getAllThings() {
+    public List<ThingDTO> getAllThings(@RequestParam(required = false, defaultValue = "false") boolean eagerload) {
         log.debug("REST request to get all Things");
         return thingService.findAll();
     }
@@ -154,11 +148,7 @@ public class ThingResource {
      * @param id the id of the thingDTO to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the thingDTO, or with status {@code 404 (Not Found)}.
      */
-
     @GetMapping("/things/{id}")
-    @PreAuthorize(
-        "hasAuthority(\"" + AuthoritiesConstants.COMPANY_ADMIN + "\") and hasAuthority(\"" + AuthoritiesConstants.COMPANY_USER + "\") "
-    )
     public ResponseEntity<ThingDTO> getThing(@PathVariable Long id) {
         log.debug("REST request to get Thing : {}", id);
         Optional<ThingDTO> thingDTO = thingService.findOne(id);
@@ -172,7 +162,6 @@ public class ThingResource {
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/things/{id}")
-    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.COMPANY_ADMIN + "\")")
     public ResponseEntity<Void> deleteThing(@PathVariable Long id) {
         log.debug("REST request to delete Thing : {}", id);
         thingService.delete(id);

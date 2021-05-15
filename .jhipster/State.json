@@ -14,14 +14,7 @@
       "fieldType": "String"
     }
   ],
-  "relationships": [
-    {
-      "relationshipType": "many-to-one",
-      "otherEntityName": "thing",
-      "otherEntityRelationshipName": "state",
-      "relationshipName": "thing"
-    }
-  ],
+  "relationships": [],
   "javadoc": "Entity to define possible state of the Thing.\\n@author Vassili Moskaljov\\n@version 1.0",
   "entityTableName": "state",
   "dto": "mapstruct",
