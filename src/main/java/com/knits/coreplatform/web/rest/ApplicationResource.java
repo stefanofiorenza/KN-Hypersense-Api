@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.*;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
+// for testing purposes
+
 /**
  * REST controller for managing {@link com.knits.coreplatform.domain.Application}.
  */
