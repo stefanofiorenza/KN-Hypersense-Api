@@ -74,6 +74,7 @@ public class DeviceGroupResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/device-groups/{id}")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.COMPANY_ADMIN + "\")")
     public ResponseEntity<DeviceGroupDTO> updateDeviceGroup(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody DeviceGroupDTO deviceGroupDTO
@@ -109,6 +110,7 @@ public class DeviceGroupResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/device-groups/{id}", consumes = "application/merge-patch+json")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.COMPANY_ADMIN + "\")")
     public ResponseEntity<DeviceGroupDTO> partialUpdateDeviceGroup(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody DeviceGroupDTO deviceGroupDTO
