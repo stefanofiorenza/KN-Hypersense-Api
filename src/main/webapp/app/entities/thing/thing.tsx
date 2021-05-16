@@ -47,6 +47,7 @@ export const Thing = (props: IThingProps) => {
                 <th>Location</th>
                 <th>Thing Category</th>
                 <th>Application</th>
+                <th>State</th>
                 <th />
               </tr>
             </thead>
@@ -65,6 +66,16 @@ export const Thing = (props: IThingProps) => {
                     {thing.thingCategory ? <Link to={`thing-category/${thing.thingCategory.id}`}>{thing.thingCategory.id}</Link> : ''}
                   </td>
                   <td>{thing.application ? <Link to={`application/${thing.application.id}`}>{thing.application.id}</Link> : ''}</td>
+                  <td>
+                    {thing.states
+                      ? thing.states.map((val, j) => (
+                          <span key={j}>
+                            <Link to={`state/${val.id}`}>{val.name}</Link>
+                            {j === thing.states.length - 1 ? '' : ', '}
+                          </span>
+                        ))
+                      : null}
+                  </td>
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`${match.url}/${thing.id}`} color="info" size="sm" data-cy="entityDetailsButton">

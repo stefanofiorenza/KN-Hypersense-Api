@@ -79,7 +79,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Override
     @Transactional(readOnly = true)
     public List<ApplicationDTO> findAllByIsAuthorizedTrue() {
-        log.debug("Request to get all Applications");
+        log.debug("Request to get all authorized Applications");
         return applicationRepository
             .findAllByIsAuthorizedTrue()
             .stream()

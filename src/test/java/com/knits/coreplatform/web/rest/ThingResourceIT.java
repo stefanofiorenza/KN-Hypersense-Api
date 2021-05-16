@@ -2,22 +2,30 @@ package com.knits.coreplatform.web.rest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.knits.coreplatform.IntegrationTest;
 import com.knits.coreplatform.domain.Thing;
 import com.knits.coreplatform.repository.ThingRepository;
+import com.knits.coreplatform.service.ThingService;
 import com.knits.coreplatform.service.dto.ThingDTO;
 import com.knits.coreplatform.service.mapper.ThingMapper;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
 import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -27,6 +35,7 @@ import org.springframework.transaction.annotation.Transactional;
  * Integration tests for the {@link ThingResource} REST controller.
  */
 @IntegrationTest
+@ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
 @WithMockUser
 class ThingResourceIT {
@@ -46,8 +55,14 @@ class ThingResourceIT {
     @Autowired
     private ThingRepository thingRepository;
 
+    @Mock
+    private ThingRepository thingRepositoryMock;
+
     @Autowired
     private ThingMapper thingMapper;
+
+    @Mock
+    private ThingService thingServiceMock;
 
     @Autowired
     private EntityManager em;
@@ -135,6 +150,24 @@ class ThingResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(thing.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
             .andExpect(jsonPath("$.[*].uUID").value(hasItem(DEFAULT_U_UID)));
+    }
+
+    @SuppressWarnings({ "unchecked" })
+    void getAllThingsWithEagerRelationshipsIsEnabled() throws Exception {
+        when(thingServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+
+        restThingMockMvc.perform(get(ENTITY_API_URL + "?eagerload=true")).andExpect(status().isOk());
+
+        verify(thingServiceMock, times(1)).findAllWithEagerRelationships(any());
+    }
+
+    @SuppressWarnings({ "unchecked" })
+    void getAllThingsWithEagerRelationshipsIsNotEnabled() throws Exception {
+        when(thingServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+
+        restThingMockMvc.perform(get(ENTITY_API_URL + "?eagerload=true")).andExpect(status().isOk());
+
+        verify(thingServiceMock, times(1)).findAllWithEagerRelationships(any());
     }
 
     @Test

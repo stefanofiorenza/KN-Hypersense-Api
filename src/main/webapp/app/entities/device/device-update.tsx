@@ -1,17 +1,28 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Col, Label, Row } from 'reactstrap';
-import { AvField, AvForm, AvGroup, AvInput } from 'availity-reactstrap-validation';
+import { Button, Row, Col, Label } from 'reactstrap';
+import { AvFeedback, AvForm, AvGroup, AvInput, AvField } from 'availity-reactstrap-validation';
+import { translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
+
+import { ITelemetry } from 'app/shared/model/telemetry.model';
 import { getEntities as getTelemetries } from 'app/entities/telemetry/telemetry.reducer';
+import { ISupplier } from 'app/shared/model/supplier.model';
 import { getEntities as getSuppliers } from 'app/entities/supplier/supplier.reducer';
+import { IDeviceModel } from 'app/shared/model/device-model.model';
 import { getEntities as getDeviceModels } from 'app/entities/device-model/device-model.reducer';
+import { IThing } from 'app/shared/model/thing.model';
 import { getEntities as getThings } from 'app/entities/thing/thing.reducer';
+import { IDeviceGroup } from 'app/shared/model/device-group.model';
 import { getEntities as getDeviceGroups } from 'app/entities/device-group/device-group.reducer';
+import { IStatus } from 'app/shared/model/status.model';
 import { getEntities as getStatuses } from 'app/entities/status/status.reducer';
-import { createEntity, getEntity, reset, updateEntity } from './device.reducer';
+import { getEntity, updateEntity, createEntity, reset } from './device.reducer';
+import { IDevice } from 'app/shared/model/device.model';
+import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
+import { mapIdList } from 'app/shared/util/entity-utils';
 
 export interface IDeviceUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 

@@ -137,13 +137,14 @@ public class ThingResource {
     /**
      * {@code GET  /things} : get all the things.
      *
+     * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many).
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of things in body.
      */
     @GetMapping("/things")
     @PreAuthorize(
         "hasAuthority(\"" + AuthoritiesConstants.COMPANY_ADMIN + "\") and hasAuthority(\"" + AuthoritiesConstants.COMPANY_USER + "\") "
     )
-    public List<ThingDTO> getAllThings() {
+    public List<ThingDTO> getAllThings(@RequestParam(required = false, defaultValue = "false") boolean eagerload) {
         log.debug("REST request to get all Things");
         return thingService.findAll();
     }
@@ -154,7 +155,6 @@ public class ThingResource {
      * @param id the id of the thingDTO to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the thingDTO, or with status {@code 404 (Not Found)}.
      */
-
     @GetMapping("/things/{id}")
     @PreAuthorize(
         "hasAuthority(\"" + AuthoritiesConstants.COMPANY_ADMIN + "\") and hasAuthority(\"" + AuthoritiesConstants.COMPANY_USER + "\") "
