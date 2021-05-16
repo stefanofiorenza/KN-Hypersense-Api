@@ -166,6 +166,7 @@ public class DeviceGroupResource {
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/device-groups/{id}")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.COMPANY_ADMIN + "\")")
     public ResponseEntity<Void> deleteDeviceGroup(@PathVariable Long id) {
         log.debug("REST request to delete DeviceGroup : {}", id);
         deviceGroupService.delete(id);
