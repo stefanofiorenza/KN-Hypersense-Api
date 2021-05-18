@@ -1,6 +1,7 @@
 package com.knits.coreplatform.web.rest;
 
 import com.knits.coreplatform.repository.AlertConfigurationRepository;
+import com.knits.coreplatform.security.AuthoritiesConstants;
 import com.knits.coreplatform.service.AlertConfigurationService;
 import com.knits.coreplatform.service.dto.AlertConfigurationDTO;
 import com.knits.coreplatform.web.rest.errors.BadRequestAlertException;
@@ -13,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.ResponseUtil;
@@ -51,6 +53,7 @@ public class AlertConfigurationResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/alert-configurations")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_CREATE + "\")")
     public ResponseEntity<AlertConfigurationDTO> createAlertConfiguration(@RequestBody AlertConfigurationDTO alertConfigurationDTO)
         throws URISyntaxException {
         log.debug("REST request to save AlertConfiguration : {}", alertConfigurationDTO);
@@ -75,6 +78,7 @@ public class AlertConfigurationResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/alert-configurations/{id}")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_UPDATE + "\")")
     public ResponseEntity<AlertConfigurationDTO> updateAlertConfiguration(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody AlertConfigurationDTO alertConfigurationDTO
@@ -110,6 +114,7 @@ public class AlertConfigurationResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/alert-configurations/{id}", consumes = "application/merge-patch+json")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_UPDATE + "\")")
     public ResponseEntity<AlertConfigurationDTO> partialUpdateAlertConfiguration(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody AlertConfigurationDTO alertConfigurationDTO
@@ -140,6 +145,7 @@ public class AlertConfigurationResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of alertConfigurations in body.
      */
     @GetMapping("/alert-configurations")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_READ + "\")")
     public List<AlertConfigurationDTO> getAllAlertConfigurations() {
         log.debug("REST request to get all AlertConfigurations");
         return alertConfigurationService.findAll();
@@ -152,6 +158,7 @@ public class AlertConfigurationResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the alertConfigurationDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/alert-configurations/{id}")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_READ + "\")")
     public ResponseEntity<AlertConfigurationDTO> getAlertConfiguration(@PathVariable Long id) {
         log.debug("REST request to get AlertConfiguration : {}", id);
         Optional<AlertConfigurationDTO> alertConfigurationDTO = alertConfigurationService.findOne(id);
@@ -165,6 +172,7 @@ public class AlertConfigurationResource {
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/alert-configurations/{id}")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_DELETE + "\")")
     public ResponseEntity<Void> deleteAlertConfiguration(@PathVariable Long id) {
         log.debug("REST request to delete AlertConfiguration : {}", id);
         alertConfigurationService.delete(id);

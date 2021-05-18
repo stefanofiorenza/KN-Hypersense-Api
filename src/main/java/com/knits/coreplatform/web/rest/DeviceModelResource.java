@@ -1,6 +1,7 @@
 package com.knits.coreplatform.web.rest;
 
 import com.knits.coreplatform.repository.DeviceModelRepository;
+import com.knits.coreplatform.security.AuthoritiesConstants;
 import com.knits.coreplatform.service.DeviceModelService;
 import com.knits.coreplatform.service.dto.DeviceModelDTO;
 import com.knits.coreplatform.web.rest.errors.BadRequestAlertException;
@@ -13,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.ResponseUtil;
@@ -48,6 +50,7 @@ public class DeviceModelResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/device-models")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_CREATE + "\")")
     public ResponseEntity<DeviceModelDTO> createDeviceModel(@RequestBody DeviceModelDTO deviceModelDTO) throws URISyntaxException {
         log.debug("REST request to save DeviceModel : {}", deviceModelDTO);
         if (deviceModelDTO.getId() != null) {
@@ -71,6 +74,7 @@ public class DeviceModelResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/device-models/{id}")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_UPDATE + "\")")
     public ResponseEntity<DeviceModelDTO> updateDeviceModel(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody DeviceModelDTO deviceModelDTO
@@ -106,6 +110,7 @@ public class DeviceModelResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/device-models/{id}", consumes = "application/merge-patch+json")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_UPDATE + "\")")
     public ResponseEntity<DeviceModelDTO> partialUpdateDeviceModel(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody DeviceModelDTO deviceModelDTO
@@ -136,6 +141,7 @@ public class DeviceModelResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of deviceModels in body.
      */
     @GetMapping("/device-models")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_READ + "\")")
     public List<DeviceModelDTO> getAllDeviceModels() {
         log.debug("REST request to get all DeviceModels");
         return deviceModelService.findAll();
@@ -148,6 +154,7 @@ public class DeviceModelResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the deviceModelDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/device-models/{id}")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_READ + "\")")
     public ResponseEntity<DeviceModelDTO> getDeviceModel(@PathVariable Long id) {
         log.debug("REST request to get DeviceModel : {}", id);
         Optional<DeviceModelDTO> deviceModelDTO = deviceModelService.findOne(id);
@@ -161,6 +168,7 @@ public class DeviceModelResource {
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/device-models/{id}")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_DELETE + "\")")
     public ResponseEntity<Void> deleteDeviceModel(@PathVariable Long id) {
         log.debug("REST request to delete DeviceModel : {}", id);
         deviceModelService.delete(id);

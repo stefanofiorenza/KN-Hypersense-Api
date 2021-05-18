@@ -1,6 +1,7 @@
 package com.knits.coreplatform.web.rest;
 
 import com.knits.coreplatform.repository.RuleConfigurationRepository;
+import com.knits.coreplatform.security.AuthoritiesConstants;
 import com.knits.coreplatform.service.RuleConfigurationService;
 import com.knits.coreplatform.service.dto.RuleConfigurationDTO;
 import com.knits.coreplatform.web.rest.errors.BadRequestAlertException;
@@ -13,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.ResponseUtil;
@@ -51,6 +53,7 @@ public class RuleConfigurationResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/rule-configurations")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_CREATE + "\")")
     public ResponseEntity<RuleConfigurationDTO> createRuleConfiguration(@RequestBody RuleConfigurationDTO ruleConfigurationDTO)
         throws URISyntaxException {
         log.debug("REST request to save RuleConfiguration : {}", ruleConfigurationDTO);
@@ -75,6 +78,7 @@ public class RuleConfigurationResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/rule-configurations/{id}")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_UPDATE + "\")")
     public ResponseEntity<RuleConfigurationDTO> updateRuleConfiguration(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody RuleConfigurationDTO ruleConfigurationDTO
@@ -110,6 +114,7 @@ public class RuleConfigurationResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/rule-configurations/{id}", consumes = "application/merge-patch+json")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_UPDATE + "\")")
     public ResponseEntity<RuleConfigurationDTO> partialUpdateRuleConfiguration(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody RuleConfigurationDTO ruleConfigurationDTO
@@ -140,6 +145,7 @@ public class RuleConfigurationResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of ruleConfigurations in body.
      */
     @GetMapping("/rule-configurations")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_READ + "\")")
     public List<RuleConfigurationDTO> getAllRuleConfigurations() {
         log.debug("REST request to get all RuleConfigurations");
         return ruleConfigurationService.findAll();
@@ -152,6 +158,7 @@ public class RuleConfigurationResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the ruleConfigurationDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/rule-configurations/{id}")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_READ + "\")")
     public ResponseEntity<RuleConfigurationDTO> getRuleConfiguration(@PathVariable Long id) {
         log.debug("REST request to get RuleConfiguration : {}", id);
         Optional<RuleConfigurationDTO> ruleConfigurationDTO = ruleConfigurationService.findOne(id);
@@ -165,6 +172,7 @@ public class RuleConfigurationResource {
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/rule-configurations/{id}")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_DELETE + "\")")
     public ResponseEntity<Void> deleteRuleConfiguration(@PathVariable Long id) {
         log.debug("REST request to delete RuleConfiguration : {}", id);
         ruleConfigurationService.delete(id);

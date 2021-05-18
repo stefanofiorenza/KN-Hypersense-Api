@@ -50,7 +50,7 @@ public class ThingResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/things")
-    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.COMPANY_ADMIN + "\")")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_CREATE + "\")")
     public ResponseEntity<ThingDTO> createThing(@RequestBody ThingDTO thingDTO) throws URISyntaxException {
         log.debug("REST request to save Thing : {}", thingDTO);
         if (thingDTO.getId() != null) {
@@ -74,7 +74,7 @@ public class ThingResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/things/{id}")
-    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.COMPANY_ADMIN + "\")")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_UPDATE + "\")")
     public ResponseEntity<ThingDTO> updateThing(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody ThingDTO thingDTO
@@ -110,6 +110,7 @@ public class ThingResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/things/{id}", consumes = "application/merge-patch+json")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_UPDATE + "\")")
     public ResponseEntity<ThingDTO> partialUpdateThing(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody ThingDTO thingDTO
@@ -141,9 +142,7 @@ public class ThingResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of things in body.
      */
     @GetMapping("/things")
-    @PreAuthorize(
-        "hasAuthority(\"" + AuthoritiesConstants.COMPANY_ADMIN + "\") and hasAuthority(\"" + AuthoritiesConstants.COMPANY_USER + "\") "
-    )
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_READ + "\")")
     public List<ThingDTO> getAllThings(@RequestParam(required = false, defaultValue = "false") boolean eagerload) {
         log.debug("REST request to get all Things");
         return thingService.findAll();
@@ -156,9 +155,7 @@ public class ThingResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the thingDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/things/{id}")
-    @PreAuthorize(
-        "hasAuthority(\"" + AuthoritiesConstants.COMPANY_ADMIN + "\") and hasAuthority(\"" + AuthoritiesConstants.COMPANY_USER + "\") "
-    )
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_READ + "\")")
     public ResponseEntity<ThingDTO> getThing(@PathVariable Long id) {
         log.debug("REST request to get Thing : {}", id);
         Optional<ThingDTO> thingDTO = thingService.findOne(id);
@@ -172,7 +169,7 @@ public class ThingResource {
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/things/{id}")
-    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.COMPANY_ADMIN + "\")")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_DELETE + "\")")
     public ResponseEntity<Void> deleteThing(@PathVariable Long id) {
         log.debug("REST request to delete Thing : {}", id);
         thingService.delete(id);

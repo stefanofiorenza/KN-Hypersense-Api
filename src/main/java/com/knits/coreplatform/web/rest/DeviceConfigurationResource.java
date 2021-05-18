@@ -1,6 +1,7 @@
 package com.knits.coreplatform.web.rest;
 
 import com.knits.coreplatform.repository.DeviceConfigurationRepository;
+import com.knits.coreplatform.security.AuthoritiesConstants;
 import com.knits.coreplatform.service.DeviceConfigurationService;
 import com.knits.coreplatform.service.dto.DeviceConfigurationDTO;
 import com.knits.coreplatform.web.rest.errors.BadRequestAlertException;
@@ -13,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.ResponseUtil;
@@ -51,6 +53,7 @@ public class DeviceConfigurationResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/device-configurations")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_CREATE + "\")")
     public ResponseEntity<DeviceConfigurationDTO> createDeviceConfiguration(@RequestBody DeviceConfigurationDTO deviceConfigurationDTO)
         throws URISyntaxException {
         log.debug("REST request to save DeviceConfiguration : {}", deviceConfigurationDTO);
@@ -75,6 +78,7 @@ public class DeviceConfigurationResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/device-configurations/{id}")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_UPDATE + "\")")
     public ResponseEntity<DeviceConfigurationDTO> updateDeviceConfiguration(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody DeviceConfigurationDTO deviceConfigurationDTO
@@ -110,6 +114,7 @@ public class DeviceConfigurationResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/device-configurations/{id}", consumes = "application/merge-patch+json")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_UPDATE + "\")")
     public ResponseEntity<DeviceConfigurationDTO> partialUpdateDeviceConfiguration(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody DeviceConfigurationDTO deviceConfigurationDTO
@@ -140,6 +145,7 @@ public class DeviceConfigurationResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of deviceConfigurations in body.
      */
     @GetMapping("/device-configurations")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_READ + "\")")
     public List<DeviceConfigurationDTO> getAllDeviceConfigurations() {
         log.debug("REST request to get all DeviceConfigurations");
         return deviceConfigurationService.findAll();
@@ -152,6 +158,7 @@ public class DeviceConfigurationResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the deviceConfigurationDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/device-configurations/{id}")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_READ + "\")")
     public ResponseEntity<DeviceConfigurationDTO> getDeviceConfiguration(@PathVariable Long id) {
         log.debug("REST request to get DeviceConfiguration : {}", id);
         Optional<DeviceConfigurationDTO> deviceConfigurationDTO = deviceConfigurationService.findOne(id);
@@ -165,6 +172,7 @@ public class DeviceConfigurationResource {
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/device-configurations/{id}")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_DELETE + "\")")
     public ResponseEntity<Void> deleteDeviceConfiguration(@PathVariable Long id) {
         log.debug("REST request to delete DeviceConfiguration : {}", id);
         deviceConfigurationService.delete(id);

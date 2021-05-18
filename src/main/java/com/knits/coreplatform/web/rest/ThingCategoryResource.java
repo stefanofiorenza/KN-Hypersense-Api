@@ -50,7 +50,7 @@ public class ThingCategoryResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/thing-categories")
-    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.COMPANY_ADMIN + "\")")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_CREATE + "\")")
     public ResponseEntity<ThingCategoryDTO> createThingCategory(@RequestBody ThingCategoryDTO thingCategoryDTO) throws URISyntaxException {
         log.debug("REST request to save ThingCategory : {}", thingCategoryDTO);
         if (thingCategoryDTO.getId() != null) {
@@ -74,6 +74,7 @@ public class ThingCategoryResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/thing-categories/{id}")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_UPDATE + "\")")
     public ResponseEntity<ThingCategoryDTO> updateThingCategory(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody ThingCategoryDTO thingCategoryDTO
@@ -109,6 +110,7 @@ public class ThingCategoryResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/thing-categories/{id}", consumes = "application/merge-patch+json")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_UPDATE + "\")")
     public ResponseEntity<ThingCategoryDTO> partialUpdateThingCategory(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody ThingCategoryDTO thingCategoryDTO
@@ -139,6 +141,7 @@ public class ThingCategoryResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of thingCategories in body.
      */
     @GetMapping("/thing-categories")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_READ + "\")")
     public List<ThingCategoryDTO> getAllThingCategories() {
         log.debug("REST request to get all ThingCategories");
         return thingCategoryService.findAll();
@@ -164,7 +167,7 @@ public class ThingCategoryResource {
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/thing-categories/{id}")
-    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.COMPANY_ADMIN + "\")")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_DELETE + "\")")
     public ResponseEntity<Void> deleteThingCategory(@PathVariable Long id) {
         log.debug("REST request to delete ThingCategory : {}", id);
         thingCategoryService.delete(id);

@@ -1,6 +1,7 @@
 package com.knits.coreplatform.web.rest;
 
 import com.knits.coreplatform.repository.StatusRepository;
+import com.knits.coreplatform.security.AuthoritiesConstants;
 import com.knits.coreplatform.service.StatusService;
 import com.knits.coreplatform.service.dto.StatusDTO;
 import com.knits.coreplatform.web.rest.errors.BadRequestAlertException;
@@ -13,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.ResponseUtil;
@@ -48,6 +50,7 @@ public class StatusResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/statuses")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_CREATE + "\")")
     public ResponseEntity<StatusDTO> createStatus(@RequestBody StatusDTO statusDTO) throws URISyntaxException {
         log.debug("REST request to save Status : {}", statusDTO);
         if (statusDTO.getId() != null) {
@@ -71,6 +74,7 @@ public class StatusResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/statuses/{id}")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_UPDATE + "\")")
     public ResponseEntity<StatusDTO> updateStatus(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody StatusDTO statusDTO
@@ -106,6 +110,7 @@ public class StatusResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/statuses/{id}", consumes = "application/merge-patch+json")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_UPDATE + "\")")
     public ResponseEntity<StatusDTO> partialUpdateStatus(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody StatusDTO statusDTO
@@ -136,6 +141,7 @@ public class StatusResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of statuses in body.
      */
     @GetMapping("/statuses")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_READ + "\")")
     public List<StatusDTO> getAllStatuses() {
         log.debug("REST request to get all Statuses");
         return statusService.findAll();
@@ -148,6 +154,7 @@ public class StatusResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the statusDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/statuses/{id}")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_READ + "\")")
     public ResponseEntity<StatusDTO> getStatus(@PathVariable Long id) {
         log.debug("REST request to get Status : {}", id);
         Optional<StatusDTO> statusDTO = statusService.findOne(id);
@@ -161,6 +168,7 @@ public class StatusResource {
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/statuses/{id}")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_DELETE + "\")")
     public ResponseEntity<Void> deleteStatus(@PathVariable Long id) {
         log.debug("REST request to delete Status : {}", id);
         statusService.delete(id);
