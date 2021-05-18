@@ -1,6 +1,7 @@
 package com.knits.coreplatform.web.rest;
 
 import com.knits.coreplatform.repository.AlertMessageRepository;
+import com.knits.coreplatform.security.AuthoritiesConstants;
 import com.knits.coreplatform.service.AlertMessageService;
 import com.knits.coreplatform.service.dto.AlertMessageDTO;
 import com.knits.coreplatform.web.rest.errors.BadRequestAlertException;
@@ -13,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.ResponseUtil;
@@ -48,6 +50,7 @@ public class AlertMessageResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/alert-messages")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_CREATE + "\")")
     public ResponseEntity<AlertMessageDTO> createAlertMessage(@RequestBody AlertMessageDTO alertMessageDTO) throws URISyntaxException {
         log.debug("REST request to save AlertMessage : {}", alertMessageDTO);
         if (alertMessageDTO.getId() != null) {
@@ -71,6 +74,7 @@ public class AlertMessageResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/alert-messages/{id}")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_UPDATE + "\")")
     public ResponseEntity<AlertMessageDTO> updateAlertMessage(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody AlertMessageDTO alertMessageDTO
@@ -106,6 +110,7 @@ public class AlertMessageResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/alert-messages/{id}", consumes = "application/merge-patch+json")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_UPDATE + "\")")
     public ResponseEntity<AlertMessageDTO> partialUpdateAlertMessage(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody AlertMessageDTO alertMessageDTO
@@ -136,6 +141,7 @@ public class AlertMessageResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of alertMessages in body.
      */
     @GetMapping("/alert-messages")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_READ + "\")")
     public List<AlertMessageDTO> getAllAlertMessages() {
         log.debug("REST request to get all AlertMessages");
         return alertMessageService.findAll();
@@ -148,6 +154,7 @@ public class AlertMessageResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the alertMessageDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/alert-messages/{id}")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_READ + "\")")
     public ResponseEntity<AlertMessageDTO> getAlertMessage(@PathVariable Long id) {
         log.debug("REST request to get AlertMessage : {}", id);
         Optional<AlertMessageDTO> alertMessageDTO = alertMessageService.findOne(id);
@@ -161,6 +168,7 @@ public class AlertMessageResource {
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/alert-messages/{id}")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_DELETE + "\")")
     public ResponseEntity<Void> deleteAlertMessage(@PathVariable Long id) {
         log.debug("REST request to delete AlertMessage : {}", id);
         alertMessageService.delete(id);

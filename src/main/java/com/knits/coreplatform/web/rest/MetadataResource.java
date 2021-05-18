@@ -50,6 +50,7 @@ public class MetadataResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/metadata")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_CREATE + "\")")
     public ResponseEntity<MetadataDTO> createMetadata(@RequestBody MetadataDTO metadataDTO) throws URISyntaxException {
         log.debug("REST request to save Metadata : {}", metadataDTO);
         if (metadataDTO.getId() != null) {
@@ -73,7 +74,7 @@ public class MetadataResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/metadata/{id}")
-    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.COMPANY_ADMIN + "\")")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_UPDATE + "\")")
     public ResponseEntity<MetadataDTO> updateMetadata(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody MetadataDTO metadataDTO
@@ -109,7 +110,7 @@ public class MetadataResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/metadata/{id}", consumes = "application/merge-patch+json")
-    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.COMPANY_ADMIN + "\")")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_UPDATE + "\")")
     public ResponseEntity<MetadataDTO> partialUpdateMetadata(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody MetadataDTO metadataDTO
@@ -140,6 +141,7 @@ public class MetadataResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of metadata in body.
      */
     @GetMapping("/metadata")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_READ + "\")")
     public List<MetadataDTO> getAllMetadata() {
         log.debug("REST request to get all Metadata");
         return metadataService.findAll();
@@ -152,6 +154,7 @@ public class MetadataResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the metadataDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/metadata/{id}")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_READ + "\")")
     public ResponseEntity<MetadataDTO> getMetadata(@PathVariable Long id) {
         log.debug("REST request to get Metadata : {}", id);
         Optional<MetadataDTO> metadataDTO = metadataService.findOne(id);
@@ -165,6 +168,7 @@ public class MetadataResource {
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/metadata/{id}")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_DELETE + "\")")
     public ResponseEntity<Void> deleteMetadata(@PathVariable Long id) {
         log.debug("REST request to delete Metadata : {}", id);
         metadataService.delete(id);

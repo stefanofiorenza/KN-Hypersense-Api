@@ -52,7 +52,7 @@ public class ApplicationResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/applications")
-    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.COMPANY_ADMIN + "\")")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_CREATE + "\")")
     public ResponseEntity<ApplicationDTO> createApplication(@RequestBody ApplicationDTO applicationDTO) throws URISyntaxException {
         log.debug("REST request to save Application : {}", applicationDTO);
         if (applicationDTO.getId() != null) {
@@ -76,7 +76,7 @@ public class ApplicationResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/applications/{id}")
-    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.COMPANY_ADMIN + "\")")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_UPDATE + "\")")
     public ResponseEntity<ApplicationDTO> updateApplication(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody ApplicationDTO applicationDTO
@@ -112,7 +112,7 @@ public class ApplicationResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/applications/{id}", consumes = "application/merge-patch+json")
-    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.COMPANY_ADMIN + "\")")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_UPDATE + "\")")
     public ResponseEntity<ApplicationDTO> partialUpdateApplication(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody ApplicationDTO applicationDTO
@@ -143,6 +143,7 @@ public class ApplicationResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of applications in body.
      */
     @GetMapping("/applications")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_READ + "\")")
     public List<ApplicationDTO> getAllApplications() {
         log.debug("REST request to get all Applications");
         return applicationService.findAll();
@@ -155,6 +156,7 @@ public class ApplicationResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the applicationDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/applications/{id}")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_READ + "\")")
     public ResponseEntity<ApplicationDTO> getApplication(@PathVariable Long id) {
         log.debug("REST request to get Application : {}", id);
         Optional<ApplicationDTO> applicationDTO = applicationService.findOne(id);
@@ -168,6 +170,7 @@ public class ApplicationResource {
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/applications/{id}")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_DELETE + "\")")
     public ResponseEntity<Void> deleteApplication(@PathVariable Long id) {
         log.debug("REST request to delete Application : {}", id);
         applicationService.delete(id);
@@ -183,7 +186,7 @@ public class ApplicationResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of authorized applications in body.
      */
     @GetMapping("/applications/authorized")
-    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.COMPANY_ADMIN + "\")")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_READ + "\")")
     public List<ApplicationDTO> getAllAuthorizedApplications() {
         log.debug("REST request to get all authorized Applications");
         return applicationService.findAllByIsAuthorizedTrue();

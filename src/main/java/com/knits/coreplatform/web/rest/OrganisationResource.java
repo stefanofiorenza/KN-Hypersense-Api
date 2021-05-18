@@ -1,6 +1,7 @@
 package com.knits.coreplatform.web.rest;
 
 import com.knits.coreplatform.repository.OrganisationRepository;
+import com.knits.coreplatform.security.AuthoritiesConstants;
 import com.knits.coreplatform.service.OrganisationService;
 import com.knits.coreplatform.service.dto.OrganisationDTO;
 import com.knits.coreplatform.web.rest.errors.BadRequestAlertException;
@@ -13,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.ResponseUtil;
@@ -48,6 +50,7 @@ public class OrganisationResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/organisations")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_CREATE + "\")")
     public ResponseEntity<OrganisationDTO> createOrganisation(@RequestBody OrganisationDTO organisationDTO) throws URISyntaxException {
         log.debug("REST request to save Organisation : {}", organisationDTO);
         if (organisationDTO.getId() != null) {
@@ -71,6 +74,7 @@ public class OrganisationResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/organisations/{id}")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_UPDATE + "\")")
     public ResponseEntity<OrganisationDTO> updateOrganisation(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody OrganisationDTO organisationDTO
@@ -106,6 +110,7 @@ public class OrganisationResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/organisations/{id}", consumes = "application/merge-patch+json")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_UPDATE + "\")")
     public ResponseEntity<OrganisationDTO> partialUpdateOrganisation(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody OrganisationDTO organisationDTO
@@ -136,6 +141,7 @@ public class OrganisationResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of organisations in body.
      */
     @GetMapping("/organisations")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_READ + "\")")
     public List<OrganisationDTO> getAllOrganisations() {
         log.debug("REST request to get all Organisations");
         return organisationService.findAll();
@@ -148,6 +154,7 @@ public class OrganisationResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the organisationDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/organisations/{id}")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_READ + "\")")
     public ResponseEntity<OrganisationDTO> getOrganisation(@PathVariable Long id) {
         log.debug("REST request to get Organisation : {}", id);
         Optional<OrganisationDTO> organisationDTO = organisationService.findOne(id);
@@ -161,6 +168,7 @@ public class OrganisationResource {
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/organisations/{id}")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_DELETE + "\")")
     public ResponseEntity<Void> deleteOrganisation(@PathVariable Long id) {
         log.debug("REST request to delete Organisation : {}", id);
         organisationService.delete(id);

@@ -1,6 +1,7 @@
 package com.knits.coreplatform.web.rest;
 
 import com.knits.coreplatform.repository.ConfigurationDataRepository;
+import com.knits.coreplatform.security.AuthoritiesConstants;
 import com.knits.coreplatform.service.ConfigurationDataService;
 import com.knits.coreplatform.service.dto.ConfigurationDataDTO;
 import com.knits.coreplatform.web.rest.errors.BadRequestAlertException;
@@ -13,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.ResponseUtil;
@@ -51,6 +53,7 @@ public class ConfigurationDataResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/configuration-data")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_CREATE + "\")")
     public ResponseEntity<ConfigurationDataDTO> createConfigurationData(@RequestBody ConfigurationDataDTO configurationDataDTO)
         throws URISyntaxException {
         log.debug("REST request to save ConfigurationData : {}", configurationDataDTO);
@@ -75,6 +78,7 @@ public class ConfigurationDataResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/configuration-data/{id}")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_UPDATE + "\")")
     public ResponseEntity<ConfigurationDataDTO> updateConfigurationData(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody ConfigurationDataDTO configurationDataDTO
@@ -110,6 +114,7 @@ public class ConfigurationDataResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/configuration-data/{id}", consumes = "application/merge-patch+json")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_UPDATE + "\")")
     public ResponseEntity<ConfigurationDataDTO> partialUpdateConfigurationData(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody ConfigurationDataDTO configurationDataDTO
@@ -140,6 +145,7 @@ public class ConfigurationDataResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of configurationData in body.
      */
     @GetMapping("/configuration-data")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_READ + "\")")
     public List<ConfigurationDataDTO> getAllConfigurationData() {
         log.debug("REST request to get all ConfigurationData");
         return configurationDataService.findAll();
@@ -152,6 +158,7 @@ public class ConfigurationDataResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the configurationDataDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/configuration-data/{id}")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_READ + "\")")
     public ResponseEntity<ConfigurationDataDTO> getConfigurationData(@PathVariable Long id) {
         log.debug("REST request to get ConfigurationData : {}", id);
         Optional<ConfigurationDataDTO> configurationDataDTO = configurationDataService.findOne(id);
@@ -165,6 +172,7 @@ public class ConfigurationDataResource {
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/configuration-data/{id}")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_DELETE + "\")")
     public ResponseEntity<Void> deleteConfigurationData(@PathVariable Long id) {
         log.debug("REST request to delete ConfigurationData : {}", id);
         configurationDataService.delete(id);
