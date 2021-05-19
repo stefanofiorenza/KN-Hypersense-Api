@@ -44,18 +44,16 @@ spring:
   # Replace by 'prod, faker' to add the faker context and have sample data loaded in production
   liquibase:
     contexts: prod
-    mail:
-      enabled: true # When using the MailService, configure an SMTP server and set this to true
-      host: smtp.elasticemail.com
-      port: 2525
-      username: dmitri.marinen@gmail.com #Replace this field with your Gmail username.
-      password: D55EE251EA007F8BA25B6E0E46F19C80DD2A #Replace this field with your Gmail password/App password.
-      protocol: smtp
-      tls: true
-      properties.mail.smtp:
-        auth: true
-        starttls.enable: true
-        ssl.trust: smtp.elasticemail.com
+  mail:
+    host: smtp.elasticemail.com
+    port: 2525
+    username: dmitri.marinen@gmail.com #Replace this field with your Gmail username.
+    password: D55EE251EA007F8BA25B6E0E46F19C80DD2A #Replace this field with your Gmail password/App password.
+    protocol: smtp
+    properties.mail.smtp:
+      auth: true
+      starttls.enable: true
+      ssl.trust: smtp.elasticemail.com
   thymeleaf:
     cache: true
 
