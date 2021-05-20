@@ -64,6 +64,9 @@
       "State",
       "Status"
     ],
-    "lastLiquibaseTimestamp": 1620663196000
+    "lastLiquibaseTimestamp": 1620663196000,
+    "herokuAppName": "coreplatform",
+    "herokuDeployType": "git",
+    "herokuJavaVersion": "11"
   }
 }
