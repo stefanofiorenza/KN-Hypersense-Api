@@ -12,6 +12,8 @@ public class UserDataDTO implements Serializable {
 
     private Long id;
 
+    private String uuid;
+
     private UserDTO internalUser;
 
     private OrganisationDTO organisation;
@@ -22,6 +24,14 @@ public class UserDataDTO implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
     public UserDTO getInternalUser() {
@@ -66,6 +76,7 @@ public class UserDataDTO implements Serializable {
     public String toString() {
         return "UserDataDTO{" +
             "id=" + getId() +
+            ", uuid='" + getUuid() + "'" +
             ", internalUser=" + getInternalUser() +
             ", organisation=" + getOrganisation() +
             "}";

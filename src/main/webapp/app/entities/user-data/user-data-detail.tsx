@@ -26,6 +26,10 @@ export const UserDataDetail = (props: IUserDataDetailProps) => {
             <span id="id">ID</span>
           </dt>
           <dd>{userDataEntity.id}</dd>
+          <dt>
+            <span id="uuid">Uuid</span>
+          </dt>
+          <dd>{userDataEntity.uuid}</dd>
           <dt>Internal User</dt>
           <dd>{userDataEntity.internalUser ? userDataEntity.internalUser.id : ''}</dd>
           <dt>Organisation</dt>

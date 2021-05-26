@@ -7,6 +7,8 @@ import { translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
 
+import { IThing } from 'app/shared/model/thing.model';
+import { getEntities as getThings } from 'app/entities/thing/thing.reducer';
 import { getEntity, updateEntity, createEntity, reset } from './state.reducer';
 import { IState } from 'app/shared/model/state.model';
 import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
@@ -17,7 +19,7 @@ export interface IStateUpdateProps extends StateProps, DispatchProps, RouteCompo
 export const StateUpdate = (props: IStateUpdateProps) => {
   const [isNew] = useState(!props.match.params || !props.match.params.id);
 
-  const { stateEntity, loading, updating } = props;
+  const { stateEntity, things, loading, updating } = props;
 
   const handleClose = () => {
     props.history.push('/state');
@@ -29,6 +31,8 @@ export const StateUpdate = (props: IStateUpdateProps) => {
     } else {
       props.getEntity(props.match.params.id);
     }
+
+    props.getThings();
   }, []);
 
   useEffect(() => {
@@ -42,6 +46,7 @@ export const StateUpdate = (props: IStateUpdateProps) => {
       const entity = {
         ...stateEntity,
         ...values,
+        thing: things.find(it => it.id.toString() === values.thingId.toString()),
       };
 
       if (isNew) {
@@ -91,6 +96,19 @@ export const StateUpdate = (props: IStateUpdateProps) => {
                 </Label>
                 <AvField id="state-uUID" data-cy="uUID" type="text" name="uUID" />
               </AvGroup>
+              <AvGroup>
+                <Label for="state-thing">Thing</Label>
+                <AvInput id="state-thing" data-cy="thing" type="select" className="form-control" name="thingId">
+                  <option value="" key="0" />
+                  {things
+                    ? things.map(otherEntity => (
+                        <option value={otherEntity.id} key={otherEntity.id}>
+                          {otherEntity.id}
+                        </option>
+                      ))
+                    : null}
+                </AvInput>
+              </AvGroup>
               <Button tag={Link} id="cancel-save" to="/state" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />
                 &nbsp;
@@ -110,6 +128,7 @@ export const StateUpdate = (props: IStateUpdateProps) => {
 };
 
 const mapStateToProps = (storeState: IRootState) => ({
+  things: storeState.thing.entities,
   stateEntity: storeState.state.entity,
   loading: storeState.state.loading,
   updating: storeState.state.updating,
@@ -117,6 +136,7 @@ const mapStateToProps = (storeState: IRootState) => ({
 });
 
 const mapDispatchToProps = {
+  getThings,
   getEntity,
   updateEntity,
   createEntity,

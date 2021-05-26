@@ -11,20 +11,20 @@ import org.mapstruct.*;
     componentModel = "spring",
     uses = {
         TelemetryMapper.class,
+        DeviceConfigurationMapper.class,
         SupplierMapper.class,
         DeviceModelMapper.class,
         ThingMapper.class,
         DeviceGroupMapper.class,
-        StatusMapper.class,
     }
 )
 public interface DeviceMapper extends EntityMapper<DeviceDTO, Device> {
     @Mapping(target = "telemetry", source = "telemetry", qualifiedByName = "id")
+    @Mapping(target = "deviceConfiguration", source = "deviceConfiguration", qualifiedByName = "id")
     @Mapping(target = "supplier", source = "supplier", qualifiedByName = "id")
     @Mapping(target = "deviceModel", source = "deviceModel", qualifiedByName = "id")
     @Mapping(target = "thing", source = "thing", qualifiedByName = "id")
     @Mapping(target = "deviceGroup", source = "deviceGroup", qualifiedByName = "id")
-    @Mapping(target = "status", source = "status", qualifiedByName = "id")
     DeviceDTO toDto(Device s);
 
     @Named("id")

@@ -24,6 +24,13 @@
     },
     {
       "relationshipType": "one-to-one",
+      "otherEntityName": "deviceConfiguration",
+      "otherEntityRelationshipName": "device",
+      "relationshipName": "deviceConfiguration",
+      "ownerSide": true
+    },
+    {
+      "relationshipType": "one-to-one",
       "otherEntityName": "supplier",
       "otherEntityRelationshipName": "device",
       "relationshipName": "supplier",
@@ -56,9 +63,9 @@
     },
     {
       "relationshipType": "one-to-many",
-      "otherEntityName": "deviceConfiguration",
+      "otherEntityName": "status",
       "otherEntityRelationshipName": "device",
-      "relationshipName": "deviceConfiguration"
+      "relationshipName": "status"
     },
     {
       "relationshipType": "many-to-one",
@@ -71,15 +78,6 @@
       "otherEntityName": "deviceGroup",
       "otherEntityRelationshipName": "device",
       "relationshipName": "deviceGroup"
-    },
-    {
-      "relationshipName": "status",
-      "otherEntityName": "status",
-      "relationshipType": "one-to-one",
-      "otherEntityField": "id",
-      "ownerSide": true,
-      "id": false,
-      "otherEntityRelationshipName": "one-to-one"
     }
   ],
   "javadoc": "Entity that holds up Sensor data.\\n@author Vassili Moskaljov\\n@version 1.0",

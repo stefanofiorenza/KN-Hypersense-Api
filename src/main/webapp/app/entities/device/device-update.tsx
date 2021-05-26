@@ -9,6 +9,8 @@ import { IRootState } from 'app/shared/reducers';
 
 import { ITelemetry } from 'app/shared/model/telemetry.model';
 import { getEntities as getTelemetries } from 'app/entities/telemetry/telemetry.reducer';
+import { IDeviceConfiguration } from 'app/shared/model/device-configuration.model';
+import { getEntities as getDeviceConfigurations } from 'app/entities/device-configuration/device-configuration.reducer';
 import { ISupplier } from 'app/shared/model/supplier.model';
 import { getEntities as getSuppliers } from 'app/entities/supplier/supplier.reducer';
 import { IDeviceModel } from 'app/shared/model/device-model.model';
@@ -17,8 +19,6 @@ import { IThing } from 'app/shared/model/thing.model';
 import { getEntities as getThings } from 'app/entities/thing/thing.reducer';
 import { IDeviceGroup } from 'app/shared/model/device-group.model';
 import { getEntities as getDeviceGroups } from 'app/entities/device-group/device-group.reducer';
-import { IStatus } from 'app/shared/model/status.model';
-import { getEntities as getStatuses } from 'app/entities/status/status.reducer';
 import { getEntity, updateEntity, createEntity, reset } from './device.reducer';
 import { IDevice } from 'app/shared/model/device.model';
 import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
@@ -29,7 +29,7 @@ export interface IDeviceUpdateProps extends StateProps, DispatchProps, RouteComp
 export const DeviceUpdate = (props: IDeviceUpdateProps) => {
   const [isNew] = useState(!props.match.params || !props.match.params.id);
 
-  const { deviceEntity, telemetries, suppliers, deviceModels, things, deviceGroups, statuses, loading, updating } = props;
+  const { deviceEntity, telemetries, deviceConfigurations, suppliers, deviceModels, things, deviceGroups, loading, updating } = props;
 
   const handleClose = () => {
     props.history.push('/device');
@@ -43,11 +43,11 @@ export const DeviceUpdate = (props: IDeviceUpdateProps) => {
     }
 
     props.getTelemetries();
+    props.getDeviceConfigurations();
     props.getSuppliers();
     props.getDeviceModels();
     props.getThings();
     props.getDeviceGroups();
-    props.getStatuses();
   }, []);
 
   useEffect(() => {
@@ -62,11 +62,11 @@ export const DeviceUpdate = (props: IDeviceUpdateProps) => {
         ...deviceEntity,
         ...values,
         telemetry: telemetries.find(it => it.id.toString() === values.telemetryId.toString()),
+        deviceConfiguration: deviceConfigurations.find(it => it.id.toString() === values.deviceConfigurationId.toString()),
         supplier: suppliers.find(it => it.id.toString() === values.supplierId.toString()),
         deviceModel: deviceModels.find(it => it.id.toString() === values.deviceModelId.toString()),
         thing: things.find(it => it.id.toString() === values.thingId.toString()),
         deviceGroup: deviceGroups.find(it => it.id.toString() === values.deviceGroupId.toString()),
-        status: statuses.find(it => it.id.toString() === values.statusId.toString()),
       };
 
       if (isNew) {
@@ -130,6 +130,25 @@ export const DeviceUpdate = (props: IDeviceUpdateProps) => {
                 </AvInput>
               </AvGroup>
               <AvGroup>
+                <Label for="device-deviceConfiguration">Device Configuration</Label>
+                <AvInput
+                  id="device-deviceConfiguration"
+                  data-cy="deviceConfiguration"
+                  type="select"
+                  className="form-control"
+                  name="deviceConfigurationId"
+                >
+                  <option value="" key="0" />
+                  {deviceConfigurations
+                    ? deviceConfigurations.map(otherEntity => (
+                        <option value={otherEntity.id} key={otherEntity.id}>
+                          {otherEntity.id}
+                        </option>
+                      ))
+                    : null}
+                </AvInput>
+              </AvGroup>
+              <AvGroup>
                 <Label for="device-supplier">Supplier</Label>
                 <AvInput id="device-supplier" data-cy="supplier" type="select" className="form-control" name="supplierId">
                   <option value="" key="0" />
@@ -181,19 +200,6 @@ export const DeviceUpdate = (props: IDeviceUpdateProps) => {
                     : null}
                 </AvInput>
               </AvGroup>
-              <AvGroup>
-                <Label for="device-status">Status</Label>
-                <AvInput id="device-status" data-cy="status" type="select" className="form-control" name="statusId">
-                  <option value="" key="0" />
-                  {statuses
-                    ? statuses.map(otherEntity => (
-                        <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.id}
-                        </option>
-                      ))
-                    : null}
-                </AvInput>
-              </AvGroup>
               <Button tag={Link} id="cancel-save" to="/device" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />
                 &nbsp;
@@ -214,11 +220,11 @@ export const DeviceUpdate = (props: IDeviceUpdateProps) => {
 
 const mapStateToProps = (storeState: IRootState) => ({
   telemetries: storeState.telemetry.entities,
+  deviceConfigurations: storeState.deviceConfiguration.entities,
   suppliers: storeState.supplier.entities,
   deviceModels: storeState.deviceModel.entities,
   things: storeState.thing.entities,
   deviceGroups: storeState.deviceGroup.entities,
-  statuses: storeState.status.entities,
   deviceEntity: storeState.device.entity,
   loading: storeState.device.loading,
   updating: storeState.device.updating,
@@ -227,11 +233,11 @@ const mapStateToProps = (storeState: IRootState) => ({
 
 const mapDispatchToProps = {
   getTelemetries,
+  getDeviceConfigurations,
   getSuppliers,
   getDeviceModels,
   getThings,
   getDeviceGroups,
-  getStatuses,
   getEntity,
   updateEntity,
   createEntity,

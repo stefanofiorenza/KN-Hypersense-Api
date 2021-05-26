@@ -26,6 +26,10 @@ export const DeviceModelDetail = (props: IDeviceModelDetailProps) => {
             <span id="id">ID</span>
           </dt>
           <dd>{deviceModelEntity.id}</dd>
+          <dt>
+            <span id="name">Name</span>
+          </dt>
+          <dd>{deviceModelEntity.name}</dd>
         </dl>
         <Button tag={Link} to="/device-model" replace color="info" data-cy="entityDetailsBackButton">
           <FontAwesomeIcon icon="arrow-left" /> <span className="d-none d-md-inline">Back</span>

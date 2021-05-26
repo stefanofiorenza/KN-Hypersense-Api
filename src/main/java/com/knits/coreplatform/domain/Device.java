@@ -36,6 +36,11 @@ public class Device implements Serializable {
     @JoinColumn(unique = true)
     private Telemetry telemetry;
 
+    @JsonIgnoreProperties(value = { "configurationData", "userData" }, allowSetters = true)
+    @OneToOne
+    @JoinColumn(unique = true)
+    private DeviceConfiguration deviceConfiguration;
+
     @OneToOne
     @JoinColumn(unique = true)
     private Supplier supplier;
@@ -61,8 +66,8 @@ public class Device implements Serializable {
 
     @OneToMany(mappedBy = "device")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "configurationData", "device", "userData" }, allowSetters = true)
-    private Set<DeviceConfiguration> deviceConfigurations = new HashSet<>();
+    @JsonIgnoreProperties(value = { "device" }, allowSetters = true)
+    private Set<Status> statuses = new HashSet<>();
 
     @ManyToOne
     @JsonIgnoreProperties(value = { "location", "devices", "states", "thingCategory", "application" }, allowSetters = true)
@@ -71,10 +76,6 @@ public class Device implements Serializable {
     @ManyToOne
     @JsonIgnoreProperties(value = { "devices" }, allowSetters = true)
     private DeviceGroup deviceGroup;
-
-    @OneToOne
-    @JoinColumn(unique = true)
-    private Status status;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -140,6 +141,19 @@ public class Device implements Serializable {
 
     public void setTelemetry(Telemetry telemetry) {
         this.telemetry = telemetry;
+    }
+
+    public DeviceConfiguration getDeviceConfiguration() {
+        return this.deviceConfiguration;
+    }
+
+    public Device deviceConfiguration(DeviceConfiguration deviceConfiguration) {
+        this.setDeviceConfiguration(deviceConfiguration);
+        return this;
+    }
+
+    public void setDeviceConfiguration(DeviceConfiguration deviceConfiguration) {
+        this.deviceConfiguration = deviceConfiguration;
     }
 
     public Supplier getSupplier() {
@@ -261,35 +275,35 @@ public class Device implements Serializable {
         this.metaData = metadata;
     }
 
-    public Set<DeviceConfiguration> getDeviceConfigurations() {
-        return this.deviceConfigurations;
+    public Set<Status> getStatuses() {
+        return this.statuses;
     }
 
-    public Device deviceConfigurations(Set<DeviceConfiguration> deviceConfigurations) {
-        this.setDeviceConfigurations(deviceConfigurations);
+    public Device statuses(Set<Status> statuses) {
+        this.setStatuses(statuses);
         return this;
     }
 
-    public Device addDeviceConfiguration(DeviceConfiguration deviceConfiguration) {
-        this.deviceConfigurations.add(deviceConfiguration);
-        deviceConfiguration.setDevice(this);
+    public Device addStatus(Status status) {
+        this.statuses.add(status);
+        status.setDevice(this);
         return this;
     }
 
-    public Device removeDeviceConfiguration(DeviceConfiguration deviceConfiguration) {
-        this.deviceConfigurations.remove(deviceConfiguration);
-        deviceConfiguration.setDevice(null);
+    public Device removeStatus(Status status) {
+        this.statuses.remove(status);
+        status.setDevice(null);
         return this;
     }
 
-    public void setDeviceConfigurations(Set<DeviceConfiguration> deviceConfigurations) {
-        if (this.deviceConfigurations != null) {
-            this.deviceConfigurations.forEach(i -> i.setDevice(null));
+    public void setStatuses(Set<Status> statuses) {
+        if (this.statuses != null) {
+            this.statuses.forEach(i -> i.setDevice(null));
         }
-        if (deviceConfigurations != null) {
-            deviceConfigurations.forEach(i -> i.setDevice(this));
+        if (statuses != null) {
+            statuses.forEach(i -> i.setDevice(this));
         }
-        this.deviceConfigurations = deviceConfigurations;
+        this.statuses = statuses;
     }
 
     public Thing getThing() {
@@ -316,19 +330,6 @@ public class Device implements Serializable {
 
     public void setDeviceGroup(DeviceGroup deviceGroup) {
         this.deviceGroup = deviceGroup;
-    }
-
-    public Status getStatus() {
-        return this.status;
-    }
-
-    public Device status(Status status) {
-        this.setStatus(status);
-        return this;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

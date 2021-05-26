@@ -32,6 +32,9 @@ import org.springframework.util.Base64Utils;
 @WithMockUser
 class DeviceConfigurationResourceIT {
 
+    private static final String DEFAULT_NAME = "AAAAAAAAAA";
+    private static final String UPDATED_NAME = "BBBBBBBBBB";
+
     private static final String DEFAULT_U_UID = "AAAAAAAAAA";
     private static final String UPDATED_U_UID = "BBBBBBBBBB";
 
@@ -68,6 +71,7 @@ class DeviceConfigurationResourceIT {
      */
     public static DeviceConfiguration createEntity(EntityManager em) {
         DeviceConfiguration deviceConfiguration = new DeviceConfiguration()
+            .name(DEFAULT_NAME)
             .uUID(DEFAULT_U_UID)
             .token(DEFAULT_TOKEN)
             .tokenContentType(DEFAULT_TOKEN_CONTENT_TYPE);
@@ -82,6 +86,7 @@ class DeviceConfigurationResourceIT {
      */
     public static DeviceConfiguration createUpdatedEntity(EntityManager em) {
         DeviceConfiguration deviceConfiguration = new DeviceConfiguration()
+            .name(UPDATED_NAME)
             .uUID(UPDATED_U_UID)
             .token(UPDATED_TOKEN)
             .tokenContentType(UPDATED_TOKEN_CONTENT_TYPE);
@@ -111,6 +116,7 @@ class DeviceConfigurationResourceIT {
         List<DeviceConfiguration> deviceConfigurationList = deviceConfigurationRepository.findAll();
         assertThat(deviceConfigurationList).hasSize(databaseSizeBeforeCreate + 1);
         DeviceConfiguration testDeviceConfiguration = deviceConfigurationList.get(deviceConfigurationList.size() - 1);
+        assertThat(testDeviceConfiguration.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testDeviceConfiguration.getuUID()).isEqualTo(DEFAULT_U_UID);
         assertThat(testDeviceConfiguration.getToken()).isEqualTo(DEFAULT_TOKEN);
         assertThat(testDeviceConfiguration.getTokenContentType()).isEqualTo(DEFAULT_TOKEN_CONTENT_TYPE);
@@ -151,6 +157,7 @@ class DeviceConfigurationResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(deviceConfiguration.getId().intValue())))
+            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
             .andExpect(jsonPath("$.[*].uUID").value(hasItem(DEFAULT_U_UID)))
             .andExpect(jsonPath("$.[*].tokenContentType").value(hasItem(DEFAULT_TOKEN_CONTENT_TYPE)))
             .andExpect(jsonPath("$.[*].token").value(hasItem(Base64Utils.encodeToString(DEFAULT_TOKEN))));
@@ -168,6 +175,7 @@ class DeviceConfigurationResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(deviceConfiguration.getId().intValue()))
+            .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
             .andExpect(jsonPath("$.uUID").value(DEFAULT_U_UID))
             .andExpect(jsonPath("$.tokenContentType").value(DEFAULT_TOKEN_CONTENT_TYPE))
             .andExpect(jsonPath("$.token").value(Base64Utils.encodeToString(DEFAULT_TOKEN)));
@@ -192,7 +200,7 @@ class DeviceConfigurationResourceIT {
         DeviceConfiguration updatedDeviceConfiguration = deviceConfigurationRepository.findById(deviceConfiguration.getId()).get();
         // Disconnect from session so that the updates on updatedDeviceConfiguration are not directly saved in db
         em.detach(updatedDeviceConfiguration);
-        updatedDeviceConfiguration.uUID(UPDATED_U_UID).token(UPDATED_TOKEN).tokenContentType(UPDATED_TOKEN_CONTENT_TYPE);
+        updatedDeviceConfiguration.name(UPDATED_NAME).uUID(UPDATED_U_UID).token(UPDATED_TOKEN).tokenContentType(UPDATED_TOKEN_CONTENT_TYPE);
         DeviceConfigurationDTO deviceConfigurationDTO = deviceConfigurationMapper.toDto(updatedDeviceConfiguration);
 
         restDeviceConfigurationMockMvc
@@ -207,6 +215,7 @@ class DeviceConfigurationResourceIT {
         List<DeviceConfiguration> deviceConfigurationList = deviceConfigurationRepository.findAll();
         assertThat(deviceConfigurationList).hasSize(databaseSizeBeforeUpdate);
         DeviceConfiguration testDeviceConfiguration = deviceConfigurationList.get(deviceConfigurationList.size() - 1);
+        assertThat(testDeviceConfiguration.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testDeviceConfiguration.getuUID()).isEqualTo(UPDATED_U_UID);
         assertThat(testDeviceConfiguration.getToken()).isEqualTo(UPDATED_TOKEN);
         assertThat(testDeviceConfiguration.getTokenContentType()).isEqualTo(UPDATED_TOKEN_CONTENT_TYPE);
@@ -293,7 +302,11 @@ class DeviceConfigurationResourceIT {
         DeviceConfiguration partialUpdatedDeviceConfiguration = new DeviceConfiguration();
         partialUpdatedDeviceConfiguration.setId(deviceConfiguration.getId());
 
-        partialUpdatedDeviceConfiguration.uUID(UPDATED_U_UID).token(UPDATED_TOKEN).tokenContentType(UPDATED_TOKEN_CONTENT_TYPE);
+        partialUpdatedDeviceConfiguration
+            .name(UPDATED_NAME)
+            .uUID(UPDATED_U_UID)
+            .token(UPDATED_TOKEN)
+            .tokenContentType(UPDATED_TOKEN_CONTENT_TYPE);
 
         restDeviceConfigurationMockMvc
             .perform(
@@ -307,6 +320,7 @@ class DeviceConfigurationResourceIT {
         List<DeviceConfiguration> deviceConfigurationList = deviceConfigurationRepository.findAll();
         assertThat(deviceConfigurationList).hasSize(databaseSizeBeforeUpdate);
         DeviceConfiguration testDeviceConfiguration = deviceConfigurationList.get(deviceConfigurationList.size() - 1);
+        assertThat(testDeviceConfiguration.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testDeviceConfiguration.getuUID()).isEqualTo(UPDATED_U_UID);
         assertThat(testDeviceConfiguration.getToken()).isEqualTo(UPDATED_TOKEN);
         assertThat(testDeviceConfiguration.getTokenContentType()).isEqualTo(UPDATED_TOKEN_CONTENT_TYPE);
@@ -324,7 +338,11 @@ class DeviceConfigurationResourceIT {
         DeviceConfiguration partialUpdatedDeviceConfiguration = new DeviceConfiguration();
         partialUpdatedDeviceConfiguration.setId(deviceConfiguration.getId());
 
-        partialUpdatedDeviceConfiguration.uUID(UPDATED_U_UID).token(UPDATED_TOKEN).tokenContentType(UPDATED_TOKEN_CONTENT_TYPE);
+        partialUpdatedDeviceConfiguration
+            .name(UPDATED_NAME)
+            .uUID(UPDATED_U_UID)
+            .token(UPDATED_TOKEN)
+            .tokenContentType(UPDATED_TOKEN_CONTENT_TYPE);
 
         restDeviceConfigurationMockMvc
             .perform(
@@ -338,6 +356,7 @@ class DeviceConfigurationResourceIT {
         List<DeviceConfiguration> deviceConfigurationList = deviceConfigurationRepository.findAll();
         assertThat(deviceConfigurationList).hasSize(databaseSizeBeforeUpdate);
         DeviceConfiguration testDeviceConfiguration = deviceConfigurationList.get(deviceConfigurationList.size() - 1);
+        assertThat(testDeviceConfiguration.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testDeviceConfiguration.getuUID()).isEqualTo(UPDATED_U_UID);
         assertThat(testDeviceConfiguration.getToken()).isEqualTo(UPDATED_TOKEN);
         assertThat(testDeviceConfiguration.getTokenContentType()).isEqualTo(UPDATED_TOKEN_CONTENT_TYPE);

@@ -14,6 +14,9 @@
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
             <column name="u_uid" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
@@ -25,9 +28,6 @@
             </column>
             <column name="configuration_data_id" type="bigint">
                 <constraints nullable="true" unique="true" uniqueConstraintName="ux_device_configuration__configuration_data_id" />
-            </column>
-            <column name="device_id" type="bigint">
-                <constraints nullable="true" />
             </column>
             <column name="user_data_id" type="bigint">
                 <constraints nullable="true" />
@@ -52,6 +52,7 @@
                   separator=";"
                   tableName="device_configuration">
             <column name="id" type="numeric"/>
+            <column name="name" type="string"/>
             <column name="u_uid" type="string"/>
             <column name="token" type="blob"/>
             <column name="token_content_type" type="string"/>

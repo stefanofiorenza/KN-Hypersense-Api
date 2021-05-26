@@ -21,6 +21,9 @@ public class DeviceConfiguration implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
+    @Column(name = "name")
+    private String name;
+
     @Column(name = "u_uid")
     private String uUID;
 
@@ -34,24 +37,6 @@ public class DeviceConfiguration implements Serializable {
     @OneToOne
     @JoinColumn(unique = true)
     private ConfigurationData configurationData;
-
-    @ManyToOne
-    @JsonIgnoreProperties(
-        value = {
-            "telemetry",
-            "supplier",
-            "deviceModel",
-            "rules",
-            "alertMessages",
-            "metaData",
-            "deviceConfigurations",
-            "thing",
-            "deviceGroup",
-            "status",
-        },
-        allowSetters = true
-    )
-    private Device device;
 
     @ManyToOne
     @JsonIgnoreProperties(value = { "internalUser", "deviceConfigurations", "organisation" }, allowSetters = true)
@@ -69,6 +54,19 @@ public class DeviceConfiguration implements Serializable {
     public DeviceConfiguration id(Long id) {
         this.id = id;
         return this;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public DeviceConfiguration name(String name) {
+        this.name = name;
+        return this;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getuUID() {
@@ -123,19 +121,6 @@ public class DeviceConfiguration implements Serializable {
         this.configurationData = configurationData;
     }
 
-    public Device getDevice() {
-        return this.device;
-    }
-
-    public DeviceConfiguration device(Device device) {
-        this.setDevice(device);
-        return this;
-    }
-
-    public void setDevice(Device device) {
-        this.device = device;
-    }
-
     public UserData getUserData() {
         return this.userData;
     }
@@ -173,6 +158,7 @@ public class DeviceConfiguration implements Serializable {
     public String toString() {
         return "DeviceConfiguration{" +
             "id=" + getId() +
+            ", name='" + getName() + "'" +
             ", uUID='" + getuUID() + "'" +
             ", token='" + getToken() + "'" +
             ", tokenContentType='" + getTokenContentType() + "'" +

@@ -38,6 +38,8 @@ export const StatusDetail = (props: IStatusDetailProps) => {
             <span id="uUID">U UID</span>
           </dt>
           <dd>{statusEntity.uUID}</dd>
+          <dt>Device</dt>
+          <dd>{statusEntity.device ? statusEntity.device.id : ''}</dd>
         </dl>
         <Button tag={Link} to="/status" replace color="info" data-cy="entityDetailsBackButton">
           <FontAwesomeIcon icon="arrow-left" /> <span className="d-none d-md-inline">Back</span>

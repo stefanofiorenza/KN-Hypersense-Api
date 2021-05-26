@@ -40,6 +40,8 @@ export const DeviceDetail = (props: IDeviceDetailProps) => {
           <dd>{deviceEntity.manufacturer}</dd>
           <dt>Telemetry</dt>
           <dd>{deviceEntity.telemetry ? deviceEntity.telemetry.id : ''}</dd>
+          <dt>Device Configuration</dt>
+          <dd>{deviceEntity.deviceConfiguration ? deviceEntity.deviceConfiguration.id : ''}</dd>
           <dt>Supplier</dt>
           <dd>{deviceEntity.supplier ? deviceEntity.supplier.id : ''}</dd>
           <dt>Device Model</dt>
@@ -48,8 +50,6 @@ export const DeviceDetail = (props: IDeviceDetailProps) => {
           <dd>{deviceEntity.thing ? deviceEntity.thing.id : ''}</dd>
           <dt>Device Group</dt>
           <dd>{deviceEntity.deviceGroup ? deviceEntity.deviceGroup.id : ''}</dd>
-          <dt>Status</dt>
-          <dd>{deviceEntity.status ? deviceEntity.status.id : ''}</dd>
         </dl>
         <Button tag={Link} to="/device" replace color="info" data-cy="entityDetailsBackButton">
           <FontAwesomeIcon icon="arrow-left" /> <span className="d-none d-md-inline">Back</span>

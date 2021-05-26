@@ -13,6 +13,8 @@ public class DeviceConfigurationDTO implements Serializable {
 
     private Long id;
 
+    private String name;
+
     private String uUID;
 
     @Lob
@@ -20,8 +22,6 @@ public class DeviceConfigurationDTO implements Serializable {
 
     private String tokenContentType;
     private ConfigurationDataDTO configurationData;
-
-    private DeviceDTO device;
 
     private UserDataDTO userData;
 
@@ -31,6 +31,14 @@ public class DeviceConfigurationDTO implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getuUID() {
@@ -63,14 +71,6 @@ public class DeviceConfigurationDTO implements Serializable {
 
     public void setConfigurationData(ConfigurationDataDTO configurationData) {
         this.configurationData = configurationData;
-    }
-
-    public DeviceDTO getDevice() {
-        return device;
-    }
-
-    public void setDevice(DeviceDTO device) {
-        this.device = device;
     }
 
     public UserDataDTO getUserData() {
@@ -107,10 +107,10 @@ public class DeviceConfigurationDTO implements Serializable {
     public String toString() {
         return "DeviceConfigurationDTO{" +
             "id=" + getId() +
+            ", name='" + getName() + "'" +
             ", uUID='" + getuUID() + "'" +
             ", token='" + getToken() + "'" +
             ", configurationData=" + getConfigurationData() +
-            ", device=" + getDevice() +
             ", userData=" + getUserData() +
             "}";
     }

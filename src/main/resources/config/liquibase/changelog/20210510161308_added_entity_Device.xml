@@ -26,6 +26,9 @@
             <column name="telemetry_id" type="bigint">
                 <constraints nullable="true" unique="true" uniqueConstraintName="ux_device__telemetry_id" />
             </column>
+            <column name="device_configuration_id" type="bigint">
+                <constraints nullable="true" unique="true" uniqueConstraintName="ux_device__device_configuration_id" />
+            </column>
             <column name="supplier_id" type="bigint">
                 <constraints nullable="true" unique="true" uniqueConstraintName="ux_device__supplier_id" />
             </column>
@@ -37,9 +40,6 @@
             </column>
             <column name="device_group_id" type="bigint">
                 <constraints nullable="true" />
-            </column>
-            <column name="status_id" type="bigint">
-                <constraints nullable="true" unique="true" uniqueConstraintName="ux_device__status_id" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>

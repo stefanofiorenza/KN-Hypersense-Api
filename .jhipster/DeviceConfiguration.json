@@ -2,6 +2,10 @@
   "name": "DeviceConfiguration",
   "fields": [
     {
+      "fieldName": "name",
+      "fieldType": "String"
+    },
+    {
       "fieldName": "uUID",
       "fieldType": "String"
     },
@@ -18,12 +22,6 @@
       "otherEntityRelationshipName": "deviceConfiguration",
       "relationshipName": "configurationData",
       "ownerSide": true
-    },
-    {
-      "relationshipType": "many-to-one",
-      "otherEntityName": "device",
-      "otherEntityRelationshipName": "deviceConfiguration",
-      "relationshipName": "device"
     },
     {
       "relationshipType": "many-to-one",

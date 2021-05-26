@@ -30,27 +30,12 @@ export const ThingDetail = (props: IThingDetailProps) => {
             <span id="name">Name</span>
           </dt>
           <dd>{thingEntity.name}</dd>
-          <dt>
-            <span id="uUID">U UID</span>
-          </dt>
-          <dd>{thingEntity.uUID}</dd>
           <dt>Location</dt>
           <dd>{thingEntity.location ? thingEntity.location.id : ''}</dd>
           <dt>Thing Category</dt>
           <dd>{thingEntity.thingCategory ? thingEntity.thingCategory.id : ''}</dd>
           <dt>Application</dt>
           <dd>{thingEntity.application ? thingEntity.application.id : ''}</dd>
-          <dt>State</dt>
-          <dd>
-            {thingEntity.states
-              ? thingEntity.states.map((val, i) => (
-                  <span key={val.id}>
-                    <a>{val.name}</a>
-                    {thingEntity.states && i === thingEntity.states.length - 1 ? '' : ', '}
-                  </span>
-                ))
-              : null}
-          </dd>
         </dl>
         <Button tag={Link} to="/thing" replace color="info" data-cy="entityDetailsBackButton">
           <FontAwesomeIcon icon="arrow-left" /> <span className="d-none d-md-inline">Back</span>

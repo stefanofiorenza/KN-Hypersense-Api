@@ -46,11 +46,11 @@ export const Device = (props: IDeviceProps) => {
                 <th>Serial Number</th>
                 <th>Manufacturer</th>
                 <th>Telemetry</th>
+                <th>Device Configuration</th>
                 <th>Supplier</th>
                 <th>Device Model</th>
                 <th>Thing</th>
                 <th>Device Group</th>
-                <th>Status</th>
                 <th />
               </tr>
             </thead>
@@ -66,11 +66,17 @@ export const Device = (props: IDeviceProps) => {
                   <td>{device.serialNumber}</td>
                   <td>{device.manufacturer}</td>
                   <td>{device.telemetry ? <Link to={`telemetry/${device.telemetry.id}`}>{device.telemetry.id}</Link> : ''}</td>
+                  <td>
+                    {device.deviceConfiguration ? (
+                      <Link to={`device-configuration/${device.deviceConfiguration.id}`}>{device.deviceConfiguration.id}</Link>
+                    ) : (
+                      ''
+                    )}
+                  </td>
                   <td>{device.supplier ? <Link to={`supplier/${device.supplier.id}`}>{device.supplier.id}</Link> : ''}</td>
                   <td>{device.deviceModel ? <Link to={`device-model/${device.deviceModel.id}`}>{device.deviceModel.id}</Link> : ''}</td>
                   <td>{device.thing ? <Link to={`thing/${device.thing.id}`}>{device.thing.id}</Link> : ''}</td>
                   <td>{device.deviceGroup ? <Link to={`device-group/${device.deviceGroup.id}`}>{device.deviceGroup.id}</Link> : ''}</td>
-                  <td>{device.status ? <Link to={`status/${device.status.id}`}>{device.status.id}</Link> : ''}</td>
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`${match.url}/${device.id}`} color="info" size="sm" data-cy="entityDetailsButton">

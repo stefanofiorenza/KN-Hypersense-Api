@@ -31,6 +31,9 @@ import org.springframework.transaction.annotation.Transactional;
 @WithMockUser
 class UserDataResourceIT {
 
+    private static final String DEFAULT_UUID = "AAAAAAAAAA";
+    private static final String UPDATED_UUID = "BBBBBBBBBB";
+
     private static final String ENTITY_API_URL = "/api/user-data";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
@@ -58,7 +61,7 @@ class UserDataResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static UserData createEntity(EntityManager em) {
-        UserData userData = new UserData();
+        UserData userData = new UserData().uuid(DEFAULT_UUID);
         return userData;
     }
 
@@ -69,7 +72,7 @@ class UserDataResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static UserData createUpdatedEntity(EntityManager em) {
-        UserData userData = new UserData();
+        UserData userData = new UserData().uuid(UPDATED_UUID);
         return userData;
     }
 
@@ -92,6 +95,7 @@ class UserDataResourceIT {
         List<UserData> userDataList = userDataRepository.findAll();
         assertThat(userDataList).hasSize(databaseSizeBeforeCreate + 1);
         UserData testUserData = userDataList.get(userDataList.size() - 1);
+        assertThat(testUserData.getUuid()).isEqualTo(DEFAULT_UUID);
     }
 
     @Test
@@ -124,7 +128,8 @@ class UserDataResourceIT {
             .perform(get(ENTITY_API_URL + "?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(userData.getId().intValue())));
+            .andExpect(jsonPath("$.[*].id").value(hasItem(userData.getId().intValue())))
+            .andExpect(jsonPath("$.[*].uuid").value(hasItem(DEFAULT_UUID)));
     }
 
     @Test
@@ -138,7 +143,8 @@ class UserDataResourceIT {
             .perform(get(ENTITY_API_URL_ID, userData.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.id").value(userData.getId().intValue()));
+            .andExpect(jsonPath("$.id").value(userData.getId().intValue()))
+            .andExpect(jsonPath("$.uuid").value(DEFAULT_UUID));
     }
 
     @Test
@@ -160,6 +166,7 @@ class UserDataResourceIT {
         UserData updatedUserData = userDataRepository.findById(userData.getId()).get();
         // Disconnect from session so that the updates on updatedUserData are not directly saved in db
         em.detach(updatedUserData);
+        updatedUserData.uuid(UPDATED_UUID);
         UserDataDTO userDataDTO = userDataMapper.toDto(updatedUserData);
 
         restUserDataMockMvc
@@ -174,6 +181,7 @@ class UserDataResourceIT {
         List<UserData> userDataList = userDataRepository.findAll();
         assertThat(userDataList).hasSize(databaseSizeBeforeUpdate);
         UserData testUserData = userDataList.get(userDataList.size() - 1);
+        assertThat(testUserData.getUuid()).isEqualTo(UPDATED_UUID);
     }
 
     @Test
@@ -265,6 +273,7 @@ class UserDataResourceIT {
         List<UserData> userDataList = userDataRepository.findAll();
         assertThat(userDataList).hasSize(databaseSizeBeforeUpdate);
         UserData testUserData = userDataList.get(userDataList.size() - 1);
+        assertThat(testUserData.getUuid()).isEqualTo(DEFAULT_UUID);
     }
 
     @Test
@@ -279,6 +288,8 @@ class UserDataResourceIT {
         UserData partialUpdatedUserData = new UserData();
         partialUpdatedUserData.setId(userData.getId());
 
+        partialUpdatedUserData.uuid(UPDATED_UUID);
+
         restUserDataMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedUserData.getId())
@@ -291,6 +302,7 @@ class UserDataResourceIT {
         List<UserData> userDataList = userDataRepository.findAll();
         assertThat(userDataList).hasSize(databaseSizeBeforeUpdate);
         UserData testUserData = userDataList.get(userDataList.size() - 1);
+        assertThat(testUserData.getUuid()).isEqualTo(UPDATED_UUID);
     }
 
     @Test

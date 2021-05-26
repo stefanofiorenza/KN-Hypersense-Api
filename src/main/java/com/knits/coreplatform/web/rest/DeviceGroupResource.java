@@ -1,7 +1,6 @@
 package com.knits.coreplatform.web.rest;
 
 import com.knits.coreplatform.repository.DeviceGroupRepository;
-import com.knits.coreplatform.security.AuthoritiesConstants;
 import com.knits.coreplatform.service.DeviceGroupService;
 import com.knits.coreplatform.service.dto.DeviceGroupDTO;
 import com.knits.coreplatform.web.rest.errors.BadRequestAlertException;
@@ -14,7 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.ResponseUtil;
@@ -50,7 +48,6 @@ public class DeviceGroupResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/device-groups")
-    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_CREATE + "\")")
     public ResponseEntity<DeviceGroupDTO> createDeviceGroup(@RequestBody DeviceGroupDTO deviceGroupDTO) throws URISyntaxException {
         log.debug("REST request to save DeviceGroup : {}", deviceGroupDTO);
         if (deviceGroupDTO.getId() != null) {
@@ -74,7 +71,6 @@ public class DeviceGroupResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/device-groups/{id}")
-    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_UPDATE + "\")")
     public ResponseEntity<DeviceGroupDTO> updateDeviceGroup(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody DeviceGroupDTO deviceGroupDTO
@@ -110,7 +106,6 @@ public class DeviceGroupResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/device-groups/{id}", consumes = "application/merge-patch+json")
-    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_UPDATE + "\")")
     public ResponseEntity<DeviceGroupDTO> partialUpdateDeviceGroup(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody DeviceGroupDTO deviceGroupDTO
@@ -141,7 +136,6 @@ public class DeviceGroupResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of deviceGroups in body.
      */
     @GetMapping("/device-groups")
-    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_READ + "\")")
     public List<DeviceGroupDTO> getAllDeviceGroups() {
         log.debug("REST request to get all DeviceGroups");
         return deviceGroupService.findAll();
@@ -154,7 +148,6 @@ public class DeviceGroupResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the deviceGroupDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/device-groups/{id}")
-    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_READ + "\")")
     public ResponseEntity<DeviceGroupDTO> getDeviceGroup(@PathVariable Long id) {
         log.debug("REST request to get DeviceGroup : {}", id);
         Optional<DeviceGroupDTO> deviceGroupDTO = deviceGroupService.findOne(id);
@@ -168,7 +161,6 @@ public class DeviceGroupResource {
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/device-groups/{id}")
-    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_DELETE + "\")")
     public ResponseEntity<Void> deleteDeviceGroup(@PathVariable Long id) {
         log.debug("REST request to delete DeviceGroup : {}", id);
         deviceGroupService.delete(id);

@@ -2,30 +2,22 @@ package com.knits.coreplatform.web.rest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
-import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.knits.coreplatform.IntegrationTest;
 import com.knits.coreplatform.domain.Thing;
 import com.knits.coreplatform.repository.ThingRepository;
-import com.knits.coreplatform.service.ThingService;
 import com.knits.coreplatform.service.dto.ThingDTO;
 import com.knits.coreplatform.service.mapper.ThingMapper;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
 import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -35,16 +27,12 @@ import org.springframework.transaction.annotation.Transactional;
  * Integration tests for the {@link ThingResource} REST controller.
  */
 @IntegrationTest
-@ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
 @WithMockUser
 class ThingResourceIT {
 
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
-
-    private static final String DEFAULT_U_UID = "AAAAAAAAAA";
-    private static final String UPDATED_U_UID = "BBBBBBBBBB";
 
     private static final String ENTITY_API_URL = "/api/things";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
@@ -55,14 +43,8 @@ class ThingResourceIT {
     @Autowired
     private ThingRepository thingRepository;
 
-    @Mock
-    private ThingRepository thingRepositoryMock;
-
     @Autowired
     private ThingMapper thingMapper;
-
-    @Mock
-    private ThingService thingServiceMock;
 
     @Autowired
     private EntityManager em;
@@ -79,7 +61,7 @@ class ThingResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Thing createEntity(EntityManager em) {
-        Thing thing = new Thing().name(DEFAULT_NAME).uUID(DEFAULT_U_UID);
+        Thing thing = new Thing().name(DEFAULT_NAME);
         return thing;
     }
 
@@ -90,7 +72,7 @@ class ThingResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Thing createUpdatedEntity(EntityManager em) {
-        Thing thing = new Thing().name(UPDATED_NAME).uUID(UPDATED_U_UID);
+        Thing thing = new Thing().name(UPDATED_NAME);
         return thing;
     }
 
@@ -114,7 +96,6 @@ class ThingResourceIT {
         assertThat(thingList).hasSize(databaseSizeBeforeCreate + 1);
         Thing testThing = thingList.get(thingList.size() - 1);
         assertThat(testThing.getName()).isEqualTo(DEFAULT_NAME);
-        assertThat(testThing.getuUID()).isEqualTo(DEFAULT_U_UID);
     }
 
     @Test
@@ -148,26 +129,7 @@ class ThingResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(thing.getId().intValue())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
-            .andExpect(jsonPath("$.[*].uUID").value(hasItem(DEFAULT_U_UID)));
-    }
-
-    @SuppressWarnings({ "unchecked" })
-    void getAllThingsWithEagerRelationshipsIsEnabled() throws Exception {
-        when(thingServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
-
-        restThingMockMvc.perform(get(ENTITY_API_URL + "?eagerload=true")).andExpect(status().isOk());
-
-        verify(thingServiceMock, times(1)).findAllWithEagerRelationships(any());
-    }
-
-    @SuppressWarnings({ "unchecked" })
-    void getAllThingsWithEagerRelationshipsIsNotEnabled() throws Exception {
-        when(thingServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
-
-        restThingMockMvc.perform(get(ENTITY_API_URL + "?eagerload=true")).andExpect(status().isOk());
-
-        verify(thingServiceMock, times(1)).findAllWithEagerRelationships(any());
+            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)));
     }
 
     @Test
@@ -182,8 +144,7 @@ class ThingResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(thing.getId().intValue()))
-            .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
-            .andExpect(jsonPath("$.uUID").value(DEFAULT_U_UID));
+            .andExpect(jsonPath("$.name").value(DEFAULT_NAME));
     }
 
     @Test
@@ -205,7 +166,7 @@ class ThingResourceIT {
         Thing updatedThing = thingRepository.findById(thing.getId()).get();
         // Disconnect from session so that the updates on updatedThing are not directly saved in db
         em.detach(updatedThing);
-        updatedThing.name(UPDATED_NAME).uUID(UPDATED_U_UID);
+        updatedThing.name(UPDATED_NAME);
         ThingDTO thingDTO = thingMapper.toDto(updatedThing);
 
         restThingMockMvc
@@ -221,7 +182,6 @@ class ThingResourceIT {
         assertThat(thingList).hasSize(databaseSizeBeforeUpdate);
         Thing testThing = thingList.get(thingList.size() - 1);
         assertThat(testThing.getName()).isEqualTo(UPDATED_NAME);
-        assertThat(testThing.getuUID()).isEqualTo(UPDATED_U_UID);
     }
 
     @Test
@@ -316,7 +276,6 @@ class ThingResourceIT {
         assertThat(thingList).hasSize(databaseSizeBeforeUpdate);
         Thing testThing = thingList.get(thingList.size() - 1);
         assertThat(testThing.getName()).isEqualTo(UPDATED_NAME);
-        assertThat(testThing.getuUID()).isEqualTo(DEFAULT_U_UID);
     }
 
     @Test
@@ -331,7 +290,7 @@ class ThingResourceIT {
         Thing partialUpdatedThing = new Thing();
         partialUpdatedThing.setId(thing.getId());
 
-        partialUpdatedThing.name(UPDATED_NAME).uUID(UPDATED_U_UID);
+        partialUpdatedThing.name(UPDATED_NAME);
 
         restThingMockMvc
             .perform(
@@ -346,7 +305,6 @@ class ThingResourceIT {
         assertThat(thingList).hasSize(databaseSizeBeforeUpdate);
         Thing testThing = thingList.get(thingList.size() - 1);
         assertThat(testThing.getName()).isEqualTo(UPDATED_NAME);
-        assertThat(testThing.getuUID()).isEqualTo(UPDATED_U_UID);
     }
 
     @Test

@@ -42,6 +42,7 @@ export const UserData = (props: IUserDataProps) => {
             <thead>
               <tr>
                 <th>ID</th>
+                <th>Uuid</th>
                 <th>Internal User</th>
                 <th>Organisation</th>
                 <th />
@@ -55,6 +56,7 @@ export const UserData = (props: IUserDataProps) => {
                       {userData.id}
                     </Button>
                   </td>
+                  <td>{userData.uuid}</td>
                   <td>{userData.internalUser ? userData.internalUser.id : ''}</td>
                   <td>
                     {userData.organisation ? <Link to={`organisation/${userData.organisation.id}`}>{userData.organisation.id}</Link> : ''}

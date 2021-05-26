@@ -9,8 +9,6 @@ import { IRootState } from 'app/shared/reducers';
 
 import { IConfigurationData } from 'app/shared/model/configuration-data.model';
 import { getEntities as getConfigurationData } from 'app/entities/configuration-data/configuration-data.reducer';
-import { IDevice } from 'app/shared/model/device.model';
-import { getEntities as getDevices } from 'app/entities/device/device.reducer';
 import { IUserData } from 'app/shared/model/user-data.model';
 import { getEntities as getUserData } from 'app/entities/user-data/user-data.reducer';
 import { getEntity, updateEntity, createEntity, setBlob, reset } from './device-configuration.reducer';
@@ -23,7 +21,7 @@ export interface IDeviceConfigurationUpdateProps extends StateProps, DispatchPro
 export const DeviceConfigurationUpdate = (props: IDeviceConfigurationUpdateProps) => {
   const [isNew] = useState(!props.match.params || !props.match.params.id);
 
-  const { deviceConfigurationEntity, configurationData, devices, userData, loading, updating } = props;
+  const { deviceConfigurationEntity, configurationData, userData, loading, updating } = props;
 
   const { token, tokenContentType } = deviceConfigurationEntity;
 
@@ -39,7 +37,6 @@ export const DeviceConfigurationUpdate = (props: IDeviceConfigurationUpdateProps
     }
 
     props.getConfigurationData();
-    props.getDevices();
     props.getUserData();
   }, []);
 
@@ -63,7 +60,6 @@ export const DeviceConfigurationUpdate = (props: IDeviceConfigurationUpdateProps
         ...deviceConfigurationEntity,
         ...values,
         configurationData: configurationData.find(it => it.id.toString() === values.configurationDataId.toString()),
-        device: devices.find(it => it.id.toString() === values.deviceId.toString()),
         userData: userData.find(it => it.id.toString() === values.userDataId.toString()),
       };
 
@@ -96,6 +92,12 @@ export const DeviceConfigurationUpdate = (props: IDeviceConfigurationUpdateProps
                   <AvInput id="device-configuration-id" type="text" className="form-control" name="id" required readOnly />
                 </AvGroup>
               ) : null}
+              <AvGroup>
+                <Label id="nameLabel" for="device-configuration-name">
+                  Name
+                </Label>
+                <AvField id="device-configuration-name" data-cy="name" type="text" name="name" />
+              </AvGroup>
               <AvGroup>
                 <Label id="uUIDLabel" for="device-configuration-uUID">
                   U UID
@@ -150,19 +152,6 @@ export const DeviceConfigurationUpdate = (props: IDeviceConfigurationUpdateProps
                 </AvInput>
               </AvGroup>
               <AvGroup>
-                <Label for="device-configuration-device">Device</Label>
-                <AvInput id="device-configuration-device" data-cy="device" type="select" className="form-control" name="deviceId">
-                  <option value="" key="0" />
-                  {devices
-                    ? devices.map(otherEntity => (
-                        <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.id}
-                        </option>
-                      ))
-                    : null}
-                </AvInput>
-              </AvGroup>
-              <AvGroup>
                 <Label for="device-configuration-userData">User Data</Label>
                 <AvInput id="device-configuration-userData" data-cy="userData" type="select" className="form-control" name="userDataId">
                   <option value="" key="0" />
@@ -195,7 +184,6 @@ export const DeviceConfigurationUpdate = (props: IDeviceConfigurationUpdateProps
 
 const mapStateToProps = (storeState: IRootState) => ({
   configurationData: storeState.configurationData.entities,
-  devices: storeState.device.entities,
   userData: storeState.userData.entities,
   deviceConfigurationEntity: storeState.deviceConfiguration.entity,
   loading: storeState.deviceConfiguration.loading,
@@ -205,7 +193,6 @@ const mapStateToProps = (storeState: IRootState) => ({
 
 const mapDispatchToProps = {
   getConfigurationData,
-  getDevices,
   getUserData,
   getEntity,
   updateEntity,

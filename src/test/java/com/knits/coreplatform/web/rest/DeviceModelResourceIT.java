@@ -31,6 +31,9 @@ import org.springframework.transaction.annotation.Transactional;
 @WithMockUser
 class DeviceModelResourceIT {
 
+    private static final String DEFAULT_NAME = "AAAAAAAAAA";
+    private static final String UPDATED_NAME = "BBBBBBBBBB";
+
     private static final String ENTITY_API_URL = "/api/device-models";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
@@ -58,7 +61,7 @@ class DeviceModelResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static DeviceModel createEntity(EntityManager em) {
-        DeviceModel deviceModel = new DeviceModel();
+        DeviceModel deviceModel = new DeviceModel().name(DEFAULT_NAME);
         return deviceModel;
     }
 
@@ -69,7 +72,7 @@ class DeviceModelResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static DeviceModel createUpdatedEntity(EntityManager em) {
-        DeviceModel deviceModel = new DeviceModel();
+        DeviceModel deviceModel = new DeviceModel().name(UPDATED_NAME);
         return deviceModel;
     }
 
@@ -94,6 +97,7 @@ class DeviceModelResourceIT {
         List<DeviceModel> deviceModelList = deviceModelRepository.findAll();
         assertThat(deviceModelList).hasSize(databaseSizeBeforeCreate + 1);
         DeviceModel testDeviceModel = deviceModelList.get(deviceModelList.size() - 1);
+        assertThat(testDeviceModel.getName()).isEqualTo(DEFAULT_NAME);
     }
 
     @Test
@@ -128,7 +132,8 @@ class DeviceModelResourceIT {
             .perform(get(ENTITY_API_URL + "?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(deviceModel.getId().intValue())));
+            .andExpect(jsonPath("$.[*].id").value(hasItem(deviceModel.getId().intValue())))
+            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)));
     }
 
     @Test
@@ -142,7 +147,8 @@ class DeviceModelResourceIT {
             .perform(get(ENTITY_API_URL_ID, deviceModel.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.id").value(deviceModel.getId().intValue()));
+            .andExpect(jsonPath("$.id").value(deviceModel.getId().intValue()))
+            .andExpect(jsonPath("$.name").value(DEFAULT_NAME));
     }
 
     @Test
@@ -164,6 +170,7 @@ class DeviceModelResourceIT {
         DeviceModel updatedDeviceModel = deviceModelRepository.findById(deviceModel.getId()).get();
         // Disconnect from session so that the updates on updatedDeviceModel are not directly saved in db
         em.detach(updatedDeviceModel);
+        updatedDeviceModel.name(UPDATED_NAME);
         DeviceModelDTO deviceModelDTO = deviceModelMapper.toDto(updatedDeviceModel);
 
         restDeviceModelMockMvc
@@ -178,6 +185,7 @@ class DeviceModelResourceIT {
         List<DeviceModel> deviceModelList = deviceModelRepository.findAll();
         assertThat(deviceModelList).hasSize(databaseSizeBeforeUpdate);
         DeviceModel testDeviceModel = deviceModelList.get(deviceModelList.size() - 1);
+        assertThat(testDeviceModel.getName()).isEqualTo(UPDATED_NAME);
     }
 
     @Test
@@ -269,6 +277,7 @@ class DeviceModelResourceIT {
         List<DeviceModel> deviceModelList = deviceModelRepository.findAll();
         assertThat(deviceModelList).hasSize(databaseSizeBeforeUpdate);
         DeviceModel testDeviceModel = deviceModelList.get(deviceModelList.size() - 1);
+        assertThat(testDeviceModel.getName()).isEqualTo(DEFAULT_NAME);
     }
 
     @Test
@@ -283,6 +292,8 @@ class DeviceModelResourceIT {
         DeviceModel partialUpdatedDeviceModel = new DeviceModel();
         partialUpdatedDeviceModel.setId(deviceModel.getId());
 
+        partialUpdatedDeviceModel.name(UPDATED_NAME);
+
         restDeviceModelMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedDeviceModel.getId())
@@ -295,6 +306,7 @@ class DeviceModelResourceIT {
         List<DeviceModel> deviceModelList = deviceModelRepository.findAll();
         assertThat(deviceModelList).hasSize(databaseSizeBeforeUpdate);
         DeviceModel testDeviceModel = deviceModelList.get(deviceModelList.size() - 1);
+        assertThat(testDeviceModel.getName()).isEqualTo(UPDATED_NAME);
     }
 
     @Test
