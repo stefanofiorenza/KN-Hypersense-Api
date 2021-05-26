@@ -14,12 +14,6 @@
                                  referencedColumnNames="id"
                                  referencedTableName="configuration_data"/>
 
-        <addForeignKeyConstraint baseColumnNames="device_id"
-                                 baseTableName="device_configuration"
-                                 constraintName="fk_device_configuration__device_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="device"/>
-
         <addForeignKeyConstraint baseColumnNames="user_data_id"
                                  baseTableName="device_configuration"
                                  constraintName="fk_device_configuration__user_data_id"

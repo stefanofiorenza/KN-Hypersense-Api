@@ -34,15 +34,15 @@ public class DeviceGroup implements Serializable {
     @JsonIgnoreProperties(
         value = {
             "telemetry",
+            "deviceConfiguration",
             "supplier",
             "deviceModel",
             "rules",
             "alertMessages",
             "metaData",
-            "deviceConfigurations",
+            "statuses",
             "thing",
             "deviceGroup",
-            "status",
         },
         allowSetters = true
     )

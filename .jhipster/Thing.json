@@ -4,10 +4,6 @@
     {
       "fieldName": "name",
       "fieldType": "String"
-    },
-    {
-      "fieldName": "uUID",
-      "fieldType": "String"
     }
   ],
   "relationships": [
@@ -25,6 +21,12 @@
       "relationshipName": "device"
     },
     {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "state",
+      "otherEntityRelationshipName": "thing",
+      "relationshipName": "state"
+    },
+    {
       "relationshipType": "many-to-one",
       "otherEntityName": "thingCategory",
       "otherEntityRelationshipName": "thing",
@@ -35,17 +37,9 @@
       "otherEntityName": "application",
       "otherEntityRelationshipName": "thing",
       "relationshipName": "application"
-    },
-    {
-      "relationshipName": "state",
-      "otherEntityName": "state",
-      "relationshipType": "many-to-many",
-      "otherEntityField": "name",
-      "ownerSide": true,
-      "otherEntityRelationshipName": "thing"
     }
   ],
-  "javadoc": "Thing is a representation of place to attach sensorts.\\n@author Vassili Moskaljov\\n@version 1.1",
+  "javadoc": "Thing is a representation of place to attach sensorts.\\n@author Vassili Moskaljov\\n@version 1.0",
   "entityTableName": "thing",
   "dto": "mapstruct",
   "pagination": "no",

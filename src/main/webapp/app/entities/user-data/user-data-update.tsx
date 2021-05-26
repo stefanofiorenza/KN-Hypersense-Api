@@ -83,6 +83,12 @@ export const UserDataUpdate = (props: IUserDataUpdateProps) => {
                 </AvGroup>
               ) : null}
               <AvGroup>
+                <Label id="uuidLabel" for="user-data-uuid">
+                  Uuid
+                </Label>
+                <AvField id="user-data-uuid" data-cy="uuid" type="text" name="uuid" />
+              </AvGroup>
+              <AvGroup>
                 <Label for="user-data-internalUser">Internal User</Label>
                 <AvInput id="user-data-internalUser" data-cy="internalUser" type="select" className="form-control" name="internalUserId">
                   <option value="" key="0" />

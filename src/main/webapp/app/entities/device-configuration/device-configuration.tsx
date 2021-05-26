@@ -42,10 +42,10 @@ export const DeviceConfiguration = (props: IDeviceConfigurationProps) => {
             <thead>
               <tr>
                 <th>ID</th>
+                <th>Name</th>
                 <th>U UID</th>
                 <th>Token</th>
                 <th>Configuration Data</th>
-                <th>Device</th>
                 <th>User Data</th>
                 <th />
               </tr>
@@ -58,6 +58,7 @@ export const DeviceConfiguration = (props: IDeviceConfigurationProps) => {
                       {deviceConfiguration.id}
                     </Button>
                   </td>
+                  <td>{deviceConfiguration.name}</td>
                   <td>{deviceConfiguration.uUID}</td>
                   <td>
                     {deviceConfiguration.token ? (
@@ -76,13 +77,6 @@ export const DeviceConfiguration = (props: IDeviceConfigurationProps) => {
                       <Link to={`configuration-data/${deviceConfiguration.configurationData.id}`}>
                         {deviceConfiguration.configurationData.id}
                       </Link>
-                    ) : (
-                      ''
-                    )}
-                  </td>
-                  <td>
-                    {deviceConfiguration.device ? (
-                      <Link to={`device/${deviceConfiguration.device.id}`}>{deviceConfiguration.device.id}</Link>
                     ) : (
                       ''
                     )}

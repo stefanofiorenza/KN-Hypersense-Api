@@ -42,6 +42,7 @@ export const DeviceModel = (props: IDeviceModelProps) => {
             <thead>
               <tr>
                 <th>ID</th>
+                <th>Name</th>
                 <th />
               </tr>
             </thead>
@@ -53,6 +54,7 @@ export const DeviceModel = (props: IDeviceModelProps) => {
                       {deviceModel.id}
                     </Button>
                   </td>
+                  <td>{deviceModel.name}</td>
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`${match.url}/${deviceModel.id}`} color="info" size="sm" data-cy="entityDetailsButton">

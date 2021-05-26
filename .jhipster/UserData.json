@@ -1,6 +1,11 @@
 {
   "name": "UserData",
-  "fields": [],
+  "fields": [
+    {
+      "fieldName": "uuid",
+      "fieldType": "String"
+    }
+  ],
   "relationships": [
     {
       "relationshipType": "one-to-one",

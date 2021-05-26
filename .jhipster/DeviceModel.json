@@ -1,6 +1,11 @@
 {
   "name": "DeviceModel",
-  "fields": [],
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String"
+    }
+  ],
   "relationships": [],
   "javadoc": "Entity to set device model specification.\\n@author Vassili Moskaljov\\n@version 1.0",
   "entityTableName": "device_model",

@@ -27,6 +27,10 @@ export const DeviceConfigurationDetail = (props: IDeviceConfigurationDetailProps
           </dt>
           <dd>{deviceConfigurationEntity.id}</dd>
           <dt>
+            <span id="name">Name</span>
+          </dt>
+          <dd>{deviceConfigurationEntity.name}</dd>
+          <dt>
             <span id="uUID">U UID</span>
           </dt>
           <dd>{deviceConfigurationEntity.uUID}</dd>
@@ -47,8 +51,6 @@ export const DeviceConfigurationDetail = (props: IDeviceConfigurationDetailProps
           </dd>
           <dt>Configuration Data</dt>
           <dd>{deviceConfigurationEntity.configurationData ? deviceConfigurationEntity.configurationData.id : ''}</dd>
-          <dt>Device</dt>
-          <dd>{deviceConfigurationEntity.device ? deviceConfigurationEntity.device.id : ''}</dd>
           <dt>User Data</dt>
           <dd>{deviceConfigurationEntity.userData ? deviceConfigurationEntity.userData.id : ''}</dd>
         </dl>

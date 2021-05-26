@@ -13,8 +13,6 @@ import { IThingCategory } from 'app/shared/model/thing-category.model';
 import { getEntities as getThingCategories } from 'app/entities/thing-category/thing-category.reducer';
 import { IApplication } from 'app/shared/model/application.model';
 import { getEntities as getApplications } from 'app/entities/application/application.reducer';
-import { IState } from 'app/shared/model/state.model';
-import { getEntities as getStates } from 'app/entities/state/state.reducer';
 import { getEntity, updateEntity, createEntity, reset } from './thing.reducer';
 import { IThing } from 'app/shared/model/thing.model';
 import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
@@ -23,10 +21,9 @@ import { mapIdList } from 'app/shared/util/entity-utils';
 export interface IThingUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 export const ThingUpdate = (props: IThingUpdateProps) => {
-  const [idsstate, setIdsstate] = useState([]);
   const [isNew] = useState(!props.match.params || !props.match.params.id);
 
-  const { thingEntity, locations, thingCategories, applications, states, loading, updating } = props;
+  const { thingEntity, locations, thingCategories, applications, loading, updating } = props;
 
   const handleClose = () => {
     props.history.push('/thing');
@@ -42,7 +39,6 @@ export const ThingUpdate = (props: IThingUpdateProps) => {
     props.getLocations();
     props.getThingCategories();
     props.getApplications();
-    props.getStates();
   }, []);
 
   useEffect(() => {
@@ -56,7 +52,6 @@ export const ThingUpdate = (props: IThingUpdateProps) => {
       const entity = {
         ...thingEntity,
         ...values,
-        states: mapIdList(values.states),
         location: locations.find(it => it.id.toString() === values.locationId.toString()),
         thingCategory: thingCategories.find(it => it.id.toString() === values.thingCategoryId.toString()),
         application: applications.find(it => it.id.toString() === values.applicationId.toString()),
@@ -98,12 +93,6 @@ export const ThingUpdate = (props: IThingUpdateProps) => {
                 <AvField id="thing-name" data-cy="name" type="text" name="name" />
               </AvGroup>
               <AvGroup>
-                <Label id="uUIDLabel" for="thing-uUID">
-                  U UID
-                </Label>
-                <AvField id="thing-uUID" data-cy="uUID" type="text" name="uUID" />
-              </AvGroup>
-              <AvGroup>
                 <Label for="thing-location">Location</Label>
                 <AvInput id="thing-location" data-cy="location" type="select" className="form-control" name="locationId">
                   <option value="" key="0" />
@@ -142,27 +131,6 @@ export const ThingUpdate = (props: IThingUpdateProps) => {
                     : null}
                 </AvInput>
               </AvGroup>
-              <AvGroup>
-                <Label for="thing-state">State</Label>
-                <AvInput
-                  id="thing-state"
-                  data-cy="state"
-                  type="select"
-                  multiple
-                  className="form-control"
-                  name="states"
-                  value={!isNew && thingEntity.states && thingEntity.states.map(e => e.id)}
-                >
-                  <option value="" key="0" />
-                  {states
-                    ? states.map(otherEntity => (
-                        <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.name}
-                        </option>
-                      ))
-                    : null}
-                </AvInput>
-              </AvGroup>
               <Button tag={Link} id="cancel-save" to="/thing" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />
                 &nbsp;
@@ -185,7 +153,6 @@ const mapStateToProps = (storeState: IRootState) => ({
   locations: storeState.location.entities,
   thingCategories: storeState.thingCategory.entities,
   applications: storeState.application.entities,
-  states: storeState.state.entities,
   thingEntity: storeState.thing.entity,
   loading: storeState.thing.loading,
   updating: storeState.thing.updating,
@@ -196,7 +163,6 @@ const mapDispatchToProps = {
   getLocations,
   getThingCategories,
   getApplications,
-  getStates,
   getEntity,
   updateEntity,
   createEntity,

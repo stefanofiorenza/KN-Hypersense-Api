@@ -25,17 +25,5 @@
                                  constraintName="fk_thing__application_id"
                                  referencedColumnNames="id"
                                  referencedTableName="application"/>
-
-        <addForeignKeyConstraint baseColumnNames="thing_id"
-                                 baseTableName="rel_thing__state"
-                                 constraintName="fk_rel_thing__state__thing_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="thing"/>
-
-        <addForeignKeyConstraint baseColumnNames="state_id"
-                                 baseTableName="rel_thing__state"
-                                 constraintName="fk_rel_thing__state__state_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="state"/>
     </changeSet>
 </databaseChangeLog>

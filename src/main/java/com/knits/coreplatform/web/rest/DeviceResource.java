@@ -101,7 +101,7 @@ public class DeviceResource {
     /**
      * {@code PATCH  /devices/:id} : Partial updates given fields of an existing device, field will ignore if it is null
      *
-     * @param id        the id of the deviceDTO to save.
+     * @param id the id of the deviceDTO to save.
      * @param deviceDTO the deviceDTO to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated deviceDTO,
      * or with status {@code 400 (Bad Request)} if the deviceDTO is not valid,

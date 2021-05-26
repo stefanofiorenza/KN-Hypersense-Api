@@ -23,13 +23,16 @@ public class UserData implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
+    @Column(name = "uuid")
+    private String uuid;
+
     @OneToOne
     @JoinColumn(unique = true)
     private User internalUser;
 
     @OneToMany(mappedBy = "userData")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "configurationData", "device", "userData" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "configurationData", "userData" }, allowSetters = true)
     private Set<DeviceConfiguration> deviceConfigurations = new HashSet<>();
 
     @ManyToOne
@@ -48,6 +51,19 @@ public class UserData implements Serializable {
     public UserData id(Long id) {
         this.id = id;
         return this;
+    }
+
+    public String getUuid() {
+        return this.uuid;
+    }
+
+    public UserData uuid(String uuid) {
+        this.uuid = uuid;
+        return this;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
     public User getInternalUser() {
@@ -131,6 +147,7 @@ public class UserData implements Serializable {
     public String toString() {
         return "UserData{" +
             "id=" + getId() +
+            ", uuid='" + getUuid() + "'" +
             "}";
     }
 }

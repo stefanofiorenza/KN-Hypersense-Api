@@ -20,6 +20,8 @@ public class DeviceDTO implements Serializable {
 
     private TelemetryDTO telemetry;
 
+    private DeviceConfigurationDTO deviceConfiguration;
+
     private SupplierDTO supplier;
 
     private DeviceModelDTO deviceModel;
@@ -68,6 +70,14 @@ public class DeviceDTO implements Serializable {
 
     public void setTelemetry(TelemetryDTO telemetry) {
         this.telemetry = telemetry;
+    }
+
+    public DeviceConfigurationDTO getDeviceConfiguration() {
+        return deviceConfiguration;
+    }
+
+    public void setDeviceConfiguration(DeviceConfigurationDTO deviceConfiguration) {
+        this.deviceConfiguration = deviceConfiguration;
     }
 
     public SupplierDTO getSupplier() {
@@ -140,6 +150,7 @@ public class DeviceDTO implements Serializable {
             ", serialNumber='" + getSerialNumber() + "'" +
             ", manufacturer='" + getManufacturer() + "'" +
             ", telemetry=" + getTelemetry() +
+            ", deviceConfiguration=" + getDeviceConfiguration() +
             ", supplier=" + getSupplier() +
             ", deviceModel=" + getDeviceModel() +
             ", thing=" + getThing() +

@@ -73,6 +73,12 @@ export const DeviceModelUpdate = (props: IDeviceModelUpdateProps) => {
                   <AvInput id="device-model-id" type="text" className="form-control" name="id" required readOnly />
                 </AvGroup>
               ) : null}
+              <AvGroup>
+                <Label id="nameLabel" for="device-model-name">
+                  Name
+                </Label>
+                <AvField id="device-model-name" data-cy="name" type="text" name="name" />
+              </AvGroup>
               <Button tag={Link} id="cancel-save" to="/device-model" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />
                 &nbsp;

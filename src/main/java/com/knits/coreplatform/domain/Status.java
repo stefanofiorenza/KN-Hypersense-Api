@@ -1,5 +1,6 @@
 package com.knits.coreplatform.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import javax.persistence.*;
 import org.hibernate.annotations.Cache;
@@ -28,6 +29,24 @@ public class Status implements Serializable {
 
     @Column(name = "u_uid")
     private String uUID;
+
+    @ManyToOne
+    @JsonIgnoreProperties(
+        value = {
+            "telemetry",
+            "deviceConfiguration",
+            "supplier",
+            "deviceModel",
+            "rules",
+            "alertMessages",
+            "metaData",
+            "statuses",
+            "thing",
+            "deviceGroup",
+        },
+        allowSetters = true
+    )
+    private Device device;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -80,6 +99,19 @@ public class Status implements Serializable {
 
     public void setuUID(String uUID) {
         this.uUID = uUID;
+    }
+
+    public Device getDevice() {
+        return this.device;
+    }
+
+    public Status device(Device device) {
+        this.setDevice(device);
+        return this;
+    }
+
+    public void setDevice(Device device) {
+        this.device = device;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

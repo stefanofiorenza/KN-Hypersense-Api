@@ -45,6 +45,7 @@ export const Status = (props: IStatusProps) => {
                 <th>Name</th>
                 <th>Description</th>
                 <th>U UID</th>
+                <th>Device</th>
                 <th />
               </tr>
             </thead>
@@ -59,6 +60,7 @@ export const Status = (props: IStatusProps) => {
                   <td>{status.name}</td>
                   <td>{status.description}</td>
                   <td>{status.uUID}</td>
+                  <td>{status.device ? <Link to={`device/${status.device.id}`}>{status.device.id}</Link> : ''}</td>
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`${match.url}/${status.id}`} color="info" size="sm" data-cy="entityDetailsButton">

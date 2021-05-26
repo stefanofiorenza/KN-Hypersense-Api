@@ -1,7 +1,6 @@
 package com.knits.coreplatform.web.rest;
 
 import com.knits.coreplatform.repository.TelemetryRepository;
-import com.knits.coreplatform.security.AuthoritiesConstants;
 import com.knits.coreplatform.service.TelemetryService;
 import com.knits.coreplatform.service.dto.TelemetryDTO;
 import com.knits.coreplatform.web.rest.errors.BadRequestAlertException;
@@ -14,7 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.ResponseUtil;
@@ -50,7 +48,6 @@ public class TelemetryResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/telemetries")
-    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_CREATE + "\")")
     public ResponseEntity<TelemetryDTO> createTelemetry(@RequestBody TelemetryDTO telemetryDTO) throws URISyntaxException {
         log.debug("REST request to save Telemetry : {}", telemetryDTO);
         if (telemetryDTO.getId() != null) {
@@ -74,7 +71,6 @@ public class TelemetryResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/telemetries/{id}")
-    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_UPDATE + "\")")
     public ResponseEntity<TelemetryDTO> updateTelemetry(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody TelemetryDTO telemetryDTO
@@ -110,7 +106,6 @@ public class TelemetryResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/telemetries/{id}", consumes = "application/merge-patch+json")
-    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_UPDATE + "\")")
     public ResponseEntity<TelemetryDTO> partialUpdateTelemetry(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody TelemetryDTO telemetryDTO
@@ -141,7 +136,6 @@ public class TelemetryResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of telemetries in body.
      */
     @GetMapping("/telemetries")
-    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_READ + "\")")
     public List<TelemetryDTO> getAllTelemetries() {
         log.debug("REST request to get all Telemetries");
         return telemetryService.findAll();
@@ -154,7 +148,6 @@ public class TelemetryResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the telemetryDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/telemetries/{id}")
-    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_READ + "\")")
     public ResponseEntity<TelemetryDTO> getTelemetry(@PathVariable Long id) {
         log.debug("REST request to get Telemetry : {}", id);
         Optional<TelemetryDTO> telemetryDTO = telemetryService.findOne(id);
@@ -168,7 +161,6 @@ public class TelemetryResource {
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/telemetries/{id}")
-    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.PERMISSION_DELETE + "\")")
     public ResponseEntity<Void> deleteTelemetry(@PathVariable Long id) {
         log.debug("REST request to delete Telemetry : {}", id);
         telemetryService.delete(id);

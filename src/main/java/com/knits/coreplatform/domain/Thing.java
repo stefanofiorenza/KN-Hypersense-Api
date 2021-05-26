@@ -9,7 +9,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
- * Thing is a representation of place to attach sensorts.\n@author Vassili Moskaljov\n@version 1.1
+ * Thing is a representation of place to attach sensorts.\n@author Vassili Moskaljov\n@version 1.0
  */
 @Entity
 @Table(name = "thing")
@@ -26,9 +26,6 @@ public class Thing implements Serializable {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "u_uid")
-    private String uUID;
-
     @OneToOne
     @JoinColumn(unique = true)
     private Location location;
@@ -38,19 +35,24 @@ public class Thing implements Serializable {
     @JsonIgnoreProperties(
         value = {
             "telemetry",
+            "deviceConfiguration",
             "supplier",
             "deviceModel",
             "rules",
             "alertMessages",
             "metaData",
-            "deviceConfigurations",
+            "statuses",
             "thing",
             "deviceGroup",
-            "status",
         },
         allowSetters = true
     )
     private Set<Device> devices = new HashSet<>();
+
+    @OneToMany(mappedBy = "thing")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnoreProperties(value = { "thing" }, allowSetters = true)
+    private Set<State> states = new HashSet<>();
 
     @ManyToOne
     @JsonIgnoreProperties(value = { "things" }, allowSetters = true)
@@ -59,11 +61,6 @@ public class Thing implements Serializable {
     @ManyToOne
     @JsonIgnoreProperties(value = { "things", "organisation" }, allowSetters = true)
     private Application application;
-
-    @ManyToMany
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JoinTable(name = "rel_thing__state", joinColumns = @JoinColumn(name = "thing_id"), inverseJoinColumns = @JoinColumn(name = "state_id"))
-    private Set<State> states = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -90,19 +87,6 @@ public class Thing implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getuUID() {
-        return this.uUID;
-    }
-
-    public Thing uUID(String uUID) {
-        this.uUID = uUID;
-        return this;
-    }
-
-    public void setuUID(String uUID) {
-        this.uUID = uUID;
     }
 
     public Location getLocation() {
@@ -149,6 +133,37 @@ public class Thing implements Serializable {
         this.devices = devices;
     }
 
+    public Set<State> getStates() {
+        return this.states;
+    }
+
+    public Thing states(Set<State> states) {
+        this.setStates(states);
+        return this;
+    }
+
+    public Thing addState(State state) {
+        this.states.add(state);
+        state.setThing(this);
+        return this;
+    }
+
+    public Thing removeState(State state) {
+        this.states.remove(state);
+        state.setThing(null);
+        return this;
+    }
+
+    public void setStates(Set<State> states) {
+        if (this.states != null) {
+            this.states.forEach(i -> i.setThing(null));
+        }
+        if (states != null) {
+            states.forEach(i -> i.setThing(this));
+        }
+        this.states = states;
+    }
+
     public ThingCategory getThingCategory() {
         return this.thingCategory;
     }
@@ -173,29 +188,6 @@ public class Thing implements Serializable {
 
     public void setApplication(Application application) {
         this.application = application;
-    }
-
-    public Set<State> getStates() {
-        return this.states;
-    }
-
-    public Thing states(Set<State> states) {
-        this.setStates(states);
-        return this;
-    }
-
-    public Thing addState(State state) {
-        this.states.add(state);
-        return this;
-    }
-
-    public Thing removeState(State state) {
-        this.states.remove(state);
-        return this;
-    }
-
-    public void setStates(Set<State> states) {
-        this.states = states;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
@@ -223,7 +215,6 @@ public class Thing implements Serializable {
         return "Thing{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
-            ", uUID='" + getuUID() + "'" +
             "}";
     }
 }
