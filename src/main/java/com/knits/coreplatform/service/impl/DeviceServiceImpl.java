@@ -5,6 +5,9 @@ import com.knits.coreplatform.repository.DeviceRepository;
 import com.knits.coreplatform.service.DeviceService;
 import com.knits.coreplatform.service.dto.DeviceDTO;
 import com.knits.coreplatform.service.mapper.DeviceMapper;
+import com.knits.coreplatform.util.ExcelConverter;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -13,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * Service Implementation for managing {@link Device}.
@@ -74,5 +78,22 @@ public class DeviceServiceImpl implements DeviceService {
     public void delete(Long id) {
         log.debug("Request to delete Device : {}", id);
         deviceRepository.deleteById(id);
+    }
+
+    @Override
+    public void save(MultipartFile file) {
+        try {
+            List<Device> devices = ExcelConverter.excelToDevices(file.getInputStream());
+            deviceRepository.saveAll(devices);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to store excel data: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public ByteArrayInputStream load() {
+        List<Device> devices = deviceRepository.findAll();
+        ByteArrayInputStream inputStream = ExcelConverter.devicesToExcel(devices);
+        return inputStream;
     }
 }

@@ -1,9 +1,11 @@
 package com.knits.coreplatform.web.rest;
 
+import com.knits.coreplatform.message.ResponseMessage;
 import com.knits.coreplatform.repository.DeviceRepository;
 import com.knits.coreplatform.security.AuthoritiesConstants;
 import com.knits.coreplatform.service.DeviceService;
 import com.knits.coreplatform.service.dto.DeviceDTO;
+import com.knits.coreplatform.util.ExcelConverter;
 import com.knits.coreplatform.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -13,9 +15,15 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
@@ -63,6 +71,22 @@ public class DeviceResource {
             .body(result);
     }
 
+    @PostMapping("/upload")
+    public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("file") MultipartFile file) {
+        String message = "";
+        if (ExcelConverter.hasExcelFormat(file)) {
+            try {
+                deviceService.save(file);
+                message = "Uploaded the file successfully: " + file.getOriginalFilename();
+                return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
+            } catch (Exception e) {
+                throw new RuntimeException("Could not upload the file: " + e.getMessage());
+            }
+        }
+        message = "Please upload an excel file!";
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage(message));
+    }
+
     /**
      * {@code PUT  /devices/:id} : Updates an existing device.
      *
@@ -101,7 +125,7 @@ public class DeviceResource {
     /**
      * {@code PATCH  /devices/:id} : Partial updates given fields of an existing device, field will ignore if it is null
      *
-     * @param id the id of the deviceDTO to save.
+     * @param id        the id of the deviceDTO to save.
      * @param deviceDTO the deviceDTO to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated deviceDTO,
      * or with status {@code 400 (Bad Request)} if the deviceDTO is not valid,
@@ -133,6 +157,18 @@ public class DeviceResource {
             result,
             HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, deviceDTO.getId().toString())
         );
+    }
+
+    @GetMapping("/download")
+    public ResponseEntity<Resource> getFile() {
+        String filename = "devices.xlsx";
+        InputStreamResource file = new InputStreamResource(deviceService.load());
+
+        return ResponseEntity
+            .ok()
+            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename)
+            .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
+            .body(file);
     }
 
     /**
