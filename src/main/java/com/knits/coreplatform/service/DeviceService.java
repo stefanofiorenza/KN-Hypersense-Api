@@ -58,5 +58,5 @@ public interface DeviceService {
     /**
      * Method that gets info from database and generates Excel file to be donwloaded on client side.
      * */
-    public ByteArrayInputStream load();
+    ByteArrayInputStream load();
 }

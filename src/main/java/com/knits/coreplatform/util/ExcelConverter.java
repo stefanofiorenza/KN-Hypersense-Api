@@ -1,13 +1,12 @@
 package com.knits.coreplatform.util;
 
-import com.knits.coreplatform.domain.Device;
+import com.knits.coreplatform.domain.*;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -24,8 +23,95 @@ import org.springframework.web.multipart.MultipartFile;
 public class ExcelConverter {
 
     public static String TYPE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-    static String[] HEADERs = { "NR", "", "", "", "", "", "", "" };
+    static String[] HEADERs = {
+        "Name",
+        "Serial Number",
+        "Device Group",
+        "Telemetry",
+        "Device Configuration",
+        "Device Model",
+        "Status",
+        "Rules",
+        "Alert Messages",
+        "Metadata",
+        "Supplier",
+    };
     static String SHEET = "Device";
+
+    public static ByteArrayInputStream devicesToExcel(List<Device> devices) {
+        try (Workbook workbook = new XSSFWorkbook(); ByteArrayOutputStream outputStream = new ByteArrayOutputStream();) {
+            Sheet sheet = workbook.createSheet(SHEET);
+            int colWidth = 16;
+            sheet.setDefaultColumnWidth(colWidth);
+
+            Row headerRow = sheet.createRow(0);
+            for (int col = 0; col < HEADERs.length; col++) {
+                Cell cell = headerRow.createCell(col);
+                cell.setCellValue(HEADERs[col]);
+            }
+
+            int rowIdx = 1;
+            for (Device device : devices) {
+                Row row = sheet.createRow(rowIdx++);
+                int column = 0;
+                row.createCell(column++).setCellValue(device.getName());
+                row.createCell(column++).setCellValue(device.getSerialNumber());
+                row
+                    .createCell(column++)
+                    .setCellValue(device.getDeviceGroup() == null ? " " : extractData(device.getDeviceGroup().getName()));
+                row.createCell(column++).setCellValue(device.getTelemetry().getName());
+                row.createCell(column++).setCellValue(device.getDeviceConfiguration() == null);
+                row.createCell(column++).setCellValue(device.getDeviceModel() == null);
+
+                // Deal with the statuses
+                Set<Status> statuses = device.getStatuses();
+                List<String> statusNames = new ArrayList<>();
+                statuses.forEach(x -> statusNames.add(x.getName()));
+                row.createCell(column++).setCellValue(extractData(device.getStatuses()));
+
+                // Deal with the rules
+                Set<Rule> rules = device.getRules();
+                List<String> ruleNames = rules.stream().map(Rule::getName).collect(Collectors.toList());
+                row.createCell(column++).setCellValue(extractData(ruleNames));
+
+                // Deal with the alertMessages
+                Set<AlertMessage> alertMessages = device.getAlertMessages();
+                if (alertMessages != null) {
+                    List<String> alertMessageNames = alertMessages.stream().map(AlertMessage::getName).collect(Collectors.toList());
+                    row.createCell(column++).setCellValue(extractData(alertMessageNames));
+                } else {
+                    row.createCell(column++).setCellValue(extractData(" "));
+                }
+
+                // Deal with the metadata
+                Set<Metadata> metaData = device.getMetaData();
+                if (metaData != null) {
+                    List<String> metaDataNames = metaData.stream().map(Metadata::getName).collect(Collectors.toList());
+                    row.createCell(column++).setCellValue(extractData(metaDataNames));
+                } else {
+                    row.createCell(column++).setCellValue(extractData(" "));
+                }
+
+                row.createCell(column++).setCellValue(device.getSupplier() == null);
+            }
+
+            workbook.write(outputStream);
+            return new ByteArrayInputStream(outputStream.toByteArray());
+        } catch (IOException e) {
+            throw new RuntimeException("Fail to import data to Excel file:" + e.getMessage());
+        }
+    }
+
+    private static <T> String extractData(T input) {
+        if (((Collection<?>) input).isEmpty()) {
+            return " ";
+        } else {
+            StringBuilder result =
+                ((Collection<?>) input).stream()
+                    .collect(StringBuilder::new, (a, b) -> a.append(b).append(","), StringBuilder::append)
+                    .substring(0, result.length());
+        }
+    }
 
     public static boolean hasExcelFormat(MultipartFile file) {
         if (!TYPE.equals(file.getContentType())) {
@@ -77,42 +163,6 @@ public class ExcelConverter {
             return devices;
         } catch (IOException e) {
             throw new RuntimeException("Fail to parse Excel file: " + e.getMessage());
-        }
-    }
-
-    public static ByteArrayInputStream devicesToExcel(List<Device> devices) {
-        try (Workbook workbook = new XSSFWorkbook(); ByteArrayOutputStream outputStream = new ByteArrayOutputStream();) {
-            Sheet sheet = workbook.createSheet(SHEET);
-
-            //Create header
-            Row headerRow = sheet.createRow(0);
-            for (int col = 0; col < HEADERs.length; col++) {
-                Cell cell = headerRow.createCell(col);
-                cell.setCellValue(HEADERs[col]);
-            }
-
-            int rowIdx = 1;
-            for (Device device : devices) {
-                Row row = sheet.createRow(rowIdx++);
-                row.createCell(0).setCellValue("#" + rowIdx);
-                row.createCell(1).setCellValue(device.getName());
-                row.createCell(2).setCellValue(device.getSerialNumber());
-                row.createCell(3).setCellValue(device.getDeviceGroup().getName());
-                row.createCell(4).setCellValue(device.getTelemetry().getName());
-                row.createCell(5).setCellValue(device.getDeviceConfiguration().getName());
-                row.createCell(6).setCellValue(device.getDeviceModel().getId());
-                row.createCell(7).setCellValue(device.getStatuses().hashCode());
-                row.createCell(8).setCellValue("R:" + device.getRules().hashCode());
-                row.createCell(9).setCellValue("A:" + device.getAlertMessages().hashCode());
-                row.createCell(10).setCellValue("M:" + device.getMetaData().hashCode());
-                row.createCell(11).setCellValue(device.getSupplier().getName());
-                // add all necessary fields.
-            }
-
-            workbook.write(outputStream);
-            return new ByteArrayInputStream(outputStream.toByteArray());
-        } catch (IOException e) {
-            throw new RuntimeException("Fail to import data to Excel file:" + e.getMessage());
         }
     }
 }
