@@ -71,7 +71,7 @@ public class DeviceResource {
             .body(result);
     }
 
-    @PostMapping("/upload")
+    @PostMapping("/excel/upload")
     public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("file") MultipartFile file) {
         String message = "";
         if (ExcelConverter.hasExcelFormat(file)) {
@@ -159,7 +159,7 @@ public class DeviceResource {
         );
     }
 
-    @GetMapping("/download")
+    @GetMapping("/excel/download")
     public ResponseEntity<Resource> getFile() {
         String filename = "devices.xlsx";
         InputStreamResource file = new InputStreamResource(deviceService.load());

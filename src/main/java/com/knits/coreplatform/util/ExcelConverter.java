@@ -52,47 +52,51 @@ public class ExcelConverter {
 
             int rowIdx = 1;
             for (Device device : devices) {
-                Row row = sheet.createRow(rowIdx++);
                 int column = 0;
+                Row row = sheet.createRow(rowIdx++);
                 row.createCell(column++).setCellValue(device.getName());
                 row.createCell(column++).setCellValue(device.getSerialNumber());
+                row.createCell(column++).setCellValue(device.getDeviceGroup() == null ? "undefined" : device.getDeviceGroup().getName());
+                row.createCell(column++).setCellValue(device.getTelemetry() == null ? "undefined" : device.getTelemetry().getName());
                 row
                     .createCell(column++)
-                    .setCellValue(device.getDeviceGroup() == null ? " " : extractData(device.getDeviceGroup().getName()));
-                row.createCell(column++).setCellValue(device.getTelemetry().getName());
-                row.createCell(column++).setCellValue(device.getDeviceConfiguration() == null);
-                row.createCell(column++).setCellValue(device.getDeviceModel() == null);
+                    .setCellValue(device.getDeviceConfiguration() == null ? "undefined" : device.getDeviceConfiguration().getName());
+                row.createCell(column++).setCellValue(device.getDeviceModel() == null ? "undefined" : device.getDeviceModel().getName());
 
-                // Deal with the statuses
                 Set<Status> statuses = device.getStatuses();
-                List<String> statusNames = new ArrayList<>();
-                statuses.forEach(x -> statusNames.add(x.getName()));
-                row.createCell(column++).setCellValue(extractData(device.getStatuses()));
+                if (statuses != null) {
+                    List<String> statusNames = statuses.stream().map(Status::getName).collect(Collectors.toList());
+                    row.createCell(column++).setCellValue(extractData(statusNames));
+                } else {
+                    row.createCell(column++).setCellValue(extractData("Statues are undefined"));
+                }
 
-                // Deal with the rules
                 Set<Rule> rules = device.getRules();
-                List<String> ruleNames = rules.stream().map(Rule::getName).collect(Collectors.toList());
-                row.createCell(column++).setCellValue(extractData(ruleNames));
+                if (rules != null) {
+                    List<String> ruleNames = rules.stream().map(Rule::getName).collect(Collectors.toList());
+                    row.createCell(column++).setCellValue(extractData(ruleNames));
+                } else {
+                    row.createCell(column++).setCellValue(extractData("Rules are undefined"));
+                }
 
-                // Deal with the alertMessages
                 Set<AlertMessage> alertMessages = device.getAlertMessages();
                 if (alertMessages != null) {
                     List<String> alertMessageNames = alertMessages.stream().map(AlertMessage::getName).collect(Collectors.toList());
                     row.createCell(column++).setCellValue(extractData(alertMessageNames));
                 } else {
-                    row.createCell(column++).setCellValue(extractData(" "));
+                    row.createCell(column++).setCellValue(extractData("AlertMessages are undefined"));
                 }
 
-                // Deal with the metadata
                 Set<Metadata> metaData = device.getMetaData();
                 if (metaData != null) {
                     List<String> metaDataNames = metaData.stream().map(Metadata::getName).collect(Collectors.toList());
                     row.createCell(column++).setCellValue(extractData(metaDataNames));
                 } else {
-                    row.createCell(column++).setCellValue(extractData(" "));
+                    row.createCell(column++).setCellValue(extractData("Metadata is undefined"));
                 }
-
-                row.createCell(column++).setCellValue(device.getSupplier() == null);
+                row
+                    .createCell(column++)
+                    .setCellValue(device.getSupplier() == null ? "Supplier is undefined" : device.getSupplier().getName());
             }
 
             workbook.write(outputStream);
@@ -104,12 +108,11 @@ public class ExcelConverter {
 
     private static <T> String extractData(T input) {
         if (((Collection<?>) input).isEmpty()) {
-            return " ";
+            return "Undefined";
         } else {
             StringBuilder result =
-                ((Collection<?>) input).stream()
-                    .collect(StringBuilder::new, (a, b) -> a.append(b).append(","), StringBuilder::append)
-                    .substring(0, result.length());
+                ((Collection<?>) input).stream().collect(StringBuilder::new, (a, b) -> a.append(b).append(","), StringBuilder::append);
+            return result.substring(0, result.length());
         }
     }
 
@@ -149,7 +152,10 @@ public class ExcelConverter {
                         case 0:
                             device.setName(currentCell.getStringCellValue());
                             break;
-                        //Add all required fields for device to be set.
+                        case 1:
+                            device.setSerialNumber(currentCell.getStringCellValue());
+                            break;
+                        //list of other fields to be set.
                         default:
                             break;
                     }
