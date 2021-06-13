@@ -71,6 +71,9 @@ public class DeviceResource {
             .body(result);
     }
 
+    /**
+     * {@code POST /excel/upload}
+     * */
     @PostMapping("/excel/upload")
     public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("file") MultipartFile file) {
         String message = "";

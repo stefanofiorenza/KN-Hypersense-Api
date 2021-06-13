@@ -9,4 +9,6 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface DeviceConfigurationRepository extends JpaRepository<DeviceConfiguration, Long> {}
+public interface DeviceConfigurationRepository extends JpaRepository<DeviceConfiguration, Long> {
+    DeviceConfiguration findByName(String name);
+}

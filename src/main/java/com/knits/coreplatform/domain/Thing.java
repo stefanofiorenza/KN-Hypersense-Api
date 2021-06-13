@@ -30,7 +30,7 @@ public class Thing implements Serializable {
     @JoinColumn(unique = true)
     private Location location;
 
-    @OneToMany(mappedBy = "thing")
+    @OneToMany(mappedBy = "thing", cascade = CascadeType.PERSIST)
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(
         value = {

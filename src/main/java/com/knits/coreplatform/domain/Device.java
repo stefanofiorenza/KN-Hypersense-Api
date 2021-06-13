@@ -32,48 +32,48 @@ public class Device implements Serializable {
     @Column(name = "manufacturer")
     private String manufacturer;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(unique = true)
     private Telemetry telemetry;
 
     @JsonIgnoreProperties(value = { "configurationData", "userData" }, allowSetters = true)
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(unique = true)
     private DeviceConfiguration deviceConfiguration;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(unique = true)
     private Supplier supplier;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(unique = true)
     private DeviceModel deviceModel;
 
-    @OneToMany(mappedBy = "device")
+    @OneToMany(mappedBy = "device", cascade = CascadeType.PERSIST)
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(value = { "ruleConfigurations", "device" }, allowSetters = true)
     private Set<Rule> rules = new HashSet<>();
 
-    @OneToMany(mappedBy = "device")
+    @OneToMany(mappedBy = "device", cascade = CascadeType.PERSIST)
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(value = { "alertConfiguration", "device" }, allowSetters = true)
     private Set<AlertMessage> alertMessages = new HashSet<>();
 
-    @OneToMany(mappedBy = "device")
+    @OneToMany(mappedBy = "device", cascade = CascadeType.PERSIST)
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(value = { "device" }, allowSetters = true)
     private Set<Metadata> metaData = new HashSet<>();
 
-    @OneToMany(mappedBy = "device")
+    @OneToMany(mappedBy = "device", cascade = CascadeType.PERSIST)
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(value = { "device" }, allowSetters = true)
     private Set<Status> statuses = new HashSet<>();
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JsonIgnoreProperties(value = { "location", "devices", "states", "thingCategory", "application" }, allowSetters = true)
     private Thing thing;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JsonIgnoreProperties(value = { "devices" }, allowSetters = true)
     private DeviceGroup deviceGroup;
 

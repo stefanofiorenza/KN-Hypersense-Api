@@ -37,7 +37,7 @@ public class Rule implements Serializable {
     @JsonIgnoreProperties(value = { "rule" }, allowSetters = true)
     private Set<RuleConfiguration> ruleConfigurations = new HashSet<>();
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JsonIgnoreProperties(
         value = {
             "telemetry",

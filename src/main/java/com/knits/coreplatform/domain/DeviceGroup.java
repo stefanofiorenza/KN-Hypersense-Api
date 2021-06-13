@@ -29,7 +29,7 @@ public class DeviceGroup implements Serializable {
     @Column(name = "description")
     private String description;
 
-    @OneToMany(mappedBy = "deviceGroup")
+    @OneToMany(mappedBy = "deviceGroup", cascade = CascadeType.PERSIST)
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(
         value = {
