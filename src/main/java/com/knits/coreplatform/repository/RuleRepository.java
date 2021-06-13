@@ -9,4 +9,6 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface RuleRepository extends JpaRepository<Rule, Long> {}
+public interface RuleRepository extends JpaRepository<Rule, Long> {
+    Rule findByName(String name);
+}

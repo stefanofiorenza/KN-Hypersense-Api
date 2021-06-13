@@ -27,7 +27,7 @@ public class Metadata implements Serializable {
     @Column(name = "data")
     private String data;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JsonIgnoreProperties(
         value = {
             "telemetry",

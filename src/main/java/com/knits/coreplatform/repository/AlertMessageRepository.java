@@ -9,4 +9,6 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface AlertMessageRepository extends JpaRepository<AlertMessage, Long> {}
+public interface AlertMessageRepository extends JpaRepository<AlertMessage, Long> {
+    AlertMessage findByName(String name);
+}

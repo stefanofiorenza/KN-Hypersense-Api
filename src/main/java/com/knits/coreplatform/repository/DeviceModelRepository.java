@@ -1,7 +1,7 @@
 package com.knits.coreplatform.repository;
 
 import com.knits.coreplatform.domain.DeviceModel;
-import org.springframework.data.jpa.repository.*;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -9,4 +9,6 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface DeviceModelRepository extends JpaRepository<DeviceModel, Long> {}
+public interface DeviceModelRepository extends JpaRepository<DeviceModel, Long> {
+    DeviceModel findByName(String name);
+}

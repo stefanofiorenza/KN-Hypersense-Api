@@ -9,4 +9,6 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface TelemetryRepository extends JpaRepository<Telemetry, Long> {}
+public interface TelemetryRepository extends JpaRepository<Telemetry, Long> {
+    Telemetry findByName(String name);
+}

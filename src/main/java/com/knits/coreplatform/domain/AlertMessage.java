@@ -37,7 +37,7 @@ public class AlertMessage implements Serializable {
     @JoinColumn(unique = true)
     private AlertConfiguration alertConfiguration;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JsonIgnoreProperties(
         value = {
             "telemetry",

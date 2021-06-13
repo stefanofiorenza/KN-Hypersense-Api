@@ -30,7 +30,7 @@ public class Status implements Serializable {
     @Column(name = "u_uid")
     private String uUID;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JsonIgnoreProperties(
         value = {
             "telemetry",
