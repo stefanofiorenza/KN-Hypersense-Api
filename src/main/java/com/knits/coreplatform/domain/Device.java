@@ -32,20 +32,20 @@ public class Device implements Serializable {
     @Column(name = "manufacturer")
     private String manufacturer;
 
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @OneToOne
     @JoinColumn(unique = true)
     private Telemetry telemetry;
 
     @JsonIgnoreProperties(value = { "configurationData", "userData" }, allowSetters = true)
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @OneToOne
     @JoinColumn(unique = true)
     private DeviceConfiguration deviceConfiguration;
 
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @OneToOne
     @JoinColumn(unique = true)
     private Supplier supplier;
 
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @OneToOne
     @JoinColumn(unique = true)
     private DeviceModel deviceModel;
 
