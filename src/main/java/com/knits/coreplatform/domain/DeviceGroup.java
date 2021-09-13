@@ -9,7 +9,10 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
- * Entity to Group up sertain devices.\n@author Vassili Moskaljov\n@version 1.0
+ * Entity to Group up certain devices.
+ *
+ * @author Vassili Moskaljov
+ * @version 1.0
  */
 @Entity
 @Table(name = "device_group")
