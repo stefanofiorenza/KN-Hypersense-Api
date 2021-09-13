@@ -18,7 +18,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
- * Helper class that converts data from Excel to Device object and vice versa.
+ * Helper class that converts data from Excel to Devices and adds them to the database or takes data
+ * from the database and makes an Excel file. Have method to check if current input is an Excel file.
  *
  * @author Vassili Moskaljov
  * @version 1.0
@@ -27,7 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class ExcelConverter {
 
     public static String TYPE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-    static String[] HEADERs = {
+    static String[] HEADERS = {
         "Name",
         "Serial Number",
         "Device Group",
@@ -50,6 +51,7 @@ public class ExcelConverter {
     private static MetadataRepository metadataRepository;
     private static DeviceConfigurationRepository deviceConfigurationRepository;
     private static AlertMessageRepository alertMessageRepository;
+    private static final String UNDEFINED = "Undefined";
 
     @Autowired
     public ExcelConverter(
@@ -74,16 +76,22 @@ public class ExcelConverter {
         ExcelConverter.alertMessageRepository = alertMessageRepository;
     }
 
+    /**
+     * Method that takes collection of Device and makes an Excel file.
+     *
+     * @param devices collection of devices to be exported.
+     * @return Excel file with collection of devices.
+     */
     public static ByteArrayInputStream devicesToExcel(List<Device> devices) {
-        try (Workbook workbook = new XSSFWorkbook(); ByteArrayOutputStream outputStream = new ByteArrayOutputStream();) {
-            Sheet sheet = workbook.createSheet(SHEET);
+        try (Workbook workbook = new XSSFWorkbook(); ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
             int colWidth = 16;
+            Sheet sheet = workbook.createSheet(SHEET);
             sheet.setDefaultColumnWidth(colWidth);
 
             Row headerRow = sheet.createRow(0);
-            for (int col = 0; col < HEADERs.length; col++) {
+            for (int col = 0; col < HEADERS.length; col++) {
                 Cell cell = headerRow.createCell(col);
-                cell.setCellValue(HEADERs[col]);
+                cell.setCellValue(HEADERS[col]);
             }
 
             int rowIdx = 1;
@@ -92,46 +100,46 @@ public class ExcelConverter {
                 Row row = sheet.createRow(rowIdx++);
                 row.createCell(column++).setCellValue(device.getName());
                 row.createCell(column++).setCellValue(device.getSerialNumber());
-                row.createCell(column++).setCellValue(device.getDeviceGroup() == null ? "undefined" : device.getDeviceGroup().getName());
-                row.createCell(column++).setCellValue(device.getTelemetry() == null ? "undefined" : device.getTelemetry().getName());
+                row.createCell(column++).setCellValue(device.getDeviceGroup() == null ? UNDEFINED : device.getDeviceGroup().getName());
+                row.createCell(column++).setCellValue(device.getTelemetry() == null ? UNDEFINED : device.getTelemetry().getName());
                 row
                     .createCell(column++)
-                    .setCellValue(device.getDeviceConfiguration() == null ? "undefined" : device.getDeviceConfiguration().getName());
-                row.createCell(column++).setCellValue(device.getDeviceModel() == null ? "undefined" : device.getDeviceModel().getName());
+                    .setCellValue(device.getDeviceConfiguration() == null ? UNDEFINED : device.getDeviceConfiguration().getName());
+                row.createCell(column++).setCellValue(device.getDeviceModel() == null ? UNDEFINED : device.getDeviceModel().getName());
 
                 Set<Status> statuses = device.getStatuses();
                 if (statuses != null) {
                     List<String> statusNames = statuses.stream().map(Status::getName).collect(Collectors.toList());
-                    row.createCell(column++).setCellValue(extractData(statusNames));
+                    row.createCell(column++).setCellValue(convertToString(statusNames));
                 } else {
-                    row.createCell(column++).setCellValue(extractData("Statues are undefined"));
+                    row.createCell(column++).setCellValue(convertToString("Statues are undefined"));
                 }
 
                 Set<Rule> rules = device.getRules();
                 if (rules != null) {
                     List<String> ruleNames = rules.stream().map(Rule::getName).collect(Collectors.toList());
-                    row.createCell(column++).setCellValue(extractData(ruleNames));
+                    row.createCell(column++).setCellValue(convertToString(ruleNames));
                 } else {
-                    row.createCell(column++).setCellValue(extractData("Rules are undefined"));
+                    row.createCell(column++).setCellValue(convertToString("Rules are undefined"));
                 }
 
                 Set<AlertMessage> alertMessages = device.getAlertMessages();
                 if (alertMessages != null) {
                     List<String> alertMessageNames = alertMessages.stream().map(AlertMessage::getName).collect(Collectors.toList());
-                    row.createCell(column++).setCellValue(extractData(alertMessageNames));
+                    row.createCell(column++).setCellValue(convertToString(alertMessageNames));
                 } else {
-                    row.createCell(column++).setCellValue(extractData("AlertMessages are undefined"));
+                    row.createCell(column++).setCellValue(convertToString("AlertMessages are undefined"));
                 }
 
                 Set<Metadata> metaData = device.getMetaData();
                 if (metaData != null) {
                     List<String> metaDataNames = metaData.stream().map(Metadata::getName).collect(Collectors.toList());
-                    row.createCell(column++).setCellValue(extractData(metaDataNames));
+                    row.createCell(column++).setCellValue(convertToString(metaDataNames));
                 } else {
-                    row.createCell(column++).setCellValue(extractData("Metadata is undefined"));
+                    row.createCell(column++).setCellValue(convertToString("Metadata is undefined"));
                 }
                 row
-                    .createCell(column++)
+                    .createCell(column)
                     .setCellValue(device.getSupplier() == null ? "Supplier is undefined" : device.getSupplier().getName());
             }
 
@@ -142,9 +150,15 @@ public class ExcelConverter {
         }
     }
 
-    private static <T> String extractData(T input) {
+    /**
+     * Takes an input and makes sole String of the contents.
+     *
+     * @param input this could be String or collection of Strings that will be converted to a sole String.
+     * @return Sole String from input.
+     */
+    private static <T> String convertToString(T input) {
         if (((Collection<?>) input).isEmpty()) {
-            return "Undefined";
+            return UNDEFINED;
         } else {
             StringBuilder result =
                 ((Collection<?>) input).stream().collect(StringBuilder::new, (a, b) -> a.append(b).append(","), StringBuilder::append);
@@ -152,13 +166,22 @@ public class ExcelConverter {
         }
     }
 
+    /**
+     * Check if specified file is an Excel.
+     *
+     * @param file that's to be checked if it's an Excel file.
+     * @return true if file is an Excel.
+     */
     public static boolean hasExcelFormat(MultipartFile file) {
-        if (!TYPE.equals(file.getContentType())) {
-            return false;
-        }
-        return true;
+        return TYPE.equals(file.getContentType());
     }
 
+    /**
+     * Method takes Excel file as an input and inserts data to the LIST.
+     *
+     * @param inputStream Excel file with the devices to be extracted.
+     * @return list of devices from Excel file.
+     */
     public static List<Device> excelToDevices(InputStream inputStream) {
         try {
             Workbook workbook = new XSSFWorkbook(inputStream);
@@ -185,65 +208,38 @@ public class ExcelConverter {
                     String cellString = currentCell.getStringCellValue();
                     switch (cellIdx) {
                         case 0:
-                            if (cellString == null || cellString.isEmpty()) {
+                            if (nullCheck(cellString)) {
                                 break rowLoop;
                             } else {
                                 device.setName(cellString);
                             }
                             break;
                         case 1:
-                            if (cellString == null || cellString.isEmpty()) {
-                                device.setSerialNumber("");
-                            } else {
-                                device.setSerialNumber(cellString);
-                            }
+                            device.setSerialNumber(nullCheck(cellString) ? "" : cellString);
                             break;
                         case 2:
-                            if (cellString == null || cellString.isEmpty()) {
-                                device.setSupplier(null);
-                            }
-                            Supplier currentSupplier = supplierRepository.findByName(cellString);
-                            if (currentSupplier != null) {
+                            if (!nullCheck(cellString)) {
+                                Supplier currentSupplier = supplierRepository.findByName(cellString);
                                 device.setSupplier(currentSupplier);
-                            } else {
-                                device.setSupplier(null);
                             }
                             break;
                         case 3:
-                            if (cellString == null || cellString.isEmpty()) {
-                                device.setDeviceModel(null);
-                            } else {
+                            if (!nullCheck(cellString)) {
                                 DeviceModel deviceModel = deviceModelRepository.findByName(cellString);
-                                if (deviceModel == null) {
-                                    device.setDeviceModel(null);
-                                } else {
-                                    device.setDeviceModel(deviceModel);
-                                }
+                                device.setDeviceModel(deviceModel);
                             }
                             break;
                         case 4:
-                            if (cellString == null || cellString.isEmpty()) {
-                                device.setManufacturer("Undefined");
-                            } else {
-                                device.setManufacturer(cellString);
-                            }
+                            device.setManufacturer(nullCheck(cellString) ? UNDEFINED : cellString);
                             break;
                         case 5:
-                            if (cellString == null || cellString.isEmpty()) {
-                                device.setDeviceGroup(null);
-                            } else {
+                            if (!nullCheck(cellString)) {
                                 DeviceGroup currentDeviceGroup = deviceGroupRepository.findByName(cellString);
-                                if (currentDeviceGroup != null) {
-                                    device.setDeviceGroup(currentDeviceGroup);
-                                } else {
-                                    device.setDeviceGroup(null);
-                                }
+                                device.setDeviceGroup(currentDeviceGroup);
                             }
                             break;
                         case 6:
-                            if (cellString == null || cellString.isEmpty()) {
-                                device.deviceConfiguration(null);
-                            } else {
+                            if (!nullCheck(cellString)) {
                                 DeviceConfiguration deviceConfiguration = deviceConfigurationRepository.findByName(cellString);
                                 if (deviceConfiguration != null) {
                                     device.setDeviceConfiguration(deviceConfiguration);
@@ -253,19 +249,13 @@ public class ExcelConverter {
                             }
                             break;
                         case 7:
-                            if (cellString == null || cellString.isEmpty()) {
-                                device.setTelemetry(null);
-                            } else {
+                            if (!nullCheck(cellString)) {
                                 Telemetry telemetry = telemetryRepository.findByName(cellString);
-                                if (telemetry != null) {
-                                    device.setTelemetry(telemetry);
-                                } else {
-                                    device.setTelemetry(null);
-                                }
+                                device.setTelemetry(telemetry);
                             }
                             break;
                         case 8:
-                            if (cellString == null || cellString.isEmpty()) {
+                            if (nullCheck(cellString)) {
                                 device.setStatuses(Collections.EMPTY_SET);
                             } else {
                                 Set<Status> statuses = new HashSet<>();
@@ -280,7 +270,7 @@ public class ExcelConverter {
                             }
                             break;
                         case 9:
-                            if (cellString == null || cellString.isEmpty()) {
+                            if (nullCheck(cellString)) {
                                 device.setAlertMessages(Collections.EMPTY_SET);
                             } else {
                                 Set<AlertMessage> alertMessages = new HashSet<>();
@@ -295,7 +285,7 @@ public class ExcelConverter {
                             }
                             break;
                         case 10:
-                            if (cellString == null || cellString.isEmpty()) {
+                            if (nullCheck(cellString)) {
                                 device.setRules(Collections.EMPTY_SET);
                             } else {
                                 Set<Rule> rules = new HashSet<>();
@@ -310,15 +300,15 @@ public class ExcelConverter {
                             }
                             break;
                         case 11:
-                            if (cellString == null || cellString.isEmpty()) {
+                            if (nullCheck(cellString)) {
                                 device.setMetaData(Collections.EMPTY_SET);
                             } else {
                                 Set<Metadata> metadata = new HashSet<>();
                                 String[] metadataList = cellString.split(",");
                                 for (String name : metadataList) {
-                                    Metadata metadatByName = metadataRepository.findByName(name);
-                                    if (metadatByName != null) {
-                                        metadata.add(metadatByName);
+                                    Metadata metadataByName = metadataRepository.findByName(name);
+                                    if (metadataByName != null) {
+                                        metadata.add(metadataByName);
                                     }
                                 }
                                 device.setMetaData(metadata);
@@ -336,7 +326,17 @@ public class ExcelConverter {
 
             return devices;
         } catch (IOException e) {
-            throw new RuntimeException("Fail to parse Excel file: " + e.getMessage());
+            throw new RuntimeException("Failed to parse the Excel file: " + e.getMessage());
         }
+    }
+
+    /**
+     * Check for null or emptiness of the specified String.
+     *
+     * @param cellString specified String for checking.
+     * @return true is String is null or empty after trim() method.
+     */
+    private static boolean nullCheck(String cellString) {
+        return cellString == null || cellString.trim().isEmpty();
     }
 }
